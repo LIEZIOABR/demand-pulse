@@ -21,7 +21,7 @@ jobs:
         run: pip install pytrends pandas
 
       - name: Executar script de atualização
-        run: python update_pulse.py
+        run: python update_pulse_v2.py
 
       - name: Salvar mudanças no GitHub
         run: |
