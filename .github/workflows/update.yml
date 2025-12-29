@@ -1,0 +1,32 @@
+name: Atualizar Dados do Google Trends
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Roda todo dia à meia-noite
+  workflow_dispatch: # Permite que você rode manualmente se quiser
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependências
+        run: pip install pytrends pandas
+
+      - name: Executar script de atualização
+        run: python update_pulse.py
+
+      - name: Salvar mudanças no GitHub
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add pulse-data.json
+          git commit -m "Atualização automática de dados" || echo "Sem mudanças para salvar"
+          git push
