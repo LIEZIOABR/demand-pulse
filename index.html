@@ -12,7 +12,7 @@
   <style>
     :root{
       --bg:#000000;
-      --panel: rgba(15, 18, 22, 0.62 );
+      --panel: rgba(15, 18, 22, 0.62);
       --panel-2: rgba(15, 18, 22, 0.48);
       --line: rgba(255,255,255,0.10);
       --text:#eaf3ff;
@@ -271,6 +271,7 @@
 
   <div class="wrap">
     <header>
+      <!-- IMPORTANTE: o arquivo deve se chamar exatamente logo.png -->
       <img class="logo" src="logo.png" alt="ABR ALL IN ONE" />
     </header>
 
@@ -281,11 +282,11 @@
         baseada em variação e persistência — <strong>sem promessa de volume absoluto</strong>.
         Monte Verde é o destino âncora.
       </p>
-      <div class="tag"><span class="dot"></span></div>
+      <div class="tag"><span class="dot"></span>Matrix • Poppins • Destaque #00c6ff • Lendo JSON (pulse-data.json)</div>
     </section>
 
     <div class="statusbar">
-      <div class="status" id="status"></div>
+      <div class="status" id="status">Status: pronto para carregar <span class="mono">pulse-data.json</span></div>
     </div>
 
     <section class="input-box">
@@ -344,6 +345,9 @@
   </div>
 
   <script>
+    // =========================
+    // DESTINOS (IDs = chaves do seu JSON)
+    // =========================
     const DESTINATIONS = [
       { id: "monte_verde_mg", label: "Monte Verde (MG) — Âncora" },
       { id: "serra_negra_sp", label: "Serra Negra (SP)" },
@@ -367,7 +371,7 @@
 
     let PULSE_DATA = null;
 
-    function setStatus(msg){ els.status.textContent = msg; }
+    function setStatus(msg){ els.status.textContent = "Status: " + msg; }
 
     function fillSelect(selectEl, defaultId) {
       selectEl.innerHTML = "";
@@ -438,8 +442,7 @@
 
       const lines = results.map(r =>
         `• ${r.label}: ${r.pulseLabel} (variação ${fmtPct(r.recentChange)} | persistência ${Math.round(r.persistence*100)}%).`
-      ).join("  
-");
+      ).join("<br/>");
 
       return `
         <div style="font-weight:900;font-size:14px;margin-bottom:8px;">
@@ -478,25 +481,28 @@
     }
 
     async function loadPulseData(){
+      setStatus("carregando pulse-data.json...");
       try{
         const url = "pulse-data.json?_=" + Date.now();
         const res = await fetch(url, { cache: "no-store" });
         if(!res.ok) throw new Error("HTTP " + res.status);
         const json = await res.json();
         PULSE_DATA = json;
-        setStatus("");
+        setStatus("JSON carregado com sucesso ✅");
         return true;
       }catch(err){
         PULSE_DATA = null;
-        setStatus("Erro ao ler dados: " + err.message);
+        setStatus("não conseguiu ler o JSON. Erro: " + err.message);
         return false;
       }
     }
 
     function run(){
       els.destList.innerHTML = "";
+
       const selectedIds = getSelectedDestinations();
       const selected = selectedIds.map(id => DESTINATIONS.find(d => d.id === id)).filter(Boolean);
+
       const results = [];
       for(const d of selected){
         const rec = (PULSE_DATA && PULSE_DATA[d.id]) ? PULSE_DATA[d.id] : { recentChange: 0, persistence: 0, note: "chave ausente no JSON" };
@@ -512,6 +518,7 @@
       els.bulletin.innerHTML = buildBulletin(results);
     }
 
+    // Init selects
     fillSelect(els.d1, "monte_verde_mg");
     fillSelect(els.d2, "serra_negra_sp");
     fillSelect(els.d3, "gramado_canela_rs");
@@ -520,40 +527,57 @@
     els.btnRun.addEventListener("click", async () => { await loadPulseData(); run(); });
     els.btnCopy.addEventListener("click", copyBulletinText);
 
+    // Boot: carrega e desenha ao abrir
     (async function boot(){ await loadPulseData(); run(); })();
 
+    // =========================
+    // MATRIX EFFECT — AJUSTE DE VELOCIDADE
+    // =========================
     (function matrix(){
       const canvas = document.getElementById("matrix");
       const ctx = canvas.getContext("2d");
+
       function resize(){
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
       window.addEventListener("resize", resize);
       resize();
-      const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미무메모야유요라リルレロワ0123456789ABRALLINONE";
+
+      const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワ0123456789ABRALLINONE";
       const fontSize = 16;
+
       let columns = Math.floor(canvas.width / fontSize);
       let drops = Array(columns).fill(1);
+
+      // ✅ Velocidade ajustada: aumentado de 90ms para 150ms para ficar mais lento
       const FRAME_MS = 150; 
       let last = 0;
+
       function draw(t){
         if (t - last < FRAME_MS) { requestAnimationFrame(draw); return; }
         last = t;
+
+        // ✅ Rastro mais suave
         ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         ctx.font = fontSize + "px Poppins";
-        ctx.fillStyle = "rgba(0, 198, 255, 0.35)";
+        ctx.fillStyle = "rgba(0, 198, 255, 0.35)"; // Cor azulada para combinar com o tema
+
         columns = Math.floor(canvas.width / fontSize);
         if (drops.length !== columns) drops = Array(columns).fill(1);
+
         for (let i = 0; i < drops.length; i++){
           const text = chars[Math.floor(Math.random() * chars.length)];
           ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
           if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
           drops[i]++;
         }
         requestAnimationFrame(draw);
       }
+
       requestAnimationFrame(draw);
     })();
   </script>
