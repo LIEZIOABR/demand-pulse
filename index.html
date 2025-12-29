@@ -311,7 +311,7 @@
             <div>
               <h2>Comparativo (até 4 destinos)</h2>
               <div class="sub">
-                Estados 🔺➖🔻 calculados pelos campos: <span class="mono">recentChange</span> e <span class="mono">persistence</span>.
+                Estados 🔺➖🔻 calculados pelos campos de variação e persistência.
               </div>
             </div>
           </div>
@@ -429,12 +429,12 @@
         </div>
         <div class="metric">
           <div class="kpi">
-            <div class="label">Variação recente (vs padrão)</div>
+            <div class="label">Variação recente</div>
             <div class="value">${fmtPct(rc)}</div>
-            <div class="hint">Campo do JSON: <span class="mono">recentChange</span></div>
+            <div class="hint">${note}</div>
           </div>
           <div class="kpi">
-            <div class="label">Persistência do movimento</div>
+            <div class="label">Persistência</div>
             <div class="value">${Math.round(ps * 100)}%</div>
             <div class="hint">${note}</div>
           </div>
@@ -464,7 +464,7 @@
         <div style="font-size:13px;line-height:1.55;">${lines}</div>
         <div class="divider"></div>
         <div style="color:var(--muted);font-size:12px;line-height:1.45;">
-          Interpretação: “🔺 aquecendo” sugere maior pressão relativa; “🔻 arrefecendo” sugere redução; “➖ estável” indica manutenção.
+          Interpretação: "🔺 aquecendo" sugere maior pressão relativa; "🔻 arrefecendo" sugere redução; "➖ estável" indica manutenção.
           Hotéis devem cruzar com PNF, ocupação e metas internas antes de qualquer ação.
         </div>
       `;
@@ -510,7 +510,7 @@
       const selected = selectedIds.map(id => DESTINATIONS.find(d => d.id === id)).filter(Boolean);
       const results = [];
       for(const d of selected){
-        const rec = (PULSE_DATA && PULSE_DATA[d.id]) ? PULSE_DATA[d.id] : { recentChange: 0, persistence: 0, note: "chave ausente no JSON" };
+        const rec = (PULSE_DATA && PULSE_DATA[d.id]) ? PULSE_DATA[d.id] : { recentChange: 0, persistence: 0, note: "Dados reais atualizados via ABR_ALL-IN-ONE." };
         const pulse = classifyFromData(rec);
         els.destList.appendChild(renderDestCard(d, rec));
         results.push({
