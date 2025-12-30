@@ -1,32 +1,50 @@
 {
   "monte_verde_mg": {
-    "recentChange": 0.3271,
-    "persistence": 0.71,
-    "note": "Dados reais atualizados via Google Trends (v2)."
+    "recentChange": 0.378,
+    "persistence": 0.86,
+    "weather": {
+      "temp": 18.6,
+      "condition": "Nevoeiro"
+    },
+    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
   },
   "serra_negra_sp": {
-    "recentChange": 0.3271,
+    "recentChange": 0.4495,
     "persistence": 0.86,
-    "note": "Dados reais atualizados via Google Trends (v2)."
+    "weather": {
+      "temp": 24.6,
+      "condition": "Pancadas Chuva"
+    },
+    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
   },
   "gramado_canela_rs": {
-    "recentChange": 0.4283,
+    "recentChange": 0.4994,
     "persistence": 1.0,
-    "note": "Dados reais atualizados via Google Trends (v2)."
+    "weather": null,
+    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
   },
   "campos_do_jordao_sp": {
-    "recentChange": 0.4781,
+    "recentChange": 0.4922,
     "persistence": 1.0,
-    "note": "Dados reais atualizados via Google Trends (v2)."
+    "weather": null,
+    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
   },
   "pocos_de_caldas_mg": {
-    "recentChange": 0.3187,
+    "recentChange": 0.3055,
     "persistence": 1.0,
-    "note": "Dados reais atualizados via Google Trends (v2)."
+    "weather": {
+      "temp": 20.5,
+      "condition": "Parcial. Nublado"
+    },
+    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
   },
   "sao_lourenco_mg": {
-    "recentChange": 1.8169,
+    "recentChange": 2.838,
     "persistence": 1.0,
-    "note": "Dados reais atualizados via Google Trends (v2)."
+    "weather": {
+      "temp": 23.2,
+      "condition": "Nublado"
+    },
+    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
   }
 }
