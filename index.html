@@ -1,588 +1,518 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DEMAND PULSE — ABR ALL IN ONE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMAND PULSE — ABR ALL IN ONE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --matrix-green: #00ff41;
+            --matrix-dark: #0d0208;
+            --card-bg: rgba(13, 18, 23, 0.95);
+            --accent-blue: #00a3ff;
+            --accent-green: #39ff14;
+            --text-main: #e6edf3;
+            --text-dim: #8b949e;
+        }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    :root{
-      --bg:#000000;
-      --panel: rgba(15, 18, 22, 0.62);
-      --panel-2: rgba(15, 18, 22, 0.48);
-      --line: rgba(255,255,255,0.10);
-      --text:#eaf3ff;
-      --muted: rgba(234,243,255,0.70);
-      --accent:#00c6ff;
-      --shadow: 0 18px 50px rgba(0,0,0,0.55);
-      --radius: 18px;
+        body {
+            background-color: var(--matrix-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-      --ok: rgba(126,231,135,.95);
-      --flat: rgba(255,204,102,.95);
-      --bad: rgba(255,107,107,.95);
-    }
+        /* Efeito Matrix Original Preservado */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x:hidden;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-    #matrix{
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      display:block;
-      background: #000;
-    }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
 
-    .wrap{
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display:flex;
-      flex-direction:column;
-    }
+        .logo {
+            max-width: 180px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(0, 163, 255, 0.3));
+        }
 
-    header{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 26px 16px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .logo{
-      width:230px;
-      height:auto;
-      display:block;
-      filter: drop-shadow(0 12px 25px rgba(0,198,255,0.15));
-      user-select:none;
-      -webkit-user-drag:none;
-    }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
 
-    .pitch{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 14px;
-      text-align:center;
-    }
-    .pitch h1{margin: 6px 0 6px; font-size: 20px; letter-spacing: 0.4px; font-weight: 800;}
-    .pitch p{margin: 0 auto; max-width: 860px; color: var(--muted); font-size: 13px; line-height: 1.35;}
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
 
-    .tag{
-      display:inline-flex; gap:8px; align-items:center;
-      margin-top: 10px; padding: 8px 12px;
-      border-radius: 999px; border: 1px solid var(--line);
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      font-size: 12px; color: var(--muted); box-shadow: var(--shadow);
-    }
-    .tag .dot{
-      width:10px;height:10px;border-radius:50%;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(0,198,255,0.55);
-    }
+        /* Seletores e Botão */
+        .controls {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-    .statusbar{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 10px;
-      width: 100%;
-    }
-    .status{
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(0,0,0,0.28);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 10px 12px;
-      color: var(--muted);
-      font-size: 12px;
-      box-shadow: var(--shadow);
-      text-align:center;
-      display: none;
-    }
+        select {
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    .input-box{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 18px;
-    }
-    .input-card{
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      padding: 14px;
-    }
-    .controls{
-      display:flex; gap:10px; flex-wrap:wrap;
-      align-items:center; justify-content:center;
-    }
-    select, button{
-      font-family: inherit;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      padding: 12px 14px;
-      font-size: 13px;
-      outline: none;
-      background: rgba(0,0,0,0.35);
-      color: var(--text);
-      min-height: 44px;
-    }
-    select{min-width: 230px;}
-    button{
-      border: none; cursor: pointer; font-weight: 800;
-      color: #001018;
-      background: linear-gradient(135deg, rgba(0,198,255,.98), rgba(0,198,255,.55));
-      box-shadow: 0 10px 25px rgba(0,198,255,0.16);
-      min-width: 210px;
-    }
-    button:active{transform: translateY(1px);}
-    .mini-btn{
-      min-width: 180px; font-weight: 700;
-      color: var(--muted);
-      background: rgba(0,0,0,0.25);
-      border: 1px solid var(--line);
-      box-shadow: none;
-    }
+        select:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(0, 163, 255, 0.2);
+        }
 
-    main{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 20px;
-      width: 100%;
-      flex: 1;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 14px;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: 1fr;}
-      select{min-width: 100%;}
-      button{min-width: 100%;}
-    }
+        .btn-update {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #00a3ff 0%, #0066ff 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+        }
 
-    .card{
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      overflow:hidden;
-    }
-    .card .head{
-      padding: 14px 14px 12px;
-      border-bottom: 1px solid var(--line);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .card h2{margin:0; font-size: 14px; font-weight: 800; letter-spacing: .25px;}
-    .sub{margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.35; max-width: 760px;}
-    .card .body{padding: 14px;}
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 163, 255, 0.5);
+            filter: brightness(1.1);
+        }
 
-    .dest-list{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-    }
-    @media (max-width: 640px){
-      .dest-list{grid-template-columns: 1fr;}
-    }
+        .btn-update:active {
+            transform: translateY(0);
+        }
 
-    .dest{
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--panel-2);
-      padding: 12px;
-    }
-    .row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
-    }
-    .name{font-weight: 800; font-size: 13px; letter-spacing: .2px;}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,0.28);
-      color: var(--muted);
-      white-space:nowrap;
-    }
-    .state{border:none; color:#001018; font-weight: 900; letter-spacing: .3px;}
-    .up{background: var(--ok);}
-    .flat{background: var(--flat);}
-    .down{background: var(--bad);}
+        /* Grid de Comparativo */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
 
-    .metric{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .kpi{
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(0,0,0,0.22);
-      padding: 10px;
-    }
-    .kpi .label{color: var(--muted); font-size: 11px; margin-bottom: 4px;}
-    .kpi .value{font-size: 16px; font-weight: 900;}
-    .kpi .hint{margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.25;}
+        .comparison-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
 
-    /* Novos estilos para Insight e Clima */
-    .insight-box{
-      margin-top: 12px; padding: 12px; border-radius: 14px;
-      background: rgba(0,198,255,0.08); border: 1px dashed var(--accent);
-      font-size: 11px; line-height: 1.45; color: var(--accent);
-    }
-    .weather-forecast{
-      margin-top: 12px; display:flex; gap:6px; overflow-x:auto;
-      padding-bottom:6px; scrollbar-width: none;
-    }
-    .weather-forecast::-webkit-scrollbar {display: none;}
-    .w-day{
-      min-width: 55px; text-align:center; font-size: 10px;
-      background: rgba(255,255,255,0.05); padding: 6px;
-      border-radius: 10px; border: 1px solid var(--line);
-    }
-    .w-day b{display:block; font-size: 11px; color: var(--accent); margin-bottom: 2px;}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-    .divider{height:1px;background: var(--line); margin: 10px 0;}
-    .note{color: var(--muted); font-size: 12px; line-height: 1.45;}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+        .card:hover {
+            border-color: rgba(0, 163, 255, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
 
-    footer{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 24px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-      text-align:center;
-    }
-  </style>
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .dest-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            max-width: 70%;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; border: 1px solid rgba(57, 255, 20, 0.3); }
+        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; border: 1px solid rgba(255, 49, 49, 0.3); }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .metric-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .metric-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Insight ABR - Estilo Refinado */
+        .insight-box {
+            background: rgba(0, 163, 255, 0.05);
+            border: 1px solid rgba(0, 163, 255, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #99d6ff;
+            display: none; /* Ativado via JS */
+        }
+
+        .insight-box b { color: var(--accent-blue); }
+
+        /* Clima 7 Dias - Estilo Refinado */
+        .weather-forecast {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 5px;
+        }
+
+        .forecast-day {
+            text-align: center;
+            flex: 1;
+        }
+
+        .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
+        .forecast-cond { font-size: 0.6rem; color: var(--text-dim); display: block; }
+
+        /* Boletim Lateral */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-copy {
+            background: rgba(0, 163, 255, 0.1);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-copy:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        #boletim-texto {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsividade Mobile */
+        @media (max-width: 968px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .sidebar { order: -1; }
+            h1 { font-size: 1.4rem; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 15px; }
+            .controls { padding: 15px; }
+            .metrics-row { grid-template-columns: 1fr; }
+            .card { padding: 20px; }
+        }
+    </style>
 </head>
-
 <body>
-  <canvas id="matrix"></canvas>
 
-  <div class="wrap">
-    <header>
-      <img class="logo" src="logo.png" alt="ABR ALL IN ONE" />
-    </header>
+    <canvas id="matrix-canvas"></canvas>
 
-    <section class="pitch">
-      <h1>DEMAND PULSE — Radar Direcional do Destino</h1>
-      <p>
-        Leitura direcional do pulso de demanda do destino (🔺 aquecendo, ➖ estável, 🔻 arrefecendo),
-        baseada em variação e persistência histórica.
-      </p>
-      <div class="tag"><span class="dot"></span></div>
-    </section>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="ABR ALL IN ONE" class="logo">
+            <h1>Demand Pulse — Radar Direcional do Destino</h1>
+            <p class="subtitle">Leitura direcional do pulso de demanda baseada em variação e persistência histórica.</p>
+        </header>
 
-    <div class="statusbar">
-      <div class="status" id="status"></div>
+        <div class="controls">
+            <select id="dest-1">
+                <option value="monte_verde_mg">Monte Verde (MG) — Âncora</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+            </select>
+            <select id="dest-2">
+                <option value="campos_do_jordao_sp" selected>Campos do Jordão (SP)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+            </select>
+            <select id="dest-3">
+                <option value="gramado_canela_rs" selected>Gramado + Canela (RS)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+            </select>
+            <select id="dest-4">
+                <option value="pocos_de_caldas_mg" selected>Poços de Caldas (MG)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+            </select>
+            <button class="btn-update" onclick="updateDashboard()">Atualizar Pulso</button>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="comparison-section" id="cards-container">
+                <!-- Cards serão injetados aqui via JS -->
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title">
+                        Boletim Institucional
+                        <button class="btn-copy" onclick="copyBoletim()">Copiar</button>
+                    </div>
+                    <div id="boletim-texto">Carregando dados...</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            DEMAND PULSE — MVP ABR-ALL-IN-ONE — ATUALIZAÇÃO DIÁRIA À MEIA-NOITE
+        </footer>
     </div>
 
-    <section class="input-box">
-      <div class="input-card">
-        <div class="controls">
-          <select id="d1"></select>
-          <select id="d2"></select>
-          <select id="d3"></select>
-          <select id="d4"></select>
-          <button id="btnRun">Atualizar Pulso</button>
-        </div>
-        <div style="margin-top:10px" class="note">
-          Essa página lê dados de ABR ALL-IN-ONE
-        </div>
-      </div>
-    </section>
+    <script>
+        // Lógica do Matrix Canvas Original
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const fontSize = 14;
+        const columns = width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
 
-    <main>
-      <div class="grid">
-        <section class="card">
-          <div class="head">
-            <div>
-              <h2>Comparativo (até 4 destinos)</h2>
-              <div class="sub">
-                Estados 🔺➖🔻 calculados pelos campos de variação e persistência.
-              </div>
-            </div>
-          </div>
-          <div class="body">
-            <div class="dest-list" id="destList"></div>
-            <div class="divider"></div>
-            <div class="note">Atualização de dados sempre se darão automaticamente à meia noite!</div>
-          </div>
-        </section>
-
-        <aside class="card">
-          <div class="head">
-            <div>
-              <h2>Boletim institucional (1 página)</h2>
-              <div class="sub">Texto objetivo para entidade/associação.</div>
-            </div>
-            <button class="mini-btn" id="btnCopy">Copiar boletim</button>
-          </div>
-          <div class="body">
-            <div id="bulletin"></div>
-            <div class="divider"></div>
-            <div class="note">Observação: este MVP não prevê reservas. Entrega contexto direcional.</div>
-          </div>
-        </aside>
-      </div>
-    </main>
-
-    <footer>
-      <div><strong>DEMAND PULSE</strong> — MVP de ABR-ALL-IN-ONE</div>
-    </footer>
-  </div>
-
-  <script>
-    const DESTINATIONS = [
-      { id: "monte_verde_mg", label: "Monte Verde (MG) — Âncora" },
-      { id: "campos_do_jordao_sp", label: "Campos do Jordão (SP)" },
-      { id: "sao_bento_sapucai_sp", label: "São Bento do Sapucaí (SP)" },
-      { id: "passa_quatro_mg", label: "Passa Quatro (MG)" },
-      { id: "serra_negra_sp", label: "Serra Negra (SP)" },
-      { id: "gramado_canela_rs", label: "Gramado + Canela (RS)" },
-      { id: "pocos_de_caldas_mg", label: "Poços de Caldas (MG)" },
-      { id: "sao_lourenco_mg", label: "São Lourenço (MG)" }
-    ];
-
-    const els = {
-      d1: document.getElementById("d1"),
-      d2: document.getElementById("d2"),
-      d3: document.getElementById("d3"),
-      d4: document.getElementById("d4"),
-      btnRun: document.getElementById("btnRun"),
-      destList: document.getElementById("destList"),
-      bulletin: document.getElementById("bulletin"),
-      btnCopy: document.getElementById("btnCopy"),
-      status: document.getElementById("status")
-    };
-
-    let PULSE_DATA = null;
-
-    function setStatus(msg){ els.status.textContent = msg; }
-
-    function fillSelect(selectEl, defaultId) {
-      selectEl.innerHTML = "";
-      for (const d of DESTINATIONS) {
-        const opt = document.createElement("option");
-        opt.value = d.id;
-        opt.textContent = d.label;
-        selectEl.appendChild(opt);
-      }
-      selectEl.value = defaultId || DESTINATIONS[0].id;
-    }
-
-    function safeNumber(x, fallback=0){
-      const n = Number(x);
-      return Number.isFinite(n) ? n : fallback;
-    }
-
-    function fmtPct(x) {
-      const num = Number(x);
-      if (!Number.isFinite(num)) return "0,0%";
-      const v = Math.round(num * 1000) / 10;
-      return (v > 0 ? "+" : "") + v.toFixed(1).replace(".", ",") + "%";
-    }
-
-    function classifyFromData(rec){
-      const rc = safeNumber(rec?.recentChange, 0);
-      const ps = safeNumber(rec?.persistence, 0);
-
-      if (ps < 0.55) return { label: "➖ Estável", cls: "flat" };
-      if (rc >= 0.12) return { label: "🔺 Aquecendo", cls: "up" };
-      if (rc <= -0.10) return { label: "🔻 Arrefecendo", cls: "down" };
-      return { label: "➖ Estável", cls: "flat" };
-    }
-
-    function renderDestCard(d, rec) {
-      const pulse = classifyFromData(rec);
-      const rc = safeNumber(rec?.recentChange, 0);
-      const ps = safeNumber(rec?.persistence, 0);
-      const note = (rec?.note && String(rec.note).trim()) ? String(rec.note) : "Dados reais atualizados via ABR_ALL-IN-ONE.";
-      
-      // Dados de clima
-      const weather = rec?.weather;
-      let wHtml = "";
-      if (weather?.daily) {
-        wHtml = `<div class="weather-forecast">` + weather.daily.map(day => `
-          <div class="w-day"><b>${Math.round(day.max)}°</b>${Math.round(day.min)}°<br>${day.cond}</div>
-        `).join("") + `</div>`;
-      }
-
-      const wrap = document.createElement("div");
-      wrap.className = "dest";
-
-      wrap.innerHTML = `
-        <div class="row">
-          <div class="name">${d.label}</div>
-          <div class="pill state ${pulse.cls}">${pulse.label}</div>
-        </div>
-        <div class="metric">
-          <div class="kpi">
-            <div class="label">Variação recente</div>
-            <div class="value">${fmtPct(rc)}</div>
-          </div>
-          <div class="kpi">
-            <div class="label">Persistência</div>
-            <div class="value">${Math.round(ps * 100)}%</div>
-          </div>
-        </div>
-        ${rec.insight ? `<div class="insight-box"><b>💡 Insight ABR:</b> ${rec.insight}</div>` : ""}
-        ${wHtml}
-        <div class="note" style="margin-top:10px; font-size:9px; opacity:0.6; text-align:center;">${note}</div>
-      `;
-      return wrap;
-    }
-
-    function buildBulletin(results) {
-      const now = new Date();
-      const dt = now.toLocaleDateString("pt-BR", { year:"numeric", month:"long", day:"2-digit" });
-
-      const lines = results.map(r =>
-        `• ${r.label}: ${r.pulseLabel} (variação ${fmtPct(r.recentChange)} | persistência ${Math.round(r.persistence*100)}%).`
-      ).join("<br/>");
-
-      return `
-        <div style="font-weight:900;font-size:14px;margin-bottom:8px;">
-          Boletim DEMAND PULSE — Destinos monitorados (${dt})
-        </div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.45;">
-          Leitura direcional do pulso de demanda do destino, baseada em variação vs. padrão histórico e persistência do movimento.
-        </div>
-        <div class="divider"></div>
-        <div style="font-size:13px;line-height:1.55;">${lines}</div>
-        <div class="divider"></div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.45;">
-          Interpretação: “🔺 aquecendo” sugere maior pressão relativa; “🔻 arrefecendo” sugere redução; “➖ estável” indica manutenção.
-        </div>
-      `;
-    }
-
-    function copyBulletinText() {
-      const text = els.bulletin.innerText.trim();
-      navigator.clipboard.writeText(text).then(() => {
-        els.btnCopy.textContent = "Copiado!";
-        setTimeout(() => (els.btnCopy.textContent = "Copiar boletim"), 1200);
-      });
-    }
-
-    function getSelectedDestinations() {
-      const ids = [els.d1.value, els.d2.value, els.d3.value, els.d4.value].filter(Boolean);
-      const seen = new Set();
-      const uniq = [];
-      for (const id of ids) {
-        if (!seen.has(id)) { seen.add(id); uniq.push(id); }
-      }
-      return uniq.slice(0, 4);
-    }
-
-    async function loadPulseData(){
-      try{
-        const url = "pulse-data.json?_=" + Date.now();
-        const res = await fetch(url, { cache: "no-store" });
-        if(!res.ok) throw new Error("HTTP " + res.status);
-        const json = await res.json();
-        PULSE_DATA = json;
-        setStatus("");
-        return true;
-      }catch(err){
-        PULSE_DATA = null;
-        setStatus("Erro ao ler dados: " + err.message);
-        return false;
-      }
-    }
-
-    function run(){
-      els.destList.innerHTML = "";
-      const selectedIds = getSelectedDestinations();
-      const selected = selectedIds.map(id => DESTINATIONS.find(d => d.id === id)).filter(Boolean);
-      const results = [];
-      for(const d of selected){
-        const rec = (PULSE_DATA && PULSE_DATA[d.id]) ? PULSE_DATA[d.id] : { recentChange: 0, persistence: 0, note: "Dados reais atualizados via ABR_ALL-IN-ONE." };
-        const pulse = classifyFromData(rec);
-        els.destList.appendChild(renderDestCard(d, rec));
-        results.push({
-          label: d.label,
-          pulseLabel: pulse.label,
-          recentChange: safeNumber(rec.recentChange, 0),
-          persistence: safeNumber(rec.persistence, 0)
-        });
-      }
-      els.bulletin.innerHTML = buildBulletin(results);
-    }
-
-    fillSelect(els.d1, "monte_verde_mg");
-    fillSelect(els.d2, "campos_do_jordao_sp");
-    fillSelect(els.d3, "gramado_canela_rs");
-    fillSelect(els.d4, "pocos_de_caldas_mg");
-
-    els.btnRun.addEventListener("click", async () => { await loadPulseData(); run(); });
-    els.btnCopy.addEventListener("click", copyBulletinText);
-
-    (async function boot(){ await loadPulseData(); run(); })();
-
-    (function matrix(){
-      const canvas = document.getElementById("matrix");
-      const ctx = canvas.getContext("2d");
-      function resize(){
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener("resize", resize);
-      resize();
-      const chars = "0123456789ABRALLINONE";
-      const fontSize = 16;
-      let columns = Math.floor(canvas.width / fontSize);
-      let drops = Array(columns).fill(1);
-      const FRAME_MS = 100; 
-      let last = 0;
-      function draw(t){
-        if (t - last < FRAME_MS) { requestAnimationFrame(draw); return; }
-        last = t;
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = fontSize + "px monospace";
-        ctx.fillStyle = "rgba(0, 198, 255, 0.35)";
-        columns = Math.floor(canvas.width / fontSize);
-        if (drops.length !== columns) drops = Array(columns).fill(1);
-        for (let i = 0; i < drops.length; i++){
-          const text = chars[Math.floor(Math.random() * chars.length)];
-          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
         }
-        requestAnimationFrame(draw);
-      }
-      requestAnimationFrame(draw);
-    })();
-  </script>
+        setInterval(drawMatrix, 50);
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Lógica de Dados
+        let pulseData = {};
+
+        async function loadData() {
+            try {
+                const response = await fetch('pulse-data.json');
+                pulseData = await response.json();
+                updateDashboard();
+            } catch (e) {
+                console.error("Erro ao carregar JSON:", e);
+                document.getElementById('cards-container').innerHTML = "<p>Erro ao carregar dados. Verifique o arquivo pulse-data.json.</p>";
+            }
+        }
+
+        function getStatus(rc) {
+            if (rc > 0.1) return { label: 'Aquecendo', class: 'status-up' };
+            if (rc < -0.1) return { label: 'Arrefecendo', class: 'status-down' };
+            return { label: 'Estável', class: 'status-stable' };
+        }
+
+        function updateDashboard() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            let boletim = `Boletim DEMAND PULSE — Destinos monitorados (${new Date().toLocaleDateString('pt-BR')})\n\n`;
+
+            for (let i = 1; i <= 4; i++) {
+                const destId = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[destId];
+                
+                if (data) {
+                    const status = getStatus(data.recentChange);
+                    const changePct = (data.recentChange * 100).toFixed(1);
+                    const persistPct = (data.persistence * 100).toFixed(0);
+                    const destName = document.querySelector(`#dest-${i} option:checked`).text.split(' — ')[0];
+
+                    // Card HTML
+                    let cardHtml = `
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="dest-name">${destName}</span>
+                                <span class="status-badge ${status.class}">${status.label}</span>
+                            </div>
+                            <div class="metrics-row">
+                                <div class="metric-box">
+                                    <span class="metric-label">Variação Recente</span>
+                                    <span class="metric-value">${changePct > 0 ? '+' : ''}${changePct}%</span>
+                                </div>
+                                <div class="metric-box">
+                                    <span class="metric-label">Persistência</span>
+                                    <span class="metric-value">${persistPct}%</span>
+                                </div>
+                            </div>
+                    `;
+
+                    // Inserção de Insight se existir
+                    if (data.insight) {
+                        cardHtml += `<div class="insight-box" style="display:block"><b>💡 Insight ABR:</b> ${data.insight}</div>`;
+                    }
+
+                    // Inserção de Clima se existir
+                    if (data.weather && data.weather.daily) {
+                        cardHtml += `<div class="weather-forecast">`;
+                        data.weather.daily.slice(0, 5).forEach(day => {
+                            cardHtml += `
+                                <div class="forecast-day">
+                                    <span class="forecast-temp">${Math.round(day.max)}°</span>
+                                    <span class="forecast-cond">${day.cond}</span>
+                                </div>
+                            `;
+                        });
+                        cardHtml += `</div>`;
+                    }
+
+                    cardHtml += `<div style="font-size:0.6rem; color:var(--text-dim); text-align:center">${data.note || 'Dados reais atualizados via ABR_ALL-IN-ONE.'}</div></div>`;
+                    container.innerHTML += cardHtml;
+
+                    // Texto do Boletim
+                    boletim += `• ${destName}: ${status.label === 'Aquecendo' ? '▲' : status.label === 'Arrefecendo' ? '▼' : '▬'} ${status.label} (variação ${changePct > 0 ? '+' : ''}${changePct}% | persistência ${persistPct}%).\n`;
+                }
+            }
+
+            boletim += `\nInterpretação: "▲ aquecendo" sugere maior pressão relativa; "▼ arrefecendo" sugere redução; "▬ estável" indica manutenção. Hotéis devem cruzar com PNF, ocupação e metas internas antes de qualquer ação.\n\nObservação: este MVP não prevê reservas. Entrega contexto direcional.`;
+            document.getElementById('boletim-texto').innerText = boletim;
+        }
+
+        function copyBoletim() {
+            const texto = document.getElementById('boletim-texto').innerText;
+            navigator.clipboard.writeText(texto).then(() => alert("Boletim copiado para o WhatsApp!"));
+        }
+
+        loadData();
+    </script>
 </body>
 </html>
