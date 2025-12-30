@@ -1,50 +1,254 @@
 {
   "monte_verde_mg": {
-    "recentChange": 0.378,
+    "recentChange": 0.3715,
     "persistence": 0.86,
     "weather": {
-      "temp": 18.6,
-      "condition": "Nevoeiro"
+      "current": {
+        "temp": 24.2,
+        "cond": "Nublado"
+      },
+      "daily": [
+        {
+          "date": "2025-12-30",
+          "max": 24.7,
+          "min": 17.1,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2025-12-31",
+          "max": 25.3,
+          "min": 17.0,
+          "cond": "Est\u00e1vel"
+        },
+        {
+          "date": "2026-01-01",
+          "max": 24.1,
+          "min": 17.5,
+          "cond": "Est\u00e1vel"
+        },
+        {
+          "date": "2026-01-02",
+          "max": 21.1,
+          "min": 17.5,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-03",
+          "max": 21.4,
+          "min": 16.2,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-04",
+          "max": 22.0,
+          "min": 15.4,
+          "cond": "Pancadas"
+        },
+        {
+          "date": "2026-01-05",
+          "max": 20.6,
+          "min": 13.6,
+          "cond": "Nublado"
+        }
+      ]
     },
-    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
-  },
-  "serra_negra_sp": {
-    "recentChange": 0.4495,
-    "persistence": 0.86,
-    "weather": {
-      "temp": 24.6,
-      "condition": "Pancadas Chuva"
-    },
-    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
-  },
-  "gramado_canela_rs": {
-    "recentChange": 0.4994,
-    "persistence": 1.0,
-    "weather": null,
-    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "campos_do_jordao_sp": {
-    "recentChange": 0.4922,
+    "recentChange": 0.4959,
     "persistence": 1.0,
     "weather": null,
-    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
+  },
+  "sao_bento_sapucai_sp": {
+    "recentChange": 0.679,
+    "persistence": 1.0,
+    "weather": {
+      "current": {
+        "temp": 27.2,
+        "cond": "Nublado"
+      },
+      "daily": [
+        {
+          "date": "2025-12-30",
+          "max": 28.7,
+          "min": 18.7,
+          "cond": "Est\u00e1vel"
+        },
+        {
+          "date": "2025-12-31",
+          "max": 28.3,
+          "min": 18.8,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-01",
+          "max": 27.3,
+          "min": 19.9,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-02",
+          "max": 25.8,
+          "min": 20.0,
+          "cond": "Pancadas"
+        },
+        {
+          "date": "2026-01-03",
+          "max": 26.7,
+          "min": 18.2,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-04",
+          "max": 27.3,
+          "min": 17.1,
+          "cond": "Pancadas"
+        },
+        {
+          "date": "2026-01-05",
+          "max": 24.5,
+          "min": 16.6,
+          "cond": "Nublado"
+        }
+      ]
+    },
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
+  },
+  "passa_quatro_mg": {
+    "recentChange": 2.9841,
+    "persistence": 1.0,
+    "weather": null,
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
+  },
+  "serra_negra_sp": {
+    "recentChange": 0.4297,
+    "persistence": 0.86,
+    "weather": {
+      "current": {
+        "temp": 31.6,
+        "cond": "Parcial"
+      },
+      "daily": [
+        {
+          "date": "2025-12-30",
+          "max": 31.9,
+          "min": 21.4,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2025-12-31",
+          "max": 31.9,
+          "min": 21.1,
+          "cond": "Est\u00e1vel"
+        },
+        {
+          "date": "2026-01-01",
+          "max": 29.5,
+          "min": 21.7,
+          "cond": "Est\u00e1vel"
+        },
+        {
+          "date": "2026-01-02",
+          "max": 25.9,
+          "min": 21.8,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-03",
+          "max": 26.8,
+          "min": 21.3,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-04",
+          "max": 28.6,
+          "min": 20.9,
+          "cond": "Pancadas"
+        },
+        {
+          "date": "2026-01-05",
+          "max": 28.7,
+          "min": 18.3,
+          "cond": "Parcial"
+        }
+      ]
+    },
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
+  },
+  "gramado_canela_rs": {
+    "recentChange": 0.4468,
+    "persistence": 1.0,
+    "weather": null,
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "pocos_de_caldas_mg": {
-    "recentChange": 0.3055,
+    "recentChange": 0.2991,
     "persistence": 1.0,
     "weather": {
-      "temp": 20.5,
-      "condition": "Parcial. Nublado"
+      "current": {
+        "temp": 26.5,
+        "cond": "Parcial"
+      },
+      "daily": [
+        {
+          "date": "2025-12-30",
+          "max": 27.0,
+          "min": 17.6,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2025-12-31",
+          "max": 27.1,
+          "min": 17.5,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-01",
+          "max": 26.0,
+          "min": 18.1,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-02",
+          "max": 22.1,
+          "min": 17.9,
+          "cond": "Trovoada"
+        },
+        {
+          "date": "2026-01-03",
+          "max": 22.6,
+          "min": 17.6,
+          "cond": "Est\u00e1vel"
+        },
+        {
+          "date": "2026-01-04",
+          "max": 23.6,
+          "min": 17.4,
+          "cond": "Pancadas"
+        },
+        {
+          "date": "2026-01-05",
+          "max": 25.3,
+          "min": 15.7,
+          "cond": "Pancadas"
+        }
+      ]
     },
-    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "sao_lourenco_mg": {
-    "recentChange": 2.838,
+    "recentChange": 2.8285,
     "persistence": 1.0,
-    "weather": {
-      "temp": 23.2,
-      "condition": "Nublado"
-    },
-    "note": "Dados reais atualizados via Google Trends + Clima (v2.1)."
+    "weather": null,
+    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
+    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   }
 }
