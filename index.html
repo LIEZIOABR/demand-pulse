@@ -20,6 +20,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* Proteção contra seleção de texto */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -55,7 +60,7 @@
         }
 
         .logo {
-            max-width: 240px; /* Aumentado de 180px para 240px conforme solicitado */
+            max-width: 240px;
             width: 100%;
             height: auto;
             margin-bottom: 20px;
@@ -281,6 +286,11 @@
             color: var(--text-dim);
             line-height: 1.6;
             white-space: pre-wrap;
+            /* Permitir seleção apenas no boletim para cópia */
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         footer {
@@ -308,7 +318,7 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Bloqueio de Clique Direito -->
 
     <canvas id="matrix-canvas"></canvas>
 
@@ -382,6 +392,15 @@
     </div>
 
     <script>
+        // Bloqueio de Teclas de Atalho (F12, Ctrl+Shift+I, etc.)
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        };
+
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
