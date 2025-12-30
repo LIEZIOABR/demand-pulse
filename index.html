@@ -30,7 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Efeito Matrix Original Preservado */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -56,9 +55,11 @@
         }
 
         .logo {
-            max-width: 180px;
+            max-width: 240px; /* Aumentado de 180px para 240px conforme solicitado */
+            width: 100%;
+            height: auto;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(0, 163, 255, 0.3));
+            filter: drop-shadow(0 0 15px rgba(0, 163, 255, 0.4));
         }
 
         h1 {
@@ -77,7 +78,6 @@
             line-height: 1.5;
         }
 
-        /* Seletores e Botão */
         .controls {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -128,11 +128,6 @@
             filter: brightness(1.1);
         }
 
-        .btn-update:active {
-            transform: translateY(0);
-        }
-
-        /* Grid de Comparativo */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -213,7 +208,6 @@
             font-weight: 600;
         }
 
-        /* Insight ABR - Estilo Refinado */
         .insight-box {
             background: rgba(0, 163, 255, 0.05);
             border: 1px solid rgba(0, 163, 255, 0.2);
@@ -222,12 +216,11 @@
             font-size: 0.8rem;
             line-height: 1.4;
             color: #99d6ff;
-            display: none; /* Ativado via JS */
+            display: none;
         }
 
         .insight-box b { color: var(--accent-blue); }
 
-        /* Clima 7 Dias - Estilo Refinado */
         .weather-forecast {
             display: flex;
             justify-content: space-between;
@@ -244,7 +237,6 @@
         .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
         .forecast-cond { font-size: 0.6rem; color: var(--text-dim); display: block; }
 
-        /* Boletim Lateral */
         .sidebar {
             display: flex;
             flex-direction: column;
@@ -301,11 +293,11 @@
             letter-spacing: 1px;
         }
 
-        /* Responsividade Mobile */
         @media (max-width: 968px) {
             .dashboard-grid { grid-template-columns: 1fr; }
             .sidebar { order: -1; }
             h1 { font-size: 1.4rem; }
+            .logo { max-width: 200px; }
         }
 
         @media (max-width: 480px) {
@@ -372,10 +364,7 @@
         </div>
 
         <div class="dashboard-grid">
-            <div class="comparison-section" id="cards-container">
-                <!-- Cards serão injetados aqui via JS -->
-            </div>
-
+            <div class="comparison-section" id="cards-container"></div>
             <div class="sidebar">
                 <div class="sidebar-card">
                     <div class="sidebar-title">
@@ -393,7 +382,6 @@
     </div>
 
     <script>
-        // Lógica do Matrix Canvas Original
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
@@ -422,7 +410,6 @@
             height = canvas.height = window.innerHeight;
         });
 
-        // Lógica de Dados
         let pulseData = {};
 
         async function loadData() {
@@ -432,7 +419,7 @@
                 updateDashboard();
             } catch (e) {
                 console.error("Erro ao carregar JSON:", e);
-                document.getElementById('cards-container').innerHTML = "<p>Erro ao carregar dados. Verifique o arquivo pulse-data.json.</p>";
+                document.getElementById('cards-container').innerHTML = "<p>Erro ao carregar dados.</p>";
             }
         }
 
@@ -457,7 +444,6 @@
                     const persistPct = (data.persistence * 100).toFixed(0);
                     const destName = document.querySelector(`#dest-${i} option:checked`).text.split(' — ')[0];
 
-                    // Card HTML
                     let cardHtml = `
                         <div class="card">
                             <div class="card-header">
@@ -476,12 +462,10 @@
                             </div>
                     `;
 
-                    // Inserção de Insight se existir
                     if (data.insight) {
                         cardHtml += `<div class="insight-box" style="display:block"><b>💡 Insight ABR:</b> ${data.insight}</div>`;
                     }
 
-                    // Inserção de Clima se existir
                     if (data.weather && data.weather.daily) {
                         cardHtml += `<div class="weather-forecast">`;
                         data.weather.daily.slice(0, 5).forEach(day => {
@@ -498,18 +482,17 @@
                     cardHtml += `<div style="font-size:0.6rem; color:var(--text-dim); text-align:center">${data.note || 'Dados reais atualizados via ABR_ALL-IN-ONE.'}</div></div>`;
                     container.innerHTML += cardHtml;
 
-                    // Texto do Boletim
                     boletim += `• ${destName}: ${status.label === 'Aquecendo' ? '▲' : status.label === 'Arrefecendo' ? '▼' : '▬'} ${status.label} (variação ${changePct > 0 ? '+' : ''}${changePct}% | persistência ${persistPct}%).\n`;
                 }
             }
 
-            boletim += `\nInterpretação: "▲ aquecendo" sugere maior pressão relativa; "▼ arrefecendo" sugere redução; "▬ estável" indica manutenção. Hotéis devem cruzar com PNF, ocupação e metas internas antes de qualquer ação.\n\nObservação: este MVP não prevê reservas. Entrega contexto direcional.`;
+            boletim += `\nInterpretação: "▲ aquecendo" sugere maior pressão relativa; "▼ arrefecendo" sugere redução; "▬ estável" indica manutenção.\n\nObservação: este MVP não prevê reservas. Entrega contexto direcional.`;
             document.getElementById('boletim-texto').innerText = boletim;
         }
 
         function copyBoletim() {
             const texto = document.getElementById('boletim-texto').innerText;
-            navigator.clipboard.writeText(texto).then(() => alert("Boletim copiado para o WhatsApp!"));
+            navigator.clipboard.writeText(texto).then(() => alert("Boletim copiado!"));
         }
 
         loadData();
