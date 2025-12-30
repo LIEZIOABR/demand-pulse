@@ -251,6 +251,24 @@
     .kpi .value{font-size: 16px; font-weight: 900;}
     .kpi .hint{margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.25;}
 
+    /* Novos estilos para Insight e Clima */
+    .insight-box{
+      margin-top: 12px; padding: 12px; border-radius: 14px;
+      background: rgba(0,198,255,0.08); border: 1px dashed var(--accent);
+      font-size: 11px; line-height: 1.45; color: var(--accent);
+    }
+    .weather-forecast{
+      margin-top: 12px; display:flex; gap:6px; overflow-x:auto;
+      padding-bottom:6px; scrollbar-width: none;
+    }
+    .weather-forecast::-webkit-scrollbar {display: none;}
+    .w-day{
+      min-width: 55px; text-align:center; font-size: 10px;
+      background: rgba(255,255,255,0.05); padding: 6px;
+      border-radius: 10px; border: 1px solid var(--line);
+    }
+    .w-day b{display:block; font-size: 11px; color: var(--accent); margin-bottom: 2px;}
+
     .divider{height:1px;background: var(--line); margin: 10px 0;}
     .note{color: var(--muted); font-size: 12px; line-height: 1.45;}
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
@@ -279,8 +297,7 @@
       <h1>DEMAND PULSE — Radar Direcional do Destino</h1>
       <p>
         Leitura direcional do pulso de demanda do destino (🔺 aquecendo, ➖ estável, 🔻 arrefecendo),
-        baseada em variação e persistência — <strong>sem promessa de volume absoluto</strong>.
-        Monte Verde é o destino âncora.
+        baseada em variação e persistência histórica.
       </p>
       <div class="tag"><span class="dot"></span></div>
     </section>
@@ -347,9 +364,11 @@
   <script>
     const DESTINATIONS = [
       { id: "monte_verde_mg", label: "Monte Verde (MG) — Âncora" },
+      { id: "campos_do_jordao_sp", label: "Campos do Jordão (SP)" },
+      { id: "sao_bento_sapucai_sp", label: "São Bento do Sapucaí (SP)" },
+      { id: "passa_quatro_mg", label: "Passa Quatro (MG)" },
       { id: "serra_negra_sp", label: "Serra Negra (SP)" },
       { id: "gramado_canela_rs", label: "Gramado + Canela (RS)" },
-      { id: "campos_do_jordao_sp", label: "Campos do Jordão (SP)" },
       { id: "pocos_de_caldas_mg", label: "Poços de Caldas (MG)" },
       { id: "sao_lourenco_mg", label: "São Lourenço (MG)" }
     ];
@@ -407,17 +426,16 @@
       const pulse = classifyFromData(rec);
       const rc = safeNumber(rec?.recentChange, 0);
       const ps = safeNumber(rec?.persistence, 0);
-      const note = (rec?.note && String(rec.note).trim()) ? String(rec.note) : "Sem observação.";
+      const note = (rec?.note && String(rec.note).trim()) ? String(rec.note) : "Dados reais atualizados via ABR_ALL-IN-ONE.";
       
       // Dados de clima
       const weather = rec?.weather;
-      const weatherHtml = weather ? `
-        <div class="pill" style="margin-top:8px; width:100%; justify-content:center; background:rgba(0,198,255,0.1);">
-          <span>🌡️ ${weather.temp}°C</span>
-          <span style="margin:0 8px; opacity:0.3;">|</span>
-          <span>☁️ ${weather.condition}</span>
-        </div>
-      ` : '';
+      let wHtml = "";
+      if (weather?.daily) {
+        wHtml = `<div class="weather-forecast">` + weather.daily.map(day => `
+          <div class="w-day"><b>${Math.round(day.max)}°</b>${Math.round(day.min)}°<br>${day.cond}</div>
+        `).join("") + `</div>`;
+      }
 
       const wrap = document.createElement("div");
       wrap.className = "dest";
@@ -431,15 +449,15 @@
           <div class="kpi">
             <div class="label">Variação recente</div>
             <div class="value">${fmtPct(rc)}</div>
-            <div class="hint">${note}</div>
           </div>
           <div class="kpi">
             <div class="label">Persistência</div>
             <div class="value">${Math.round(ps * 100)}%</div>
-            <div class="hint">${note}</div>
           </div>
         </div>
-        ${weatherHtml}
+        ${rec.insight ? `<div class="insight-box"><b>💡 Insight ABR:</b> ${rec.insight}</div>` : ""}
+        ${wHtml}
+        <div class="note" style="margin-top:10px; font-size:9px; opacity:0.6; text-align:center;">${note}</div>
       `;
       return wrap;
     }
@@ -458,14 +476,12 @@
         </div>
         <div style="color:var(--muted);font-size:12px;line-height:1.45;">
           Leitura direcional do pulso de demanda do destino, baseada em variação vs. padrão histórico e persistência do movimento.
-          Não representa volume absoluto nem previsão de reservas. Monte Verde é o destino âncora do radar.
         </div>
         <div class="divider"></div>
         <div style="font-size:13px;line-height:1.55;">${lines}</div>
         <div class="divider"></div>
         <div style="color:var(--muted);font-size:12px;line-height:1.45;">
-          Interpretação: "🔺 aquecendo" sugere maior pressão relativa; "🔻 arrefecendo" sugere redução; "➖ estável" indica manutenção.
-          Hotéis devem cruzar com PNF, ocupação e metas internas antes de qualquer ação.
+          Interpretação: “🔺 aquecendo” sugere maior pressão relativa; “🔻 arrefecendo” sugere redução; “➖ estável” indica manutenção.
         </div>
       `;
     }
@@ -524,7 +540,7 @@
     }
 
     fillSelect(els.d1, "monte_verde_mg");
-    fillSelect(els.d2, "serra_negra_sp");
+    fillSelect(els.d2, "campos_do_jordao_sp");
     fillSelect(els.d3, "gramado_canela_rs");
     fillSelect(els.d4, "pocos_de_caldas_mg");
 
@@ -542,18 +558,18 @@
       }
       window.addEventListener("resize", resize);
       resize();
-      const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미무메모야유요라リルレロワ0123456789ABRALLINONE";
+      const chars = "0123456789ABRALLINONE";
       const fontSize = 16;
       let columns = Math.floor(canvas.width / fontSize);
       let drops = Array(columns).fill(1);
-      const FRAME_MS = 150; 
+      const FRAME_MS = 100; 
       let last = 0;
       function draw(t){
         if (t - last < FRAME_MS) { requestAnimationFrame(draw); return; }
         last = t;
-        ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = fontSize + "px Poppins";
+        ctx.font = fontSize + "px monospace";
         ctx.fillStyle = "rgba(0, 198, 255, 0.35)";
         columns = Math.floor(canvas.width / fontSize);
         if (drops.length !== columns) drops = Array(columns).fill(1);
