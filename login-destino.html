@@ -21,17 +21,17 @@
     <div class="login-container">
         <img src="logo.png" alt="ABR" class="logo">
         <h2 style="margin-bottom: 20px; color: var(--accent-blue);">ACESSO RESTRITO</h2>
-        <input type="password" id="password" placeholder="Digite sua senha">
+        <input type="password" id="password" placeholder="Digite sua senha" onkeypress="if(event.key==='Enter') checkPassword()">
         <button onclick="checkPassword()">Entrar no Radar</button>
     </div>
     <script>
         function checkPassword() {
             const pass = document.getElementById('password').value.toLowerCase().trim();
-            // SENHAS DEFINIDAS: abr2025 e testeabr
             if (pass === 'abr2025' || pass === 'testeabr') {
-                window.location.href = "destino.html"; 
+                // ESTE COMANDO ABRE O SEU RADAR LINDO (INDEX.HTML)
+                window.location.href = "index.html"; 
             } else {
-                alert('Senha Incorreta! Você digitou: ' + pass);
+                alert('Senha Incorreta!');
             }
         }
         const canvas = document.getElementById('matrix-canvas');
