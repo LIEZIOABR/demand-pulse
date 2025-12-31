@@ -70,7 +70,7 @@
         .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--matrix-green); }
 
         .grid-charts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
-        .chart-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 25px; min-height: 400px; }
+        .chart-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 25px; height: 450px; position: relative; }
         h3 { font-size: 1rem; margin-bottom: 20px; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 1px; }
 
         @media (max-width: 900px) { .grid-charts { grid-template-columns: 1fr; } header { padding: 15px 20px; } }
@@ -106,11 +106,11 @@
         <div class="grid-charts">
             <div class="chart-container">
                 <h3>Tendência de Demanda (Próximos 90 dias)</h3>
-                <canvas id="demandChart"></canvas>
+                <div style="height: 350px; width: 100%;"><canvas id="demandChart"></canvas></div>
             </div>
             <div class="chart-container">
                 <h3>Origem do Tráfego</h3>
-                <canvas id="originChart"></canvas>
+                <div style="height: 350px; width: 100%;"><canvas id="originChart"></canvas></div>
             </div>
         </div>
     </div>
@@ -122,8 +122,8 @@
             }
         }
 
-        // CARREGAMENTO SEGURO DOS GRÁFICOS
-        window.onload = function( ) {
+        // CARREGAMENTO SEGURO E DIRETO
+        document.addEventListener('DOMContentLoaded', function( ) {
             const ctxDemand = document.getElementById('demandChart').getContext('2d');
             new Chart(ctxDemand, {
                 type: 'line',
@@ -171,7 +171,7 @@
                     }
                 }
             });
-        };
+        });
     </script>
 </body>
 </html>
