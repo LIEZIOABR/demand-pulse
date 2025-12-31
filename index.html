@@ -108,6 +108,28 @@
             text-align: center;
             margin-bottom: 40px;
             padding-top: 20px;
+            position: relative;
+        }
+
+        .btn-logout {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            background: rgba(255, 49, 49, 0.1);
+            border: 1px solid #ff3131;
+            color: #ff3131;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-logout:hover {
+            background: #ff3131;
+            color: white;
         }
 
         .logo {
@@ -244,7 +266,7 @@
 
         footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
 
-        @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+        @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .sidebar { order: -1; } .btn-logout { position: static; margin-bottom: 20px; width: 100%; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -265,6 +287,7 @@
 
     <div class="container" id="main-content">
         <header>
+            <button class="btn-logout" onclick="logout()">Sair</button>
             <img src="logo.png" alt="ABR ALL-IN-ONE" class="logo">
             <h1>Demand Pulse — Radar Direcional do Destino</h1>
             <p class="subtitle">Análise de BI: Variação, Persistência e Tendência Histórica.</p>
@@ -355,6 +378,7 @@
         function checkLogin() {
             const input = document.getElementById('password-input').value;
             if(SENHAS_VALIDAS.includes(input)) {
+                sessionStorage.setItem('isLoggedIn', 'true');
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 loadData();
@@ -362,6 +386,20 @@
                 document.getElementById('login-error').style.display = 'block';
             }
         }
+
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.reload();
+        }
+
+        // Verificar se já está logado nesta sessão
+        window.onload = function() {
+            if(sessionStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadData();
+            }
+        };
 
         // Bloqueio de Teclas
         document.onkeydown = function(e) {
@@ -396,7 +434,6 @@
         let pulseData = {};
         let myChart = null;
 
-        // Função para gerar datas reais (últimos 7 domingos)
         function getTimelineLabels() {
             const labels = [];
             const today = new Date();
