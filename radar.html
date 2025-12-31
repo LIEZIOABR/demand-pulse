@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radar de Destino — ABR Marketing</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>DEMAND PULSE — ABR ALL-IN-ONE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -12,165 +12,172 @@
             --matrix-dark: #0d0208;
             --card-bg: rgba(13, 18, 23, 0.95 );
             --accent-blue: #00a3ff;
+            --accent-green: #39ff14;
             --text-main: #e6edf3;
             --text-dim: #8b949e;
-            --border-color: rgba(0, 163, 255, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--matrix-dark); color: var(--text-main); overflow-x: hidden; -webkit-user-select: none; user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
+        
+        /* Camada de Login Integrada */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--matrix-dark); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .login-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--accent-blue); text-align: center; max-width: 400px; width: 90%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.3); }
+        .login-box input { width: 100%; padding: 15px; margin: 20px 0; background: #161b22; border: 1px solid #30363d; color: white; border-radius: 10px; text-align: center; font-size: 1.1rem; }
+        .login-box button { width: 100%; padding: 15px; background: var(--accent-blue); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
 
-        header {
-            background: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; display: none; }
+        header { text-align: center; margin-bottom: 40px; padding-top: 20px; position: relative; }
+        
+        /* Botões de Navegação Blindados */
+        .header-nav { position: absolute; top: 20px; left: 0; display: flex; gap: 10px; z-index: 10; }
+        .btn-nav { border: none; padding: 10px 15px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+        .btn-logout { background: #ff3131; color: white; box-shadow: 0 4px 15px rgba(255, 49, 49, 0.3); }
+        .btn-home { background: var(--accent-blue); color: white; box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3); }
+        .btn-nav:hover { transform: scale(1.05); filter: brightness(1.2); }
 
-        .logo-area { display: flex; align-items: center; gap: 20px; }
-        .logo-area img { height: 40px; filter: drop-shadow(0 0 8px rgba(0, 163, 255, 0.3)); }
+        .logo { max-width: 240px; width: 100%; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(0, 163, 255, 0.4)); }
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .subtitle { color: var(--text-dim); font-size: 0.95rem; max-width: 600px; margin: 0 auto; line-height: 1.5; }
 
-        .nav-buttons { display: flex; gap: 15px; }
-        .btn-nav {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .bi-section { background: var(--card-bg); border: 1px solid rgba(0, 163, 255, 0.2); border-radius: 20px; padding: 24px; margin-bottom: 30px; }
+        .bi-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent-blue); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .chart-container { height: 300px; width: 100%; }
 
-        .btn-home { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-dim); }
-        .btn-home:hover { background: rgba(0, 163, 255, 0.1); color: var(--accent-blue); }
+        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .comparison-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; }
+        .card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
+        .dest-name { font-weight: 700; font-size: 1.1rem; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; }
+        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; }
 
-        .btn-logout { background: rgba(255, 50, 50, 0.1); border: 1px solid rgba(255, 50, 50, 0.3); color: #ff4d4d; }
-        .btn-logout:hover { background: #ff4d4d; color: white; }
+        .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .metric-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 12px; }
+        .metric-label { font-size: 0.7rem; color: var(--text-dim); display: block; }
+        .metric-value { font-family: 'Fira Code', monospace; font-size: 1.2rem; font-weight: 600; }
+        .insight-box { background: rgba(0, 163, 255, 0.05); border: 1px solid rgba(0, 163, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #99d6ff; }
 
-        .dashboard-container { padding: 30px; max-width: 1400px; margin: 0 auto; }
-        .welcome-section { margin-bottom: 30px; }
-        .welcome-section h1 { font-size: 1.8rem; color: var(--accent-blue); margin-bottom: 5px; }
-        .welcome-section p { color: var(--text-dim); font-size: 0.9rem; }
+        .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; }
+        #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; }
 
-        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; transition: 0.3s; }
-        .stat-card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
-        .stat-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; }
-        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--matrix-green); }
-
-        .grid-charts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
-        .chart-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 25px; min-height: 400px; }
-        h3 { font-size: 1rem; margin-bottom: 20px; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 1px; }
-
-        @media (max-width: 900px) { .grid-charts { grid-template-columns: 1fr; } header { padding: 15px 20px; } }
+        footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
+        @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .header-nav { position: static; margin-bottom: 20px; width: 100%; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
-
-    <header>
-        <div class="logo-area">
-            <img src="logo.png" alt="ABR Logo">
-            <div style="height: 24px; width: 1px; background: var(--border-color);"></div>
-            <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; color: var(--text-dim);">RADAR DE DESTINO</span>
-        </div>
-        <div class="nav-buttons">
-            <a href="https://inspiring-peony-6a9450.netlify.app/" class="btn-nav btn-home"><span>🏠</span> Home HUB</a>
-            <button onclick="logout( )" class="btn-nav btn-logout"><span>🔒</span> Sair do Sistema</button>
-        </div>
-    </header>
-
-    <div class="dashboard-container">
-        <div class="welcome-section">
-            <h1>Demand Pulse</h1>
-            <p>Análise Estratégica de Mercado — Atualizado em Tempo Real</p>
-        </div>
-
-        <div class="grid-stats">
-            <div class="stat-card"><div class="stat-label">Ocupação Média</div><div class="stat-value">74.2%</div></div>
-            <div class="stat-card"><div class="stat-label">RevPAR</div><div class="stat-value">R$ 412,00</div></div>
-            <div class="stat-card"><div class="stat-label">Lead Time Médio</div><div class="stat-value">18 Dias</div></div>
-            <div class="stat-card"><div class="stat-label">Market Share</div><div class="stat-value">22.5%</div></div>
-        </div>
-
-        <div class="grid-charts">
-            <div class="chart-container">
-                <h3>Tendência de Demanda (Próximos 90 dias)</h3>
-                <canvas id="demandChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h3>Origem do Tráfego</h3>
-                <canvas id="originChart"></canvas>
-            </div>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="login-overlay">
+        <img src="logo.png" alt="ABR" style="max-width: 200px; margin-bottom: 30px;">
+        <div class="login-box">
+            <h2 style="color: var(--accent-blue);">ACESSO RESTRITO</h2>
+            <input type="password" id="password-input" placeholder="Digite sua senha">
+            <button onclick="checkLogin()">Entrar no Radar</button>
+            <p id="login-error" style="color: #ff3131; font-size: 0.8rem; margin-top: 15px; display: none;">Senha incorreta.</p>
         </div>
     </div>
 
+    <div class="container" id="main-content">
+        <header>
+            <div class="header-nav">
+                <a href="https://inspiring-peony-6a9450.netlify.app/" class="btn-nav btn-home">Voltar ao HUB</a>
+                <button class="btn-nav btn-logout" onclick="logout( )">Sair do Sistema</button>
+            </div>
+            <img src="logo.png" alt="ABR" class="logo">
+            <h1>Demand Pulse</h1>
+            <p class="subtitle">Análise Estratégica de Demanda e Inteligência de Mercado</p>
+        </header>
+
+        <div class="bi-section">
+            <div class="bi-title"><span>📊</span> Tendência de Demanda Agregada</div>
+            <div class="chart-container"><canvas id="mainChart"></canvas></div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="comparison-section" id="destinos-grid"></div>
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="bi-title" style="margin-bottom: 15px;"><span>📝</span> Boletim Estratégico</div>
+                    <div id="boletim-texto">Carregando análise...</div>
+                </div>
+            </div>
+        </div>
+        <footer><p>© 2025 ABR Marketing Estratégico — Demand Pulse v13.4</p></footer>
+    </div>
+
     <script>
-        function logout() {
-            if(confirm("Deseja realmente sair do sistema?")) {
-                window.location.href = "https://inspiring-peony-6a9450.netlify.app/";
-            }
+        function checkLogin() {
+            const pass = document.getElementById('password-input').value.toLowerCase().trim();
+            if (pass === 'abr2025' || pass === 'testeabr') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadData();
+            } else { document.getElementById('login-error').style.display = 'block'; }
         }
 
-        window.onload = function( ) {
-            const ctxDemand = document.getElementById('demandChart').getContext('2d');
-            new Chart(ctxDemand, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                    datasets: [{
-                        label: 'Ocupação Prevista',
-                        data: [65, 72, 85, 78, 90, 95],
-                        borderColor: '#00a3ff',
-                        backgroundColor: 'rgba(0, 163, 255, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b949e' } },
-                        x: { grid: { display: false }, ticks: { color: '#8b949e' } }
-                    }
-                }
-            });
+        function logout() { if(confirm("Sair?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
 
-            const ctxOrigin = document.getElementById('originChart').getContext('2d');
-            new Chart(ctxOrigin, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Direto', 'OTA', 'Agências', 'Corporativo'],
-                    datasets: [{
-                        data: [40, 30, 20, 10],
-                        backgroundColor: ['#00ff41', '#00a3ff', '#ffb800', '#ff4d4d'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { color: '#8b949e', padding: 20, font: { size: 12 } }
-                        }
-                    }
-                }
+        async function loadData( ) {
+            try {
+                const response = await fetch('pulse-data.json');
+                const data = await response.json();
+                
+                document.getElementById('boletim-texto').innerText = data.boletim;
+                
+                const ctx = document.getElementById('mainChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.chartLabels,
+                        datasets: [{
+                            label: 'Intenção de Viagem',
+                            data: data.chartData,
+                            borderColor: '#00a3ff',
+                            backgroundColor: 'rgba(0, 163, 255, 0.1)',
+                            fill: true, tension: 0.4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+
+                document.getElementById('destinos-grid').innerHTML = data.destinos.map(d => `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="dest-name">${d.name}</span>
+                            <span class="status-badge status-${d.status}">${d.status.toUpperCase()}</span>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric-box"><span class="metric-label">Ocupação</span><span class="metric-value">${d.occ}</span></div>
+                            <div class="metric-box"><span class="metric-label">RevPAR</span><span class="metric-value">${d.revpar}</span></div>
+                        </div>
+                        <div class="insight-box">${d.insight}</div>
+                    </div>
+                `).join('');
+            } catch (e) { console.error("Erro ao carregar dados reais."); }
+        }
+
+        // Matrix Background
+        const canvas = document.getElementById('matrix-canvas');
+        const ctxM = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        const cols = w / 14;
+        const drops = Array(Math.floor(cols)).fill(1);
+        function draw() {
+            ctxM.fillStyle = 'rgba(13, 2, 8, 0.05)';
+            ctxM.fillRect(0, 0, w, h);
+            ctxM.fillStyle = '#00ff41';
+            ctxM.font = '14px monospace';
+            drops.forEach((y, i) => {
+                ctxM.fillText(Math.floor(Math.random()*2), i*14, y*14);
+                if(y*14 > h && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
             });
-        };
+        }
+        setInterval(draw, 50);
     </script>
 </body>
 </html>
