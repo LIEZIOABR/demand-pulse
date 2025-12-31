@@ -18,10 +18,6 @@
         input:focus { border-color: var(--accent-blue); background: rgba(255,255,255,0.1); }
         button { width: 100%; padding: 15px; background: var(--accent-blue); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         button:hover { background: #0086d1; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 163, 255, 0.4); }
-        
-        /* O BOTÃO DE VOLTAR QUE VOCÊ PEDIU */
-        .btn-back { display: inline-block; margin-top: 20px; color: #8b949e; text-decoration: none; font-size: 0.8rem; transition: 0.3s; text-transform: uppercase; font-weight: 600; }
-        .btn-back:hover { color: white; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -32,15 +28,12 @@
         <p>DEMAND PULSE — ABR ALL-IN-ONE</p>
         <input type="password" id="password" placeholder="Digite sua senha" onkeypress="if(event.key==='Enter') checkPassword()">
         <button onclick="checkPassword()">Entrar no Radar</button>
-        
-        <!-- LINK PARA VOLTAR AO HUB -->
-        <a href="index.html" class="btn-back">← Voltar ao HUB Principal</a>
     </div>
     <script>
         function checkPassword() {
             const pass = document.getElementById('password').value.toLowerCase();
             if (pass === 'abr2025' || pass === 'testeabr') {
-                // Redireciona para o seu Radar lindo
+                // Redireciona para o Radar
                 window.location.href = "index.html?auth=success"; 
             } else {
                 alert('Senha Incorreta!');
