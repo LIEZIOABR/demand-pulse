@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEMAND PULSE — ABR ALL IN ONE</title>
+    <title>DEMAND PULSE — ABR ALL-IN-ONE</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --matrix-green: #00ff41;
@@ -20,7 +21,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* Proteção contra seleção de texto */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -45,12 +45,63 @@
             opacity: 0.15;
         }
 
+        /* Camada de Login */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--matrix-dark);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-blue);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(0, 163, 255, 0.3);
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             position: relative;
             z-index: 1;
+            display: none; /* Escondido até o login */
         }
 
         header {
@@ -106,11 +157,6 @@
             transition: all 0.3s ease;
         }
 
-        select:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 10px rgba(0, 163, 255, 0.2);
-        }
-
         .btn-update {
             grid-column: 1 / -1;
             background: linear-gradient(135deg, #00a3ff 0%, #0066ff 100%);
@@ -120,17 +166,34 @@
             border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
         }
 
-        .btn-update:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 163, 255, 0.5);
-            filter: brightness(1.1);
+        /* Seção de BI - Gráfico */
+        .bi-section {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 163, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .bi-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-container {
+            height: 300px;
+            width: 100%;
         }
 
         .dashboard-grid {
@@ -150,262 +213,169 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             padding: 24px;
-            position: relative;
-            transition: all 0.4s ease;
             display: flex;
             flex-direction: column;
             gap: 15px;
+            transition: 0.3s;
         }
 
-        .card:hover {
-            border-color: rgba(0, 163, 255, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-        }
+        .card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .dest-name { font-weight: 700; font-size: 1.1rem; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; }
+        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; }
 
-        .dest-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-            max-width: 70%;
-        }
+        .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .metric-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 12px; }
+        .metric-label { font-size: 0.7rem; color: var(--text-dim); display: block; }
+        .metric-value { font-family: 'Fira Code', monospace; font-size: 1.2rem; font-weight: 600; }
 
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        .insight-box { background: rgba(0, 163, 255, 0.05); border: 1px solid rgba(0, 163, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #99d6ff; }
 
-        .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; border: 1px solid rgba(57, 255, 20, 0.3); }
-        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; border: 1px solid rgba(255, 49, 49, 0.3); }
-
-        .metrics-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .metric-box {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .metric-label {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .metric-value {
-            font-family: 'Fira Code', monospace;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .insight-box {
-            background: rgba(0, 163, 255, 0.05);
-            border: 1px solid rgba(0, 163, 255, 0.2);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            line-height: 1.4;
-            color: #99d6ff;
-            display: none;
-        }
-
-        .insight-box b { color: var(--accent-blue); }
-
-        .weather-forecast {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            gap: 5px;
-        }
-
-        .forecast-day {
-            text-align: center;
-            flex: 1;
-        }
-
+        .weather-forecast { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .forecast-day { text-align: center; flex: 1; }
         .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
-        .forecast-cond { font-size: 0.6rem; color: var(--text-dim); display: block; }
+        .forecast-cond { font-size: 0.55rem; color: var(--text-dim); display: block; }
 
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; }
+        #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; user-select: text; }
 
-        .sidebar-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 24px;
-        }
+        footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
 
-        .sidebar-title {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-copy {
-            background: rgba(0, 163, 255, 0.1);
-            border: 1px solid var(--accent-blue);
-            color: var(--accent-blue);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-copy:hover {
-            background: var(--accent-blue);
-            color: white;
-        }
-
-        #boletim-texto {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            line-height: 1.6;
-            white-space: pre-wrap;
-            /* Permitir seleção apenas no boletim para cópia */
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
-            user-select: text;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 968px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .sidebar { order: -1; }
-            h1 { font-size: 1.4rem; }
-            .logo { max-width: 200px; }
-        }
-
-        @media (max-width: 480px) {
-            .container { padding: 15px; }
-            .controls { padding: 15px; }
-            .metrics-row { grid-template-columns: 1fr; }
-            .card { padding: 20px; }
-        }
+        @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .sidebar { order: -1; } }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- Bloqueio de Clique Direito -->
+<body oncontextmenu="return false;">
 
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="container">
+    <!-- Overlay de Login -->
+    <div id="login-overlay">
+        <img src="logo.png" alt="ABR ALL-IN-ONE" style="max-width: 200px; margin-bottom: 30px;">
+        <div class="login-box">
+            <h2 style="color: var(--accent-blue);">ACESSO RESTRITO</h2>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px;">DEMAND PULSE — ABR ALL-IN-ONE</p>
+            <input type="password" id="password-input" placeholder="Digite sua senha">
+            <button onclick="checkLogin()">Entrar no Radar</button>
+            <p id="login-error" style="color: #ff3131; font-size: 0.8rem; margin-top: 15px; display: none;">Senha incorreta. Tente novamente.</p>
+        </div>
+    </div>
+
+    <div class="container" id="main-content">
         <header>
-            <img src="logo.png" alt="ABR ALL IN ONE" class="logo">
+            <img src="logo.png" alt="ABR ALL-IN-ONE" class="logo">
             <h1>Demand Pulse — Radar Direcional do Destino</h1>
-            <p class="subtitle">Leitura direcional do pulso de demanda baseada em variação e persistência histórica.</p>
+            <p class="subtitle">Análise de BI: Variação, Persistência e Tendência Histórica.</p>
         </header>
 
         <div class="controls">
             <select id="dest-1">
-                <option value="monte_verde_mg">Monte Verde (MG) — Âncora</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
                 <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
                 <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
                 <option value="passa_quatro_mg">Passa Quatro (MG)</option>
                 <option value="serra_negra_sp">Serra Negra (SP)</option>
-                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
                 <option value="sao_lourenco_mg">São Lourenço (MG)</option>
-                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
             </select>
             <select id="dest-2">
                 <option value="campos_do_jordao_sp" selected>Campos do Jordão (SP)</option>
                 <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
                 <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
                 <option value="passa_quatro_mg">Passa Quatro (MG)</option>
                 <option value="serra_negra_sp">Serra Negra (SP)</option>
-                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
                 <option value="sao_lourenco_mg">São Lourenço (MG)</option>
-                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
             </select>
             <select id="dest-3">
                 <option value="gramado_canela_rs" selected>Gramado + Canela (RS)</option>
                 <option value="monte_verde_mg">Monte Verde (MG)</option>
                 <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
                 <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
                 <option value="passa_quatro_mg">Passa Quatro (MG)</option>
                 <option value="serra_negra_sp">Serra Negra (SP)</option>
-                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
                 <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
             </select>
             <select id="dest-4">
-                <option value="pocos_de_caldas_mg" selected>Poços de Caldas (MG)</option>
+                <option value="goncalves_mg" selected>Gonçalves (MG)</option>
                 <option value="monte_verde_mg">Monte Verde (MG)</option>
                 <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
                 <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
                 <option value="passa_quatro_mg">Passa Quatro (MG)</option>
                 <option value="serra_negra_sp">Serra Negra (SP)</option>
                 <option value="sao_lourenco_mg">São Lourenço (MG)</option>
-                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
             </select>
-            <button class="btn-update" onclick="updateDashboard()">Atualizar Pulso</button>
+            <button class="btn-update" onclick="updateDashboard()">Atualizar Análise de BI</button>
+        </div>
+
+        <!-- Seção de BI -->
+        <div class="bi-section">
+            <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência (8 Semanas)</div>
+            <div class="chart-container">
+                <canvas id="biChart"></canvas>
+            </div>
         </div>
 
         <div class="dashboard-grid">
             <div class="comparison-section" id="cards-container"></div>
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <div class="sidebar-title">
-                        Boletim Institucional
-                        <button class="btn-copy" onclick="copyBoletim()">Copiar</button>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                        <span style="font-weight:700;">Boletim ABR</span>
+                        <button onclick="copyBoletim()" style="background:none; border:1px solid var(--accent-blue); color:var(--accent-blue); padding:4px 8px; border-radius:5px; cursor:pointer; font-size:0.7rem;">Copiar</button>
                     </div>
-                    <div id="boletim-texto">Carregando dados...</div>
+                    <div id="boletim-texto">Carregando...</div>
                 </div>
             </div>
         </div>
 
         <footer>
-            DEMAND PULSE — MVP ABR-ALL-IN-ONE — ATUALIZAÇÃO DIÁRIA À MEIA-NOITE
+            DEMAND PULSE — ABR ALL-IN-ONE — ATUALIZAÇÃO DIÁRIA À MEIA-NOITE
         </footer>
     </div>
 
     <script>
-        // Bloqueio de Teclas de Atalho (F12, Ctrl+Shift+I, etc.)
+        // CONFIGURAÇÃO DE SENHA (Mude aqui se desejar)
+        const SENHA_MESTRA = "ABR2025";
+
+        function checkLogin() {
+            const input = document.getElementById('password-input').value;
+            if(input === SENHA_MESTRA) {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadData();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        // Bloqueio de Teclas
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; // F12
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
+            if(e.keyCode == 13 && document.getElementById('login-overlay').style.display !== 'none') checkLogin();
         };
 
+        // Efeito Matrix
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const characters = '01';
         const fontSize = 14;
         const columns = width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
@@ -424,12 +394,8 @@
         }
         setInterval(drawMatrix, 50);
 
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        });
-
         let pulseData = {};
+        let myChart = null;
 
         async function loadData() {
             try {
@@ -437,84 +403,81 @@
                 pulseData = await response.json();
                 updateDashboard();
             } catch (e) {
-                console.error("Erro ao carregar JSON:", e);
-                document.getElementById('cards-container').innerHTML = "<p>Erro ao carregar dados.</p>";
+                console.error("Erro dados:", e);
             }
-        }
-
-        function getStatus(rc) {
-            if (rc > 0.1) return { label: 'Aquecendo', class: 'status-up' };
-            if (rc < -0.1) return { label: 'Arrefecendo', class: 'status-down' };
-            return { label: 'Estável', class: 'status-stable' };
         }
 
         function updateDashboard() {
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
-            let boletim = `Boletim DEMAND PULSE — Destinos monitorados (${new Date().toLocaleDateString('pt-BR')})\n\n`;
+            const chartData = { labels: ['S-7', 'S-6', 'S-5', 'S-4', 'S-3', 'S-2', 'S-1', 'Atual'], datasets: [] };
+            const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
+            let boletim = "BOLETIM DEMAND PULSE — ABR ALL-IN-ONE\n\n";
 
             for (let i = 1; i <= 4; i++) {
-                const destId = document.getElementById(`dest-${i}`).value;
-                const data = pulseData[destId];
-                
+                const id = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[id];
                 if (data) {
-                    const status = getStatus(data.recentChange);
-                    const changePct = (data.recentChange * 100).toFixed(1);
-                    const persistPct = (data.persistence * 100).toFixed(0);
-                    const destName = document.querySelector(`#dest-${i} option:checked`).text.split(' — ')[0];
+                    const rc = (data.recentChange * 100).toFixed(1);
+                    const ps = (data.persistence * 100).toFixed(0);
+                    const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'});
 
-                    let cardHtml = `
+                    container.innerHTML += `
                         <div class="card">
                             <div class="card-header">
-                                <span class="dest-name">${destName}</span>
-                                <span class="status-badge ${status.class}">${status.label}</span>
+                                <span class="dest-name">${data.name}</span>
+                                <span class="status-badge ${status.c}">${status.l}</span>
                             </div>
                             <div class="metrics-row">
-                                <div class="metric-box">
-                                    <span class="metric-label">Variação Recente</span>
-                                    <span class="metric-value">${changePct > 0 ? '+' : ''}${changePct}%</span>
-                                </div>
-                                <div class="metric-box">
-                                    <span class="metric-label">Persistência</span>
-                                    <span class="metric-value">${persistPct}%</span>
-                                </div>
+                                <div class="metric-box"><span class="metric-label">Variação</span><span class="metric-value">${rc}%</span></div>
+                                <div class="metric-box"><span class="metric-label">Persistência</span><span class="metric-value">${ps}%</span></div>
                             </div>
+                            <div class="insight-box">💡 ${data.insight}</div>
+                            <div class="weather-forecast">
+                                ${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}
+                            </div>
+                        </div>
                     `;
 
-                    if (data.insight) {
-                        cardHtml += `<div class="insight-box" style="display:block"><b>💡 Insight ABR:</b> ${data.insight}</div>`;
-                    }
-
-                    if (data.weather && data.weather.daily) {
-                        cardHtml += `<div class="weather-forecast">`;
-                        data.weather.daily.slice(0, 5).forEach(day => {
-                            cardHtml += `
-                                <div class="forecast-day">
-                                    <span class="forecast-temp">${Math.round(day.max)}°</span>
-                                    <span class="forecast-cond">${day.cond}</span>
-                                </div>
-                            `;
+                    if(data.timeline) {
+                        chartData.datasets.push({
+                            label: data.name,
+                            data: data.timeline,
+                            borderColor: colors[i-1],
+                            backgroundColor: colors[i-1] + '22',
+                            tension: 0.4,
+                            fill: true
                         });
-                        cardHtml += `</div>`;
                     }
-
-                    cardHtml += `<div style="font-size:0.6rem; color:var(--text-dim); text-align:center">${data.note || 'Dados reais atualizados via ABR_ALL-IN-ONE.'}</div></div>`;
-                    container.innerHTML += cardHtml;
-
-                    boletim += `• ${destName}: ${status.label === 'Aquecendo' ? '▲' : status.label === 'Arrefecendo' ? '▼' : '▬'} ${status.label} (variação ${changePct > 0 ? '+' : ''}${changePct}% | persistência ${persistPct}%).\n`;
+                    boletim += `• ${data.name}: ${status.l} (${rc}% var | ${ps}% pers)\n`;
                 }
             }
 
-            boletim += `\nInterpretação: "▲ aquecendo" sugere maior pressão relativa; "▼ arrefecendo" sugere redução; "▬ estável" indica manutenção.\n\nObservação: este MVP não prevê reservas. Entrega contexto direcional.`;
-            document.getElementById('boletim-texto').innerText = boletim;
+            document.getElementById('boletim-texto').innerText = boletim + "\nAnálise baseada em Big Data Google Trends.";
+            renderChart(chartData);
+        }
+
+        function renderChart(data) {
+            const ctxChart = document.getElementById('biChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctxChart, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#8b949e', font: { size: 10 } } } },
+                    scales: {
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b949e' } },
+                        x: { grid: { display: false }, ticks: { color: '#8b949e' } }
+                    }
+                }
+            });
         }
 
         function copyBoletim() {
-            const texto = document.getElementById('boletim-texto').innerText;
-            navigator.clipboard.writeText(texto).then(() => alert("Boletim copiado!"));
+            navigator.clipboard.writeText(document.getElementById('boletim-texto').innerText).then(() => alert("Copiado!"));
         }
-
-        loadData();
     </script>
 </body>
 </html>
