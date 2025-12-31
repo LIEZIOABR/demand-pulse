@@ -31,8 +31,9 @@
     </div>
     <script>
         function checkPassword() {
-            const pass = document.getElementById('password').value;
-            if (pass.toLowerCase() === 'abr2025') {
+            const pass = document.getElementById('password').value.toLowerCase();
+            // ACEITA AS DUAS SENHAS ABAIXO
+            if (pass === 'abr2025' || pass === 'testeabr') {
                 window.location.href = "destino.html"; 
             } else {
                 alert('Senha Incorreta!');
