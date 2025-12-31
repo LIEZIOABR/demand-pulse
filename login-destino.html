@@ -18,8 +18,8 @@
         input:focus { border-color: var(--accent-blue); background: rgba(255,255,255,0.1); }
         button { width: 100%; padding: 15px; background: var(--accent-blue); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         button:hover { background: #0086d1; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 163, 255, 0.4); }
-        .btn-back { display: block; margin-top: 20px; color: #8b949e; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-back:hover { color: white; }
+        .btn-back { display: block; margin-top: 25px; color: #8b949e; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .btn-back:hover { color: var(--matrix-green); }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -30,13 +30,13 @@
         <p>DEMAND PULSE — ABR ALL-IN-ONE</p>
         <input type="password" id="password" placeholder="Digite sua senha" onkeypress="if(event.key==='Enter') checkPassword()">
         <button onclick="checkPassword()">Entrar no Radar</button>
-        <a href="index.html" class="btn-back">← Voltar ao HUB Principal</a>
+        <!-- LINK ATUALIZADO PARA O ENDEREÇO COMPLETO -->
+        <a href="https://inspiring-peony-6a9450.netlify.app/" class="btn-back">← Voltar ao HUB Principal</a>
     </div>
     <script>
-        function checkPassword() {
-            const pass = document.getElementById('password').value.toLowerCase().trim();
-            if (pass === 'abr2025' || pass === 'testeabr') {
-                // AGORA ELE ABRE O ARQUIVO RADAR.HTML
+        function checkPassword( ) {
+            const input = document.getElementById('password').value.toLowerCase().trim();
+            if (input === 'abr2025' || input === 'testeabr') {
                 window.location.href = "radar.html"; 
             } else {
                 alert('Senha Incorreta!');
