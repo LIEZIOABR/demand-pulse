@@ -1,254 +1,492 @@
 {
-  "monte_verde_mg": {
-    "recentChange": 0.4048,
-    "persistence": 1.0,
-    "weather": {
-      "current": {
-        "temp": 18.6,
-        "cond": "Parcial"
-      },
-      "daily": [
-        {
-          "date": "2025-12-30",
-          "max": 25.8,
-          "min": 17.1,
-          "cond": "Trovoada"
+    "monte_verde_mg": {
+        "name": "Monte Verde",
+        "recentChange": 0.522,
+        "persistence": 0.6944,
+        "timeline": [
+            48.7,
+            60.0,
+            44.4,
+            46.6,
+            42.4,
+            46.6,
+            62.6,
+            58.3
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
         },
-        {
-          "date": "2025-12-31",
-          "max": 25.3,
-          "min": 17.1,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-01",
-          "max": 23.7,
-          "min": 18.1,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-02",
-          "max": 22.6,
-          "min": 17.5,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-03",
-          "max": 21.5,
-          "min": 16.9,
-          "cond": "Trovoada"
-        },
-        {
-          "date": "2026-01-04",
-          "max": 22.2,
-          "min": 15.9,
-          "cond": "Trovoada"
-        },
-        {
-          "date": "2026-01-05",
-          "max": 20.6,
-          "min": 13.6,
-          "cond": "Nublado"
-        }
-      ]
+        "insight": "Demanda por Monte Verde segue em alta. Foco em pacotes de experiência gastronômica.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
     },
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  },
-  "campos_do_jordao_sp": {
-    "recentChange": 0.5274,
-    "persistence": 1.0,
-    "weather": null,
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  },
-  "sao_bento_sapucai_sp": {
-    "recentChange": 0.7959,
-    "persistence": 1.0,
-    "weather": {
-      "current": {
-        "temp": 21.7,
-        "cond": "Parcial"
-      },
-      "daily": [
-        {
-          "date": "2025-12-30",
-          "max": 29.3,
-          "min": 18.7,
-          "cond": "Trovoada"
+    "campos_do_jordao_sp": {
+        "name": "Campos do Jordão",
+        "recentChange": 0.4417,
+        "persistence": 0.7696,
+        "timeline": [
+            63.0,
+            69.7,
+            55.1,
+            56.9,
+            57.4,
+            59.7,
+            80.6,
+            77.3
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
         },
-        {
-          "date": "2025-12-31",
-          "max": 28.3,
-          "min": 19.0,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-01",
-          "max": 27.4,
-          "min": 20.1,
-          "cond": "Pancadas"
-        },
-        {
-          "date": "2026-01-02",
-          "max": 26.9,
-          "min": 20.0,
-          "cond": "Pancadas"
-        },
-        {
-          "date": "2026-01-03",
-          "max": 26.2,
-          "min": 18.9,
-          "cond": "Pancadas"
-        },
-        {
-          "date": "2026-01-04",
-          "max": 27.9,
-          "min": 17.5,
-          "cond": "Trovoada"
-        },
-        {
-          "date": "2026-01-05",
-          "max": 24.5,
-          "min": 16.6,
-          "cond": "Nublado"
-        }
-      ]
+        "insight": "Campos do Jordão apresenta comportamento em alta. Otimizar tarifas para o próximo final de semana.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
     },
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  },
-  "passa_quatro_mg": {
-    "recentChange": 3.6875,
-    "persistence": 0.86,
-    "weather": null,
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  },
-  "serra_negra_sp": {
-    "recentChange": 0.4405,
-    "persistence": 1.0,
-    "weather": {
-      "current": {
-        "temp": 24.5,
-        "cond": "Trovoada"
-      },
-      "daily": [
-        {
-          "date": "2025-12-30",
-          "max": 32.5,
-          "min": 21.4,
-          "cond": "Trovoada"
+    "gramado_canela_rs": {
+        "name": "Gramado + Canela",
+        "recentChange": 0.302,
+        "persistence": 0.8179,
+        "timeline": [
+            60.6,
+            68.0,
+            65.0,
+            62.1,
+            70.4,
+            64.7,
+            88.0,
+            77.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
         },
-        {
-          "date": "2025-12-31",
-          "max": 31.9,
-          "min": 21.6,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-01",
-          "max": 28.8,
-          "min": 22.0,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-02",
-          "max": 27.2,
-          "min": 21.8,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-03",
-          "max": 26.7,
-          "min": 21.1,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-04",
-          "max": 28.2,
-          "min": 20.9,
-          "cond": "Pancadas"
-        },
-        {
-          "date": "2026-01-05",
-          "max": 28.7,
-          "min": 18.3,
-          "cond": "Parcial"
-        }
-      ]
+        "insight": "Serra Gaúcha em alta. Oportunidade para campanhas de antecipação de temporada.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
     },
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  },
-  "gramado_canela_rs": {
-    "recentChange": 0.4813,
-    "persistence": 1.0,
-    "weather": null,
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  },
-  "pocos_de_caldas_mg": {
-    "recentChange": 0.3111,
-    "persistence": 1.0,
-    "weather": {
-      "current": {
-        "temp": 20.6,
-        "cond": "Pancadas"
-      },
-      "daily": [
-        {
-          "date": "2025-12-30",
-          "max": 27.9,
-          "min": 17.6,
-          "cond": "Pancadas"
+    "pocos_de_caldas_mg": {
+        "name": "Poços de Caldas",
+        "recentChange": 0.1796,
+        "persistence": 0.8817,
+        "timeline": [
+            77.9,
+            78.0,
+            70.6,
+            76.0,
+            77.9,
+            81.7,
+            86.9,
+            96.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
         },
-        {
-          "date": "2025-12-31",
-          "max": 27.1,
-          "min": 18.0,
-          "cond": "Est\u00e1vel"
-        },
-        {
-          "date": "2026-01-01",
-          "max": 25.7,
-          "min": 17.7,
-          "cond": "Trovoada"
-        },
-        {
-          "date": "2026-01-02",
-          "max": 22.1,
-          "min": 18.3,
-          "cond": "Pancadas"
-        },
-        {
-          "date": "2026-01-03",
-          "max": 22.4,
-          "min": 18.0,
-          "cond": "Trovoada"
-        },
-        {
-          "date": "2026-01-04",
-          "max": 24.0,
-          "min": 17.4,
-          "cond": "Nevoeiro"
-        },
-        {
-          "date": "2026-01-05",
-          "max": 25.3,
-          "min": 15.7,
-          "cond": "Pancadas"
-        }
-      ]
+        "insight": "Turismo de águas em Poços em alta. Manter visibilidade em canais diretos.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
     },
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  },
-  "sao_lourenco_mg": {
-    "recentChange": 2.2142,
-    "persistence": 1.0,
-    "weather": null,
-    "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
-    "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
-  }
+    "sao_bento_sapucai_sp": {
+        "name": "São Bento do Sapucaí",
+        "recentChange": 1.9363,
+        "persistence": 0,
+        "timeline": [
+            39.3,
+            22.0,
+            10.4,
+            8.0,
+            20.4,
+            45.1,
+            67.0,
+            94.3
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Destino de natureza em alta. Potencial para turismo de aventura e isolamento.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "passa_quatro_mg": {
+        "name": "Passa Quatro",
+        "recentChange": 1.9717,
+        "persistence": 0,
+        "timeline": [
+            0.0,
+            12.0,
+            0.0,
+            14.3,
+            0.0,
+            28.6,
+            50.6,
+            63.3
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Passa Quatro em alta. Foco no público regional e ferroviário.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "serra_negra_sp": {
+        "name": "Serra Negra",
+        "recentChange": 0.6509,
+        "persistence": 0.6233,
+        "timeline": [
+            75.1,
+            63.9,
+            61.3,
+            59.7,
+            37.9,
+            57.6,
+            79.1,
+            84.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Circuito das Águas em alta. Excelente para ações de última hora.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "sao_lourenco_mg": {
+        "name": "São Lourenço",
+        "recentChange": 0.4,
+        "persistence": 0.7779,
+        "timeline": [
+            50.7,
+            58.9,
+            54.1,
+            52.4,
+            49.4,
+            51.4,
+            65.3,
+            71.7
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "São Lourenço em alta. Monitorar concorrência direta no Sul de Minas.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "goncalves_mg": {
+        "name": "Gonçalves",
+        "recentChange": 0.5056,
+        "persistence": 0.5138,
+        "timeline": [
+            49.3,
+            72.3,
+            36.9,
+            50.7,
+            45.4,
+            60.3,
+            67.6,
+            77.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Gonçalves em alta. Destino boutique em crescimento, ideal para casais.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "santo_antonio_pinhal_sp": {
+        "name": "Santo Antônio do Pinhal",
+        "recentChange": 0.6507,
+        "persistence": 0.4587,
+        "timeline": [
+            23.7,
+            33.9,
+            28.7,
+            24.3,
+            26.7,
+            29.1,
+            42.4,
+            43.7
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Santo Antônio em alta. Proximidade com Campos do Jordão favorece transbordo de demanda.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    }
 }
