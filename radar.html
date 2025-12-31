@@ -16,54 +16,47 @@
             --text-main: #e6edf3;
             --text-dim: #8b949e;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
         body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; }
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
-        
-        /* Camada de Login Integrada */
         #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--matrix-dark); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
         .login-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--accent-blue); text-align: center; max-width: 400px; width: 90%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.3); }
         .login-box input { width: 100%; padding: 15px; margin: 20px 0; background: #161b22; border: 1px solid #30363d; color: white; border-radius: 10px; text-align: center; font-size: 1.1rem; }
         .login-box button { width: 100%; padding: 15px; background: var(--accent-blue); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; display: none; }
         header { text-align: center; margin-bottom: 40px; padding-top: 20px; position: relative; }
-        
-        /* Botões de Navegação Blindados */
         .header-nav { position: absolute; top: 20px; left: 0; display: flex; gap: 10px; z-index: 10; }
         .btn-nav { border: none; padding: 10px 15px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; }
         .btn-logout { background: #ff3131; color: white; box-shadow: 0 4px 15px rgba(255, 49, 49, 0.3); }
         .btn-home { background: var(--accent-blue); color: white; box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3); }
-        .btn-nav:hover { transform: scale(1.05); filter: brightness(1.2); }
-
         .logo { max-width: 240px; width: 100%; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(0, 163, 255, 0.4)); }
         h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
         .subtitle { color: var(--text-dim); font-size: 0.95rem; max-width: 600px; margin: 0 auto; line-height: 1.5; }
-
+        .controls { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 24px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        select { background: #161b22; border: 1px solid #30363d; color: white; padding: 12px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; }
+        .btn-update { grid-column: 1 / -1; background: linear-gradient(135deg, #00a3ff 0%, #0066ff 100%); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
         .bi-section { background: var(--card-bg); border: 1px solid rgba(0, 163, 255, 0.2); border-radius: 20px; padding: 24px; margin-bottom: 30px; }
         .bi-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent-blue); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
         .chart-container { height: 300px; width: 100%; }
-
         .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
         .comparison-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; }
-        .card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
         .dest-name { font-weight: 700; font-size: 1.1rem; }
         .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
         .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; }
         .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; }
         .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; }
-
         .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .metric-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 12px; }
         .metric-label { font-size: 0.7rem; color: var(--text-dim); display: block; }
         .metric-value { font-family: 'Fira Code', monospace; font-size: 1.2rem; font-weight: 600; }
         .insight-box { background: rgba(0, 163, 255, 0.05); border: 1px solid rgba(0, 163, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #99d6ff; }
-
+        .weather-forecast { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .forecast-day { text-align: center; flex: 1; }
+        .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
+        .forecast-cond { font-size: 0.55rem; color: var(--text-dim); display: block; }
         .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; }
         #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; }
-
         footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
         @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .header-nav { position: static; margin-bottom: 20px; width: 100%; } }
     </style>
@@ -79,7 +72,6 @@
             <p id="login-error" style="color: #ff3131; font-size: 0.8rem; margin-top: 15px; display: none;">Senha incorreta.</p>
         </div>
     </div>
-
     <div class="container" id="main-content">
         <header>
             <div class="header-nav">
@@ -90,73 +82,97 @@
             <h1>Demand Pulse</h1>
             <p class="subtitle">Análise Estratégica de Demanda e Inteligência de Mercado</p>
         </header>
-
-        <div class="bi-section">
-            <div class="bi-title"><span>📊</span> Tendência de Demanda Agregada</div>
-            <div class="chart-container"><canvas id="mainChart"></canvas></div>
+        <div class="controls">
+            <select id="dest-1">
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-2"><option value="campos_do_jordao_sp" selected>Campos do Jordão (SP)</option><option value="monte_verde_mg">Monte Verde (MG)</option><option value="gramado_canela_rs">Gramado + Canela (RS)</option><option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option><option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option><option value="passa_quatro_mg">Passa Quatro (MG)</option><option value="serra_negra_sp">Serra Negra (SP)</option><option value="sao_lourenco_mg">São Lourenço (MG)</option><option value="goncalves_mg">Gonçalves (MG)</option><option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option></select>
+            <select id="dest-3"><option value="gramado_canela_rs" selected>Gramado + Canela (RS)</option><option value="monte_verde_mg">Monte Verde (MG)</option><option value="campos_do_jordao_sp">Campos do Jordão (SP)</option><option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option><option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option><option value="passa_quatro_mg">Passa Quatro (MG)</option><option value="serra_negra_sp">Serra Negra (SP)</option><option value="sao_lourenco_mg">São Lourenço (MG)</option><option value="goncalves_mg">Gonçalves (MG)</option><option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option></select>
+            <select id="dest-4"><option value="goncalves_mg" selected>Gonçalves (MG)</option><option value="monte_verde_mg">Monte Verde (MG)</option><option value="campos_do_jordao_sp">Campos do Jordão (SP)</option><option value="gramado_canela_rs">Gramado + Canela (RS)</option><option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option><option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option><option value="passa_quatro_mg">Passa Quatro (MG)</option><option value="serra_negra_sp">Serra Negra (SP)</option><option value="sao_lourenco_mg">São Lourenço (MG)</option><option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option></select>
+            <button class="btn-update" onclick="updateDashboard()">Atualizar Análise de BI</button>
         </div>
-
+        <div class="bi-section">
+            <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência</div>
+            <div class="chart-container"><canvas id="biChart"></canvas></div>
+        </div>
         <div class="dashboard-grid">
-            <div class="comparison-section" id="destinos-grid"></div>
+            <div class="comparison-section" id="cards-container"></div>
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <div class="bi-title" style="margin-bottom: 15px;"><span>📝</span> Boletim Estratégico</div>
-                    <div id="boletim-texto">Carregando análise...</div>
+                    <span style="font-weight:700; display:block; margin-bottom:15px;">Boletim ABR ALL-IN-ONE</span>
+                    <div id="boletim-texto">Carregando...</div>
                 </div>
             </div>
         </div>
-        <footer><p>© 2025 ABR Marketing Estratégico — Demand Pulse v13.4</p></footer>
+        <footer>DEMAND PULSE — ABR ALL-IN-ONE — ATUALIZAÇÃO DIÁRIA</footer>
     </div>
-
     <script>
+        const SENHAS_VALIDAS = ["abr2025", "testeabr"];
         function checkLogin() {
-            const pass = document.getElementById('password-input').value.toLowerCase().trim();
-            if (pass === 'abr2025' || pass === 'testeabr') {
+            const input = document.getElementById('password-input').value.toLowerCase().trim();
+            if(SENHAS_VALIDAS.includes(input)) {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 loadData();
             } else { document.getElementById('login-error').style.display = 'block'; }
         }
-
         function logout() { if(confirm("Sair?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
+        
+        let pulseData = {};
+        let myChart = null;
 
         async function loadData( ) {
             try {
                 const response = await fetch('pulse-data.json');
-                const data = await response.json();
-                
-                document.getElementById('boletim-texto').innerText = data.boletim;
-                
-                const ctx = document.getElementById('mainChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.chartLabels,
-                        datasets: [{
-                            label: 'Intenção de Viagem',
-                            data: data.chartData,
-                            borderColor: '#00a3ff',
-                            backgroundColor: 'rgba(0, 163, 255, 0.1)',
-                            fill: true, tension: 0.4
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                });
+                pulseData = await response.json();
+                updateDashboard();
+            } catch (e) { console.error("Erro ao carregar dados."); }
+        }
 
-                document.getElementById('destinos-grid').innerHTML = data.destinos.map(d => `
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="dest-name">${d.name}</span>
-                            <span class="status-badge status-${d.status}">${d.status.toUpperCase()}</span>
-                        </div>
-                        <div class="metrics-row">
-                            <div class="metric-box"><span class="metric-label">Ocupação</span><span class="metric-value">${d.occ}</span></div>
-                            <div class="metric-box"><span class="metric-label">RevPAR</span><span class="metric-value">${d.revpar}</span></div>
-                        </div>
-                        <div class="insight-box">${d.insight}</div>
-                    </div>
-                `).join('');
-            } catch (e) { console.error("Erro ao carregar dados reais."); }
+        function updateDashboard() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            const chartData = { labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'], datasets: [] };
+            const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
+            let boletim = "BOLETIM DEMAND PULSE\n\n";
+
+            for (let i = 1; i <= 4; i++) {
+                const id = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[id];
+                if (data) {
+                    const rc = (data.recentChange * 100).toFixed(1);
+                    const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'});
+                    container.innerHTML += `
+                        <div class="card">
+                            <div class="card-header"><span class="dest-name">${data.name}</span><span class="status-badge ${status.c}">${status.l}</span></div>
+                            <div class="metrics-row">
+                                <div class="metric-box"><span class="metric-label">Variação</span><span class="metric-value">${rc}%</span></div>
+                                <div class="metric-box"><span class="metric-label">Persistência</span><span class="metric-value">${(data.persistence*100).toFixed(0)}%</span></div>
+                            </div>
+                            <div class="insight-box">💡 ${data.insight}</div>
+                            <div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div>
+                        </div>`;
+                    chartData.datasets.push({ label: data.name, data: data.timeline, borderColor: colors[i-1], backgroundColor: colors[i-1] + '22', tension: 0.4, fill: true });
+                    boletim += `• ${data.name}: ${status.l} (${rc}% var)\n`;
+                }
+            }
+            document.getElementById('boletim-texto').innerText = boletim;
+            renderChart(chartData);
+        }
+
+        function renderChart(data) {
+            const ctx = document.getElementById('biChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, { type: 'line', data: data, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8b949e' } } } } });
         }
 
         // Matrix Background
