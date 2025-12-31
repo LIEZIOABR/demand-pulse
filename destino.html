@@ -3,54 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RADAR DIRECIONAL DO DESTINO — ABR ALL-IN-ONE</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>LOGIN — ABR ALL-IN-ONE</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --matrix-green: #00ff41; --matrix-dark: #0d0208; --card-bg: rgba(13, 18, 23, 0.9 ); --accent-blue: #00a3ff; --text-main: #e6edf3; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
-        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.15; }
-        .header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(0, 163, 255, 0.2); background: rgba(13, 2, 8, 0.8); position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; align-items: center; }
-        .logo { max-width: 150px; }
-        .btn-home { position: absolute; left: 20px; color: #8b949e; text-decoration: none; font-size: 0.8rem; border: 1px solid #8b949e; padding: 6px 12px; border-radius: 8px; text-transform: uppercase; font-weight: bold; }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); backdrop-filter: blur(10px); }
-        h2 { color: var(--accent-blue); font-size: 1.1rem; margin-bottom: 25px; text-transform: uppercase; border-left: 4px solid var(--matrix-green); padding-left: 15px; }
-        .chart-container { position: relative; height: 300px; width: 100%; }
-        footer { text-align: center; padding: 50px; color: #444; font-size: 0.75rem; }
+        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
+        .login-container { background: var(--card-bg); border: 1px solid rgba(0, 163, 255, 0.3); border-radius: 24px; padding: 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 0 40px rgba(0, 163, 255, 0.1); z-index: 10; backdrop-filter: blur(10px); }
+        .logo { max-width: 180px; margin-bottom: 30px; filter: drop-shadow(0 0 10px rgba(0, 163, 255, 0.5)); }
+        h2 { font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 10px; color: var(--accent-blue); text-transform: uppercase; }
+        p { font-size: 0.7rem; color: #8b949e; margin-bottom: 30px; letter-spacing: 1px; }
+        input { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; text-align: center; font-size: 1rem; margin-bottom: 20px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--accent-blue); background: rgba(255,255,255,0.1); }
+        button { width: 100%; padding: 15px; background: var(--accent-blue); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        button:hover { background: #0086d1; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 163, 255, 0.4); }
+        .btn-back { display: block; margin-top: 25px; color: #8b949e; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .btn-back:hover { color: var(--matrix-green); }
     </style>
 </head>
 <body oncontextmenu="return false;">
     <canvas id="matrix-canvas"></canvas>
-    <div class="header">
-        <a href="index.html" class="btn-home">← HUB</a>
+    <div class="login-container">
         <img src="logo.png" alt="ABR" class="logo">
+        <h2>Acesso Restrito</h2>
+        <p>DEMAND PULSE — ABR ALL-IN-ONE</p>
+        <input type="password" id="password" placeholder="Digite sua senha" onkeypress="if(event.key==='Enter') checkPassword()">
+        <button onclick="checkPassword()">Entrar no Radar</button>
+        <!-- LINK BLINDADO PARA O HUB -->
+        <a href="https://inspiring-peony-6a9450.netlify.app/" class="btn-back">← Voltar ao HUB Principal</a>
     </div>
-    <div class="container">
-        <div class="grid">
-            <div class="card" style="grid-column: span 2;">
-                <h2>Tendência de Demanda (Google Trends)</h2>
-                <div class="chart-container"><canvas id="chartDemanda"></canvas></div>
-            </div>
-            <div class="card">
-                <h2>Análise de Sentimento</h2>
-                <div style="text-align: center; padding: 40px 0;">
-                    <div style="font-size: 5rem; margin-bottom: 15px;">😊</div>
-                    <div style="font-size: 2rem; font-weight: 800; color: var(--matrix-green);">92%</div>
-                    <div style="color: var(--matrix-green); font-weight: 600; letter-spacing: 2px;">SENTIMENTO POSITIVO</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer>© 2025 ABR MARKETING ESTRATÉGICO ALL-IN-ONE — SISTEMA BLINDADO</footer>
     <script>
-        // TRAVA DE SEGURANÇA AJUSTADA PARA ACEITAR O LOGIN
-        if (!window.location.search.includes('auth=success')) {
-            window.location.href = 'login-destino.html';
+        function checkPassword( ) {
+            const input = document.getElementById('password').value.toLowerCase().trim();
+            if (input === 'abr2025' || input === 'testeabr') {
+                window.location.href = "radar.html"; 
+            } else {
+                alert('Senha Incorreta!');
+            }
         }
-
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
@@ -72,31 +63,6 @@
             }
         }
         setInterval(drawMatrix, 50);
-
-        fetch('pulse-data.json')
-            .then(res => res.json())
-            .then(data => {
-                new Chart(document.getElementById('chartDemanda'), {
-                    type: 'line',
-                    data: {
-                        labels: data.trends.map(t => t.date),
-                        datasets: [{
-                            data: data.trends.map(t => t.value),
-                            borderColor: '#00a3ff',
-                            backgroundColor: 'rgba(0, 163, 255, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            borderWidth: 3,
-                            pointRadius: 0
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#555' } }, x: { grid: { display: false }, ticks: { color: '#555' } } } }
-                });
-            });
-
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
-        };
     </script>
 </body>
 </html>
