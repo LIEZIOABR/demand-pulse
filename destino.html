@@ -13,17 +13,7 @@
             --accent-blue: #00a3ff;
             --text-main: #e6edf3;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
         body {
             background-color: var(--matrix-dark);
             color: var(--text-main);
@@ -34,7 +24,6 @@
             justify-content: center;
             overflow: hidden;
         }
-
         .login-container {
             background: var(--card-bg);
             border: 1px solid rgba(0, 163, 255, 0.3);
@@ -46,25 +35,9 @@
             box-shadow: 0 0 40px rgba(0, 163, 255, 0.1);
             z-index: 10;
         }
-
-        .logo {
-            max-width: 180px;
-            margin-bottom: 30px;
-        }
-
-        h2 {
-            color: var(--accent-blue);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 0.8rem;
-            color: #8b949e;
-            margin-bottom: 30px;
-        }
-
+        .logo { max-width: 180px; margin-bottom: 30px; }
+        h2 { color: var(--accent-blue); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        p { font-size: 0.8rem; color: #8b949e; margin-bottom: 30px; }
         input {
             width: 100%;
             padding: 15px;
@@ -77,11 +50,6 @@
             text-align: center;
             outline: none;
         }
-
-        input:focus {
-            border-color: var(--accent-blue);
-        }
-
         .btn-enter {
             width: 100%;
             padding: 15px;
@@ -94,65 +62,42 @@
             text-transform: uppercase;
             transition: 0.3s;
         }
-
-        .btn-enter:hover {
-            background: #0082cc;
-            transform: scale(1.02);
-        }
-
         .btn-back {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 25px;
             color: #8b949e;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             transition: 0.3s;
         }
-
-        .btn-back:hover {
-            color: white;
-        }
-
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            opacity: 0.15;
-        }
+        .btn-back:hover { color: var(--accent-blue); }
+        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.15; }
     </style>
 </head>
 <body oncontextmenu="return false;">
-
     <canvas id="matrix-canvas"></canvas>
-
     <div class="login-container">
         <img src="logo.png" alt="ABR" class="logo">
         <h2>Acesso Restrito</h2>
         <p>DEMAND PULSE — ABR ALL-IN-ONE</p>
-        
         <input type="password" id="password" placeholder="Digite sua senha" onkeypress="if(event.keyCode==13) checkPassword()">
         <button class="btn-enter" onclick="checkPassword()">Entrar no Radar</button>
-        
-        <!-- NOVO BOTÃO DE VOLTAR -->
+          
+
         <a href="index.html" class="btn-back">← Voltar ao HUB Principal</a>
     </div>
-
     <script>
-        // Função de Senha (Simples e Editável por você)
         function checkPassword() {
             const pass = document.getElementById('password').value;
-            // VOCÊ PODE MUDAR A SENHA ABAIXO (atualmente é 'abr2025')
+            // SENHA DEFINIDA: abr2025
             if (pass === 'abr2025') {
-                alert('Acesso Autorizado! Carregando Radar...');
-                // Aqui no futuro carregaremos o conteúdo do radar
-                window.location.href = "https://inspiring-peony-6a9450.netlify.app/destino"; 
+                alert('Acesso Autorizado!');
+                // LINK CORRIGIDO ABAIXO:
+                window.location.href = "destino.html?auth=success"; 
             } else {
-                alert('Senha Incorreta!' );
+                alert('Senha Incorreta!');
             }
         }
-
-        // Efeito Matrix
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
@@ -161,7 +106,6 @@
         const fontSize = 14;
         const columns = width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
-
         function drawMatrix() {
             ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
             ctx.fillRect(0, 0, width, height);
@@ -175,11 +119,6 @@
             }
         }
         setInterval(drawMatrix, 50);
-
-        // Proteções Blindadas
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
-        };
     </script>
 </body>
 </html>
