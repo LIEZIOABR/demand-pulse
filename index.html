@@ -3,67 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABR MARKETING ESTRATÉGICO ALL-IN-ONE — HUB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>DEMAND PULSE — ABR ALL-IN-ONE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --matrix-green: #00ff41; --matrix-dark: #0d0208; --card-bg: rgba(13, 18, 23, 0.9 ); --accent-blue: #00a3ff; --text-main: #e6edf3; --text-dim: #8b949e; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
-        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
-        .container { max-width: 1000px; width: 90%; text-align: center; z-index: 1; }
-        header { margin-bottom: 50px; }
-        .logo { max-width: 240px; width: 100%; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(0, 163, 255, 0.5)); }
-        h1 { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; background: linear-gradient(to right, #fff, var(--accent-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { color: var(--text-dim); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-        .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
-        .hub-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 40px 30px; text-decoration: none; color: white; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; overflow: hidden; }
-        .hub-card:hover { border-color: var(--accent-blue); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 163, 255, 0.2); }
-        .icon { font-size: 3rem; margin-bottom: 10px; }
-        .card-title { font-size: 1.2rem; font-weight: 700; text-transform: uppercase; }
-        .status-badge { font-size: 0.7rem; font-weight: 800; padding: 6px 12px; border-radius: 20px; text-transform: uppercase; }
-        .status-online { background: rgba(57, 255, 20, 0.15); color: #39ff14; border: 1px solid #39ff14; }
-        .status-pending { background: rgba(255, 234, 0, 0.15); color: #ffea00; border: 1px solid #ffea00; }
-        .whatsapp-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); z-index: 100; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 70% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        footer { margin-top: 60px; color: var(--text-dim); font-size: 0.8rem; letter-spacing: 1px; }
+        :root {
+            --matrix-green: #00ff41;
+            --matrix-dark: #0d0208;
+            --card-bg: rgba(13, 18, 23, 0.95);
+            --accent-blue: #00a3ff;
+            --accent-green: #39ff14;
+            --text-main: #e6edf3;
+            --text-dim: #8b949e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--matrix-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        /* Camada de Login */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--matrix-dark);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-blue);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(0, 163, 255, 0.3);
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            display: none;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+            position: relative;
+        }
+
+        .btn-logout {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            background: #ff3131;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 49, 49, 0.3);
+            z-index: 10;
+        }
+
+        .btn-logout:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .logo {
+            max-width: 240px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(0, 163, 255, 0.4));
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .controls {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        select {
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-update {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #00a3ff 0%, #0066ff 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .bi-section {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 163, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .bi-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bi-legend {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 10px;
+        }
+
+        .chart-container {
+            height: 300px;
+            width: 100%;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .comparison-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .dest-name { font-weight: 700; font-size: 1.1rem; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; }
+        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; }
+
+        .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .metric-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 12px; }
+        .metric-label { font-size: 0.7rem; color: var(--text-dim); display: block; }
+        .metric-value { font-family: 'Fira Code', monospace; font-size: 1.2rem; font-weight: 600; }
+
+        .insight-box { background: rgba(0, 163, 255, 0.05); border: 1px solid rgba(0, 163, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #99d6ff; }
+
+        .weather-forecast { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .forecast-day { text-align: center; flex: 1; }
+        .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
+        .forecast-cond { font-size: 0.55rem; color: var(--text-dim); display: block; }
+
+        .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; }
+        #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; user-select: text; }
+
+        footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
+
+        @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .sidebar { order: -1; } .btn-logout { position: static; margin-bottom: 20px; width: 100%; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
+
     <canvas id="matrix-canvas"></canvas>
-    <div class="container">
+
+    <!-- Overlay de Login -->
+    <div id="login-overlay">
+        <img src="logo.png" alt="ABR ALL-IN-ONE" style="max-width: 200px; margin-bottom: 30px;">
+        <div class="login-box">
+            <h2 style="color: var(--accent-blue);">ACESSO RESTRITO</h2>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px;">DEMAND PULSE — ABR ALL-IN-ONE</p>
+            <input type="password" id="password-input" placeholder="Digite sua senha">
+            <button onclick="checkLogin()">Entrar no Radar</button>
+            <p id="login-error" style="color: #ff3131; font-size: 0.8rem; margin-top: 15px; display: none;">Senha incorreta. Tente novamente.</p>
+        </div>
+    </div>
+
+    <div class="container" id="main-content">
         <header>
+            <button class="btn-logout" onclick="logout()">Sair do Sistema</button>
             <img src="logo.png" alt="ABR ALL-IN-ONE" class="logo">
-            <h1>ABR MARKETING ESTRATÉGICO ALL-IN-ONE</h1>
-            <p class="subtitle">Plataforma de Inteligência Preditiva e Big Data</p>
+            <h1>Demand Pulse — Radar Direcional do Destino</h1>
+            <p class="subtitle">Análise de BI: Variação, Persistência e Tendência Histórica.</p>
         </header>
-        <div class="hub-grid">
-            <!-- LINK ATUALIZADO PARA login-destino.html -->
-            <a href="login-destino.html" class="hub-card">
-                <div class="icon">📍</div>
-                <div class="card-title">Radar Direcional  
-do Destino</div>
-                <span class="status-badge status-online">Acesso Liberado</span>
-            </a>
-            <div class="hub-card" style="cursor: default; opacity: 0.8;">
-                <div class="icon">🗺️</div>
-                <div class="card-title">Radar Direcional  
-do Estado</div>
-                <span class="status-badge status-pending">Fase de Homologação</span>
-            </div>
-            <div class="hub-card" style="cursor: default; opacity: 0.8;">
-                <div class="icon">🏨</div>
-                <div class="card-title">Radar Direcional  
-do Hotel/Pousada</div>
-                <span class="status-badge status-pending">Fase de Homologação</span>
+
+        <div class="controls">
+            <select id="dest-1">
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-2">
+                <option value="campos_do_jordao_sp" selected>Campos do Jordão (SP)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-3">
+                <option value="gramado_canela_rs" selected>Gramado + Canela (RS)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-4">
+                <option value="goncalves_mg" selected>Gonçalves (MG)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <button class="btn-update" onclick="updateDashboard()">Atualizar Análise de BI</button>
+        </div>
+
+        <!-- Seção de BI -->
+        <div class="bi-section">
+            <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência</div>
+            <span class="bi-legend">💡 Gráfico: Volume de Interesse (0-100) | Cards: Variação Percentual (%) de crescimento recente.</span>
+            <div class="chart-container">
+                <canvas id="biChart"></canvas>
             </div>
         </div>
-        <footer>© 2025 ABR MARKETING ESTRATÉGICO ALL-IN-ONE — SISTEMA BLINDADO</footer>
+
+        <div class="dashboard-grid">
+            <div class="comparison-section" id="cards-container"></div>
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                        <span style="font-weight:700;">Boletim ABR ALL-IN-ONE</span>
+                        <button onclick="copyBoletim()" style="background:none; border:1px solid var(--accent-blue); color:var(--accent-blue); padding:4px 8px; border-radius:5px; cursor:pointer; font-size:0.7rem;">Copiar</button>
+                    </div>
+                    <div id="boletim-texto">Carregando...</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            DEMAND PULSE — ABR ALL-IN-ONE — ATUALIZAÇÃO DIÁRIA À MEIA-NOITE
+        </footer>
     </div>
-    <a href="https://wa.me/5584999519500" class="whatsapp-btn" target="_blank">
-        <svg width="35" height="35" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.675 1.438 5.662 1.438h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
+
     <script>
-        const canvas = document.getElementById('matrix-canvas' );
+        // CONFIGURAÇÃO DE SENHAS
+        const SENHAS_VALIDAS = ["ABR2025", "TESTEABR"];
+
+        function checkLogin() {
+            const input = document.getElementById('password-input').value;
+            if(SENHAS_VALIDAS.includes(input)) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadData();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.reload();
+        }
+
+        window.onload = function() {
+            if(sessionStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadData();
+            }
+        };
+
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
+            if(e.keyCode == 13 && document.getElementById('login-overlay').style.display !== 'none') checkLogin();
+        };
+
+        const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
@@ -71,6 +425,7 @@ do Hotel/Pousada</div>
         const fontSize = 14;
         const columns = width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
+
         function drawMatrix() {
             ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
             ctx.fillRect(0, 0, width, height);
@@ -84,6 +439,102 @@ do Hotel/Pousada</div>
             }
         }
         setInterval(drawMatrix, 50);
+
+        let pulseData = {};
+        let myChart = null;
+
+        function getTimelineLabels() {
+            const labels = [];
+            const today = new Date();
+            for (let i = 7; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(today.getDate() - (i * 7));
+                labels.push(`${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`);
+            }
+            return labels;
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch('pulse-data.json');
+                pulseData = await response.json();
+                updateDashboard();
+            } catch (e) {
+                console.error("Erro dados:", e);
+            }
+        }
+
+        function updateDashboard() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            const chartData = { labels: getTimelineLabels(), datasets: [] };
+            const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
+            let boletim = "BOLETIM DEMAND PULSE — ABR ALL-IN-ONE\n\n";
+
+            for (let i = 1; i <= 4; i++) {
+                const id = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[id];
+                if (data) {
+                    const rc = (data.recentChange * 100).toFixed(1);
+                    const ps = (data.persistence * 100).toFixed(0);
+                    const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'});
+
+                    container.innerHTML += `
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="dest-name">${data.name}</span>
+                                <span class="status-badge ${status.c}">${status.l}</span>
+                            </div>
+                            <div class="metrics-row">
+                                <div class="metric-box"><span class="metric-label">Variação</span><span class="metric-value">${rc}%</span></div>
+                                <div class="metric-box"><span class="metric-label">Persistência</span><span class="metric-value">${ps}%</span></div>
+                            </div>
+                            <div class="insight-box">💡 ${data.insight}</div>
+                            <div class="weather-forecast">
+                                ${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                    if(data.timeline) {
+                        chartData.datasets.push({
+                            label: data.name,
+                            data: data.timeline,
+                            borderColor: colors[i-1],
+                            backgroundColor: colors[i-1] + '22',
+                            tension: 0.4,
+                            fill: true
+                        });
+                    }
+                    boletim += `• ${data.name}: ${status.l} (${rc}% var | ${ps}% pers)\n`;
+                }
+            }
+
+            document.getElementById('boletim-texto').innerText = boletim + "\nBig Data coletado por ABR ALL-IN-ONE através do Google e seus Associados.";
+            renderChart(chartData);
+        }
+
+        function renderChart(data) {
+            const ctxChart = document.getElementById('biChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctxChart, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#8b949e', font: { size: 10 } } } },
+                    scales: {
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b949e' } },
+                        x: { grid: { display: false }, ticks: { color: '#8b949e' } }
+                    }
+                }
+            });
+        }
+
+        function copyBoletim() {
+            navigator.clipboard.writeText(document.getElementById('boletim-texto').innerText).then(() => alert("Copiado!"));
+        }
     </script>
 </body>
 </html>
