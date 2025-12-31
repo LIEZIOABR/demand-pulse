@@ -32,7 +32,6 @@
             user-select: none;
         }
 
-        /* Header Estilizado */
         header {
             background: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
@@ -99,7 +98,6 @@
             color: white;
         }
 
-        /* Dashboard Layout */
         .dashboard-container {
             padding: 30px;
             max-width: 1400px;
@@ -191,10 +189,11 @@
             <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; color: var(--text-dim);">RADAR DE DESTINO</span>
         </div>
         <div class="nav-buttons">
-            <!-- BOTÃO HOME ADICIONADO -->
+            <!-- BOTÃO HOME PARA VOLTAR AO HUB SEM DESLOGAR -->
             <a href="https://inspiring-peony-6a9450.netlify.app/" class="btn-nav btn-home">
                 <span>🏠</span> Home HUB
             </a>
+            <!-- BOTÃO SAIR COM FUNÇÃO CORRIGIDA -->
             <button onclick="logout( )" class="btn-nav btn-logout">
                 <span>🔒</span> Sair do Sistema
             </button>
@@ -239,15 +238,14 @@
     </div>
 
     <script>
-        // FUNÇÃO DE LOGOUT ATUALIZADA PARA VOLTAR AO HUB
+        // FUNÇÃO DE LOGOUT CORRIGIDA PARA VOLTAR AO HUB
         function logout() {
             if(confirm("Deseja realmente sair do sistema?")) {
                 window.location.href = "https://inspiring-peony-6a9450.netlify.app/";
             }
         }
 
-        // Configuração dos Gráficos (Preservada do v13 )
-        const ctxDemand = document.getElementById('demandChart').getContext('2d');
+        const ctxDemand = document.getElementById('demandChart' ).getContext('2d');
         new Chart(ctxDemand, {
             type: 'line',
             data: {
