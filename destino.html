@@ -7,63 +7,171 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --matrix-green: #00ff41; --matrix-dark: #0d0208; --card-bg: rgba(13, 18, 23, 0.9 ); --accent-blue: #00a3ff; --text-main: #e6edf3; }
+        :root {
+            --matrix-green: #00ff41;
+            --matrix-dark: #0d0208;
+            --card-bg: rgba(13, 18, 23, 0.9 );
+            --accent-blue: #00a3ff;
+            --text-main: #e6edf3;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
-        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; }
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.1; }
-        .header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(0, 163, 255, 0.2); background: rgba(13, 2, 8, 0.8); position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; align-items: center; }
-        .logo { max-width: 150px; }
-        .btn-home { position: absolute; left: 20px; color: #8b949e; text-decoration: none; font-size: 0.8rem; border: 1px solid #8b949e; padding: 5px 12px; border-radius: 8px; transition: 0.3s; text-transform: uppercase; font-weight: bold; }
-        .btn-home:hover { color: white; border-color: white; background: rgba(255,255,255,0.1); }
+
+        body {
+            background-color: var(--matrix-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 163, 255, 0.2);
+            background: rgba(13, 2, 8, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-home {
+            position: absolute;
+            left: 20px;
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border: 1px solid #8b949e;
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .logo { max-width: 160px; }
+
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { color: var(--accent-blue); font-size: 1.1rem; margin-bottom: 20px; text-transform: uppercase; border-left: 4px solid var(--matrix-green); padding-left: 15px; }
-        .chart-container { position: relative; height: 250px; width: 100%; }
-        footer { text-align: center; padding: 40px; color: #444; font-size: 0.7rem; letter-spacing: 1px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 4px solid var(--matrix-green);
+            padding-left: 15px;
+        }
+
+        .chart-container { position: relative; height: 300px; width: 100%; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--matrix-green); }
+        .stat-label { font-size: 0.7rem; color: #8b949e; text-transform: uppercase; }
+
+        footer { text-align: center; padding: 50px; color: #444; font-size: 0.75rem; }
     </style>
 </head>
 <body oncontextmenu="return false;">
     <canvas id="matrix-canvas"></canvas>
+
     <div class="header">
         <a href="index.html" class="btn-home">← HUB</a>
         <img src="logo.png" alt="ABR" class="logo">
     </div>
+
     <div class="container">
         <div class="grid">
+            <!-- TENDÊNCIA -->
             <div class="card">
-                <h2>Tendência de Demanda (Google Trends)</h2>
+                <h2>Tendência de Demanda</h2>
                 <div class="chart-container"><canvas id="chartDemanda"></canvas></div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value">+24%</div>
+                        <div class="stat-label">Crescimento Mensal</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">Alta</div>
+                        <div class="stat-label">Intensidade</div>
+                    </div>
+                </div>
             </div>
+
+            <!-- ORIGEM -->
             <div class="card">
-                <h2>Origem do Interesse (Estados)</h2>
+                <h2>Origem do Interesse</h2>
                 <div class="chart-container"><canvas id="chartOrigem"></canvas></div>
             </div>
+
+            <!-- TERMOS -->
             <div class="card">
-                <h2>Principais Termos de Busca</h2>
+                <h2>Termos Mais Buscados</h2>
                 <div class="chart-container"><canvas id="chartTermos"></canvas></div>
             </div>
+
+            <!-- SENTIMENTO -->
             <div class="card">
-                <h2>Análise de Sentimento do Destino</h2>
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 4rem; margin-bottom: 10px;">😊</div>
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--matrix-green);">92% POSITIVO</div>
-                    <p style="color: #8b949e; font-size: 0.8rem; margin-top: 10px;">Baseado em menções sociais e avaliações</p>
+                <h2>Análise de Sentimento</h2>
+                <div style="text-align: center; padding: 40px 0;">
+                    <div style="font-size: 5rem; margin-bottom: 15px;">😊</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--matrix-green);">92%</div>
+                    <div style="color: var(--matrix-green); font-weight: 600; letter-spacing: 2px;">SENTIMENTO POSITIVO</div>
                 </div>
             </div>
         </div>
     </div>
+
     <footer>© 2025 ABR MARKETING ESTRATÉGICO ALL-IN-ONE — SISTEMA BLINDADO</footer>
+
     <script>
-        // Efeito Matrix
+        // Matrix Effect
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
-        const characters = '01';
+        const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const fontSize = 14;
         const columns = width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
+
         function drawMatrix() {
             ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
             ctx.fillRect(0, 0, width, height);
@@ -78,54 +186,55 @@
         }
         setInterval(drawMatrix, 50);
 
-        // Carregamento de Dados Reais do pulse-data.json
+        // Carregar Dados Reais
         fetch('pulse-data.json')
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
-                const labels = data.trends.map(t => t.date);
-                const values = data.trends.map(t => t.value);
-
+                // Gráfico de Linha (Demanda)
                 new Chart(document.getElementById('chartDemanda'), {
                     type: 'line',
                     data: {
-                        labels: labels,
+                        labels: data.trends.map(t => t.date),
                         datasets: [{
-                            label: 'Interesse de Busca',
-                            data: values,
+                            data: data.trends.map(t => t.value),
                             borderColor: '#00a3ff',
                             backgroundColor: 'rgba(0, 163, 255, 0.1)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointRadius: 0
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#222' }, ticks: { color: '#8b949e' } }, x: { grid: { display: false }, ticks: { color: '#8b949e' } } } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#555' } }, x: { grid: { display: false }, ticks: { color: '#555' } } } }
                 });
 
-                // Gráfico de Origem (Exemplo com dados reais)
+                // Gráfico de Pizza (Origem)
                 new Chart(document.getElementById('chartOrigem'), {
                     type: 'doughnut',
                     data: {
                         labels: ['São Paulo', 'Rio de Janeiro', 'Minas Gerais', 'Paraná', 'Outros'],
                         datasets: [{
-                            data: [35, 20, 15, 10, 20],
-                            backgroundColor: ['#00ff41', '#00a3ff', '#ffea00', '#ff3e00', '#999'],
-                            borderWidth: 0
+                            data: [35, 22, 18, 12, 13],
+                            backgroundColor: ['#00ff41', '#00a3ff', '#ffea00', '#ff3e00', '#555'],
+                            borderWidth: 0,
+                            hoverOffset: 20
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8b949e', padding: 20, font: { size: 11 } } } }, cutout: '70%' }
                 });
 
-                // Gráfico de Termos
+                // Gráfico de Barras (Termos)
                 new Chart(document.getElementById('chartTermos'), {
                     type: 'bar',
                     data: {
                         labels: ['Hotéis', 'Pousadas', 'Passagens', 'Roteiros', 'Previsão'],
                         datasets: [{
                             data: [95, 82, 75, 60, 45],
-                            backgroundColor: '#00a3ff'
+                            backgroundColor: 'rgba(0, 163, 255, 0.8)',
+                            borderRadius: 8
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#222' }, ticks: { color: '#8b949e' } }, x: { grid: { display: false }, ticks: { color: '#8b949e' } } } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { display: false } }, x: { grid: { display: false }, ticks: { color: '#8b949e' } } } }
                 });
             });
 
