@@ -6,224 +6,50 @@
     <title>ABR MARKETING ESTRATÉGICO ALL-IN-ONE — HUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --matrix-green: #00ff41;
-            --matrix-dark: #0d0208;
-            --card-bg: rgba(13, 18, 23, 0.9 );
-            --accent-blue: #00a3ff;
-            --text-main: #e6edf3;
-            --text-dim: #8b949e;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        body {
-            background-color: var(--matrix-dark);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.2;
-        }
-
-        .container {
-            max-width: 1000px;
-            width: 90%;
-            text-align: center;
-            z-index: 1;
-        }
-
-        header {
-            margin-bottom: 50px;
-        }
-
-        .logo {
-            max-width: 240px;
-            width: 100%;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(0, 163, 255, 0.5));
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            color: var(--text-dim);
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .hub-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
-
-        .hub-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px 30px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hub-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(0, 163, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: 0.6s;
-        }
-
-        .hub-card:hover::before {
-            transform: translateX(100%);
-        }
-
-        .hub-card:hover {
-            border-color: var(--accent-blue);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 163, 255, 0.2);
-        }
-
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .status-badge {
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 6px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
-
-        .status-online {
-            background: rgba(57, 255, 20, 0.15);
-            color: #39ff14;
-            border: 1px solid #39ff14;
-        }
-
-        .status-pending {
-            background: rgba(255, 234, 0, 0.15);
-            color: #ffea00;
-            border: 1px solid #ffea00;
-        }
-
-        .whatsapp-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #25d366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-            transition: 0.3s;
-            z-index: 100;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-
-        .whatsapp-btn:hover {
-            transform: scale(1.2);
-        }
-
-        footer {
-            margin-top: 60px;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
-
-        body { -webkit-touch-callout: none; }
+        :root { --matrix-green: #00ff41; --matrix-dark: #0d0208; --card-bg: rgba(13, 18, 23, 0.9 ); --accent-blue: #00a3ff; --text-main: #e6edf3; --text-dim: #8b949e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
+        .container { max-width: 1000px; width: 90%; text-align: center; z-index: 1; }
+        header { margin-bottom: 50px; }
+        .logo { max-width: 240px; width: 100%; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(0, 163, 255, 0.5)); }
+        h1 { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; background: linear-gradient(to right, #fff, var(--accent-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: var(--text-dim); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
+        .hub-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 40px 30px; text-decoration: none; color: white; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; overflow: hidden; }
+        .hub-card:hover { border-color: var(--accent-blue); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 163, 255, 0.2); }
+        .icon { font-size: 3rem; margin-bottom: 10px; }
+        .card-title { font-size: 1.2rem; font-weight: 700; text-transform: uppercase; }
+        .status-badge { font-size: 0.7rem; font-weight: 800; padding: 6px 12px; border-radius: 20px; text-transform: uppercase; }
+        .status-online { background: rgba(57, 255, 20, 0.15); color: #39ff14; border: 1px solid #39ff14; }
+        .status-pending { background: rgba(255, 234, 0, 0.15); color: #ffea00; border: 1px solid #ffea00; }
+        .whatsapp-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); z-index: 100; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 70% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        footer { margin-top: 60px; color: var(--text-dim); font-size: 0.8rem; letter-spacing: 1px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
-
     <canvas id="matrix-canvas"></canvas>
-
     <div class="container">
         <header>
             <img src="logo.png" alt="ABR ALL-IN-ONE" class="logo">
             <h1>ABR MARKETING ESTRATÉGICO ALL-IN-ONE</h1>
             <p class="subtitle">Plataforma de Inteligência Preditiva e Big Data</p>
         </header>
-
         <div class="hub-grid">
-            <a href="destino.html" class="hub-card">
+            <!-- LINK ATUALIZADO PARA login-destino.html -->
+            <a href="login-destino.html" class="hub-card">
                 <div class="icon">📍</div>
                 <div class="card-title">Radar Direcional  
 do Destino</div>
                 <span class="status-badge status-online">Acesso Liberado</span>
             </a>
-
             <div class="hub-card" style="cursor: default; opacity: 0.8;">
                 <div class="icon">🗺️</div>
                 <div class="card-title">Radar Direcional  
 do Estado</div>
                 <span class="status-badge status-pending">Fase de Homologação</span>
             </div>
-
             <div class="hub-card" style="cursor: default; opacity: 0.8;">
                 <div class="icon">🏨</div>
                 <div class="card-title">Radar Direcional  
@@ -231,18 +57,11 @@ do Hotel/Pousada</div>
                 <span class="status-badge status-pending">Fase de Homologação</span>
             </div>
         </div>
-
-        <footer>
-            © 2025 ABR MARKETING ESTRATÉGICO ALL-IN-ONE — SISTEMA BLINDADO
-        </footer>
+        <footer>© 2025 ABR MARKETING ESTRATÉGICO ALL-IN-ONE — SISTEMA BLINDADO</footer>
     </div>
-
     <a href="https://wa.me/5584999519500" class="whatsapp-btn" target="_blank">
-        <svg width="35" height="35" viewBox="0 0 24 24" fill="white">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.675 1.438 5.662 1.438h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
+        <svg width="35" height="35" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.675 1.438 5.662 1.438h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </a>
-
     <script>
         const canvas = document.getElementById('matrix-canvas' );
         const ctx = canvas.getContext('2d');
@@ -252,7 +71,6 @@ do Hotel/Pousada</div>
         const fontSize = 14;
         const columns = width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
-
         function drawMatrix() {
             ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
             ctx.fillRect(0, 0, width, height);
@@ -266,15 +84,6 @@ do Hotel/Pousada</div>
             }
         }
         setInterval(drawMatrix, 50);
-
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        });
-
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
-        };
     </script>
 </body>
 </html>
