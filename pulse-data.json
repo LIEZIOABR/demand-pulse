@@ -1,48 +1,48 @@
 {
   "monte_verde_mg": {
-    "recentChange": 0.3715,
-    "persistence": 0.86,
+    "recentChange": 0.4048,
+    "persistence": 1.0,
     "weather": {
       "current": {
-        "temp": 24.2,
-        "cond": "Nublado"
+        "temp": 18.6,
+        "cond": "Parcial"
       },
       "daily": [
         {
           "date": "2025-12-30",
-          "max": 24.7,
+          "max": 25.8,
           "min": 17.1,
           "cond": "Trovoada"
         },
         {
           "date": "2025-12-31",
           "max": 25.3,
-          "min": 17.0,
+          "min": 17.1,
           "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-01",
-          "max": 24.1,
-          "min": 17.5,
+          "max": 23.7,
+          "min": 18.1,
           "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-02",
-          "max": 21.1,
+          "max": 22.6,
           "min": 17.5,
-          "cond": "Trovoada"
+          "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-03",
-          "max": 21.4,
-          "min": 16.2,
+          "max": 21.5,
+          "min": 16.9,
           "cond": "Trovoada"
         },
         {
           "date": "2026-01-04",
-          "max": 22.0,
-          "min": 15.4,
-          "cond": "Pancadas"
+          "max": 22.2,
+          "min": 15.9,
+          "cond": "Trovoada"
         },
         {
           "date": "2026-01-05",
@@ -56,56 +56,56 @@
     "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "campos_do_jordao_sp": {
-    "recentChange": 0.4959,
+    "recentChange": 0.5274,
     "persistence": 1.0,
     "weather": null,
     "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
     "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "sao_bento_sapucai_sp": {
-    "recentChange": 0.679,
+    "recentChange": 0.7959,
     "persistence": 1.0,
     "weather": {
       "current": {
-        "temp": 27.2,
-        "cond": "Nublado"
+        "temp": 21.7,
+        "cond": "Parcial"
       },
       "daily": [
         {
           "date": "2025-12-30",
-          "max": 28.7,
+          "max": 29.3,
           "min": 18.7,
-          "cond": "Est\u00e1vel"
+          "cond": "Trovoada"
         },
         {
           "date": "2025-12-31",
           "max": 28.3,
-          "min": 18.8,
-          "cond": "Trovoada"
+          "min": 19.0,
+          "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-01",
-          "max": 27.3,
-          "min": 19.9,
-          "cond": "Trovoada"
+          "max": 27.4,
+          "min": 20.1,
+          "cond": "Pancadas"
         },
         {
           "date": "2026-01-02",
-          "max": 25.8,
+          "max": 26.9,
           "min": 20.0,
           "cond": "Pancadas"
         },
         {
           "date": "2026-01-03",
-          "max": 26.7,
-          "min": 18.2,
-          "cond": "Trovoada"
+          "max": 26.2,
+          "min": 18.9,
+          "cond": "Pancadas"
         },
         {
           "date": "2026-01-04",
-          "max": 27.3,
-          "min": 17.1,
-          "cond": "Pancadas"
+          "max": 27.9,
+          "min": 17.5,
+          "cond": "Trovoada"
         },
         {
           "date": "2026-01-05",
@@ -119,54 +119,54 @@
     "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "passa_quatro_mg": {
-    "recentChange": 2.9841,
-    "persistence": 1.0,
+    "recentChange": 3.6875,
+    "persistence": 0.86,
     "weather": null,
     "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
     "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "serra_negra_sp": {
-    "recentChange": 0.4297,
-    "persistence": 0.86,
+    "recentChange": 0.4405,
+    "persistence": 1.0,
     "weather": {
       "current": {
-        "temp": 31.6,
-        "cond": "Parcial"
+        "temp": 24.5,
+        "cond": "Trovoada"
       },
       "daily": [
         {
           "date": "2025-12-30",
-          "max": 31.9,
+          "max": 32.5,
           "min": 21.4,
           "cond": "Trovoada"
         },
         {
           "date": "2025-12-31",
           "max": 31.9,
-          "min": 21.1,
+          "min": 21.6,
           "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-01",
-          "max": 29.5,
-          "min": 21.7,
+          "max": 28.8,
+          "min": 22.0,
           "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-02",
-          "max": 25.9,
+          "max": 27.2,
           "min": 21.8,
-          "cond": "Trovoada"
+          "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-03",
-          "max": 26.8,
-          "min": 21.3,
-          "cond": "Trovoada"
+          "max": 26.7,
+          "min": 21.1,
+          "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-04",
-          "max": 28.6,
+          "max": 28.2,
           "min": 20.9,
           "cond": "Pancadas"
         },
@@ -182,56 +182,56 @@
     "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "gramado_canela_rs": {
-    "recentChange": 0.4468,
+    "recentChange": 0.4813,
     "persistence": 1.0,
     "weather": null,
     "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
     "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "pocos_de_caldas_mg": {
-    "recentChange": 0.2991,
+    "recentChange": 0.3111,
     "persistence": 1.0,
     "weather": {
       "current": {
-        "temp": 26.5,
-        "cond": "Parcial"
+        "temp": 20.6,
+        "cond": "Pancadas"
       },
       "daily": [
         {
           "date": "2025-12-30",
-          "max": 27.0,
+          "max": 27.9,
           "min": 17.6,
-          "cond": "Trovoada"
+          "cond": "Pancadas"
         },
         {
           "date": "2025-12-31",
           "max": 27.1,
-          "min": 17.5,
-          "cond": "Trovoada"
+          "min": 18.0,
+          "cond": "Est\u00e1vel"
         },
         {
           "date": "2026-01-01",
-          "max": 26.0,
-          "min": 18.1,
+          "max": 25.7,
+          "min": 17.7,
           "cond": "Trovoada"
         },
         {
           "date": "2026-01-02",
           "max": 22.1,
-          "min": 17.9,
-          "cond": "Trovoada"
+          "min": 18.3,
+          "cond": "Pancadas"
         },
         {
           "date": "2026-01-03",
-          "max": 22.6,
-          "min": 17.6,
-          "cond": "Est\u00e1vel"
+          "max": 22.4,
+          "min": 18.0,
+          "cond": "Trovoada"
         },
         {
           "date": "2026-01-04",
-          "max": 23.6,
+          "max": 24.0,
           "min": 17.4,
-          "cond": "Pancadas"
+          "cond": "Nevoeiro"
         },
         {
           "date": "2026-01-05",
@@ -245,7 +245,7 @@
     "note": "Dados reais atualizados via ABR_ALL-IN-ONE."
   },
   "sao_lourenco_mg": {
-    "recentChange": 2.8285,
+    "recentChange": 2.2142,
     "persistence": 1.0,
     "weather": null,
     "insight": "Alerta: Busca aquecida. \u00d3timo momento para campanhas de convers\u00e3o.",
