@@ -114,22 +114,24 @@
         .btn-logout {
             position: absolute;
             top: 20px;
-            right: 0;
-            background: rgba(255, 49, 49, 0.1);
-            border: 1px solid #ff3131;
-            color: #ff3131;
-            padding: 8px 16px;
+            left: 0;
+            background: #ff3131;
+            color: white;
+            border: none;
+            padding: 10px 20px;
             border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 800;
             cursor: pointer;
             transition: 0.3s;
             text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 49, 49, 0.3);
+            z-index: 10;
         }
 
         .btn-logout:hover {
-            background: #ff3131;
-            color: white;
+            transform: scale(1.05);
+            filter: brightness(1.2);
         }
 
         .logo {
@@ -204,12 +206,21 @@
         .bi-title {
             font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             color: var(--accent-blue);
             text-transform: uppercase;
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .bi-legend {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 10px;
         }
 
         .chart-container {
@@ -287,7 +298,7 @@
 
     <div class="container" id="main-content">
         <header>
-            <button class="btn-logout" onclick="logout()">Sair</button>
+            <button class="btn-logout" onclick="logout()">Sair do Sistema</button>
             <img src="logo.png" alt="ABR ALL-IN-ONE" class="logo">
             <h1>Demand Pulse — Radar Direcional do Destino</h1>
             <p class="subtitle">Análise de BI: Variação, Persistência e Tendência Histórica.</p>
@@ -347,7 +358,8 @@
 
         <!-- Seção de BI -->
         <div class="bi-section">
-            <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência (8 Semanas)</div>
+            <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência</div>
+            <span class="bi-legend">💡 Gráfico: Volume de Interesse (0-100) | Cards: Variação Percentual (%) de crescimento recente.</span>
             <div class="chart-container">
                 <canvas id="biChart"></canvas>
             </div>
@@ -392,7 +404,6 @@
             window.location.reload();
         }
 
-        // Verificar se já está logado nesta sessão
         window.onload = function() {
             if(sessionStorage.getItem('isLoggedIn') === 'true') {
                 document.getElementById('login-overlay').style.display = 'none';
@@ -401,13 +412,11 @@
             }
         };
 
-        // Bloqueio de Teclas
         document.onkeydown = function(e) {
             if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
             if(e.keyCode == 13 && document.getElementById('login-overlay').style.display !== 'none') checkLogin();
         };
 
-        // Efeito Matrix
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
