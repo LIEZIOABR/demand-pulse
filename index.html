@@ -101,7 +101,7 @@
             padding: 20px;
             position: relative;
             z-index: 1;
-            display: none; /* Escondido até o login */
+            display: none;
         }
 
         header {
@@ -171,7 +171,6 @@
             letter-spacing: 1px;
         }
 
-        /* Seção de BI - Gráfico */
         .bi-section {
             background: var(--card-bg);
             border: 1px solid rgba(0, 163, 255, 0.2);
@@ -336,7 +335,7 @@
             <div class="sidebar">
                 <div class="sidebar-card">
                     <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                        <span style="font-weight:700;">Boletim ABR</span>
+                        <span style="font-weight:700;">Boletim ABR ALL-IN-ONE</span>
                         <button onclick="copyBoletim()" style="background:none; border:1px solid var(--accent-blue); color:var(--accent-blue); padding:4px 8px; border-radius:5px; cursor:pointer; font-size:0.7rem;">Copiar</button>
                     </div>
                     <div id="boletim-texto">Carregando...</div>
@@ -350,12 +349,12 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO DE SENHA (Mude aqui se desejar)
-        const SENHA_MESTRA = "ABR2025";
+        // CONFIGURAÇÃO DE SENHAS
+        const SENHAS_VALIDAS = ["ABR2025", "TESTEABR"];
 
         function checkLogin() {
             const input = document.getElementById('password-input').value;
-            if(input === SENHA_MESTRA) {
+            if(SENHAS_VALIDAS.includes(input)) {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
                 loadData();
@@ -397,6 +396,18 @@
         let pulseData = {};
         let myChart = null;
 
+        // Função para gerar datas reais (últimos 7 domingos)
+        function getTimelineLabels() {
+            const labels = [];
+            const today = new Date();
+            for (let i = 7; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(today.getDate() - (i * 7));
+                labels.push(`${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`);
+            }
+            return labels;
+        }
+
         async function loadData() {
             try {
                 const response = await fetch('pulse-data.json');
@@ -410,7 +421,7 @@
         function updateDashboard() {
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
-            const chartData = { labels: ['S-7', 'S-6', 'S-5', 'S-4', 'S-3', 'S-2', 'S-1', 'Atual'], datasets: [] };
+            const chartData = { labels: getTimelineLabels(), datasets: [] };
             const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
             let boletim = "BOLETIM DEMAND PULSE — ABR ALL-IN-ONE\n\n";
 
