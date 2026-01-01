@@ -144,7 +144,12 @@
         function updateDashboard() {
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
-            const chartData = { labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'], datasets: [] };
+            
+            // BUSCA AS DATAS REAIS DO PRIMEIRO DESTINO DISPONÍVEL
+            const firstDestId = Object.keys(pulseData)[0];
+            const realDates = pulseData[firstDestId] ? pulseData[firstDestId].dates : ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'];
+            
+            const chartData = { labels: realDates, datasets: [] };
             const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
             let boletim = "BOLETIM DEMAND PULSE\n\n";
 
