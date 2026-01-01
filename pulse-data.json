@@ -7,6 +7,7 @@
     "sentiment": 0.85,
     "climateProfile": "cold",
     "bookingPressure": 0.88,
+    "proximityTrigger": 0.92,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 62},
       {"location": "Campinas/SP", "percent": 18},
@@ -31,6 +32,7 @@
     "sentiment": 0.92,
     "climateProfile": "cold",
     "bookingPressure": 0.94,
+    "proximityTrigger": 0.85,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 68},
       {"location": "Rio de Janeiro/RJ", "percent": 15},
@@ -55,6 +57,7 @@
     "sentiment": 0.95,
     "climateProfile": "cold",
     "bookingPressure": 0.98,
+    "proximityTrigger": 0.70,
     "topOrigins": [
       {"location": "Porto Alegre/RS", "percent": 45},
       {"location": "São Paulo/Capital", "percent": 32},
@@ -79,6 +82,7 @@
     "sentiment": 0.78,
     "climateProfile": "mild",
     "bookingPressure": 0.72,
+    "proximityTrigger": 0.60,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 55},
       {"location": "Campinas/SP", "percent": 22},
@@ -103,6 +107,7 @@
     "sentiment": 0.82,
     "climateProfile": "cold",
     "bookingPressure": 0.80,
+    "proximityTrigger": 0.88,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 70},
       {"location": "S. J. Campos/SP", "percent": 15},
@@ -127,6 +132,7 @@
     "sentiment": 0.75,
     "climateProfile": "mild",
     "bookingPressure": 0.65,
+    "proximityTrigger": 0.55,
     "topOrigins": [
       {"location": "Rio de Janeiro/RJ", "percent": 40},
       {"location": "São Paulo/Capital", "percent": 35},
@@ -151,6 +157,7 @@
     "sentiment": 0.80,
     "climateProfile": "mild",
     "bookingPressure": 0.78,
+    "proximityTrigger": 0.75,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 65},
       {"location": "Campinas/SP", "percent": 20},
@@ -175,6 +182,7 @@
     "sentiment": 0.76,
     "climateProfile": "mild",
     "bookingPressure": 0.70,
+    "proximityTrigger": 0.65,
     "topOrigins": [
       {"location": "Rio de Janeiro/RJ", "percent": 50},
       {"location": "São Paulo/Capital", "percent": 30},
@@ -199,6 +207,7 @@
     "sentiment": 0.88,
     "climateProfile": "cold",
     "bookingPressure": 0.85,
+    "proximityTrigger": 0.90,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 75},
       {"location": "Campinas/SP", "percent": 15},
@@ -223,6 +232,7 @@
     "sentiment": 0.84,
     "climateProfile": "cold",
     "bookingPressure": 0.82,
+    "proximityTrigger": 0.84,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 72},
       {"location": "S. J. Campos/SP", "percent": 12},
