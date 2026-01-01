@@ -135,23 +135,29 @@
             const chartData = { labels: manualDates, datasets: [] };
             const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
             
-            // CÁLCULO DE MARKET SHARE
-            let totalInterest = 0;
+            // CÁLCULO DE MARKET SHARE (ATUAL E ANTERIOR)
+            let totalInterestNow = 0;
+            let totalInterestPrev = 0;
             const selectedDests = [];
             for(let i=1; i<=4; i++) {
                 const id = document.getElementById(`dest-${i}`).value;
                 if(pulseData[id]) {
-                    const lastVal = pulseData[id].timeline[pulseData[id].timeline.length - 1];
-                    totalInterest += lastVal;
-                    selectedDests.push({id, lastVal});
+                    const timeline = pulseData[id].timeline;
+                    const valNow = timeline[timeline.length - 1];
+                    const valPrev = timeline[timeline.length - 2];
+                    totalInterestNow += valNow;
+                    totalInterestPrev += valPrev;
+                    selectedDests.push({id, valNow, valPrev});
                 }
             }
 
             let boletim = "ANÁLISE SEMANAL DE MERCADO\n\n";
             boletim += "🏆 DOMINÂNCIA RELATIVA (MARKET SHARE):\n";
             selectedDests.forEach(d => {
-                const share = ((d.lastVal / totalInterest) * 100).toFixed(1);
-                boletim += `• ${pulseData[d.id].name}: ${share}% do interesse total.\n`;
+                const shareNow = ((d.valNow / totalInterestNow) * 100).toFixed(1);
+                const sharePrev = ((d.valPrev / totalInterestPrev) * 100).toFixed(1);
+                const trend = shareNow > sharePrev ? "▲" : (shareNow < sharePrev ? "▼" : "●");
+                boletim += `• ${pulseData[d.id].name}: ${shareNow}% ${trend}\n`;
             });
             boletim += "----------------------------------\n\n";
 
@@ -188,7 +194,10 @@
                     const proxVal = data.proximityTrigger || 0.6;
                     const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : "";
 
-                    const shareVal = ((data.timeline[data.timeline.length-1] / totalInterest) * 100).toFixed(0);
+                    // LÓGICA DE SETA DE SHARE NO CARD
+                    const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100);
+                    const sharePrev = ((data.timeline[data.timeline.length-2] / totalInterestPrev) * 100);
+                    const shareTrend = shareNow > sharePrev ? {s:"▲", c:"#39ff14"} : (shareNow < sharePrev ? {s:"▼", c:"#ff3131"} : {s:"●", c:"#8b949e"});
 
                     const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0};
 
@@ -203,7 +212,7 @@
                             <div class="card-header-top">
                                 <span class="dest-name">${data.name}</span>
                                 <div class="selos-stack">
-                                    <div class="atratividade-selo selo-share">SHARE: ${shareVal}%</div>
+                                    <div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}% <span style="color:${shareTrend.c}">${shareTrend.s}</span></div>
                                     <div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>
                                     ${pressSelo}
                                     ${proxSelo}
