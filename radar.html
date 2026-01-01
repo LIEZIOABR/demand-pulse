@@ -134,10 +134,14 @@
                     const rc = (data.recentChange * 100).toFixed(1);
                     const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'});
                     
-                    // LÓGICA DE INTELIGÊNCIA DO BOLETIM (AJUSTADA)
+                    // LÓGICA DE SENTIMENTO
+                    const sentVal = data.sentiment || 0.8;
+                    const sentStatus = sentVal > 0.85 ? {l:'Positivo', i:'😊'} : (sentVal < 0.75 ? {l:'Alerta', i:'⚠️'} : {l:'Neutro', i:'😐'});
+                    const sentDesc = sentVal > 0.85 ? "Fase de alto desejo e planejamento ativo." : (sentVal < 0.75 ? "Sinais de retração ou barreira de interesse." : "Interesse estável sem grandes oscilações de humor.");
+
                     const causa = data.persistence > 0.8 
                         ? "Forte base orgânica e fidelidade de busca." 
-                        : "Demanda com alta sensibilidade sazonal e picos de interesse."; // Opção 2 implementada
+                        : "Demanda com alta sensibilidade sazonal e picos de interesse.";
                     
                     const projecao = data.recentChange > 0.2 ? "Tendência de aceleração máxima para os próximos 15 dias." : "Expectativa de estabilidade com viés de alta.";
 
@@ -146,7 +150,7 @@
                             <div class="card-header"><span class="dest-name">${data.name}</span><span class="status-badge ${status.c}">${status.l}</span></div>
                             <div class="metrics-row">
                                 <div class="metric-box"><span class="metric-label">Variação</span><span class="metric-value">${rc}%</span></div>
-                                <div class="metric-box"><span class="metric-label">Persistência</span><span class="metric-value">${(data.persistence*100).toFixed(0)}%</span></div>
+                                <div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div>
                             </div>
                             <div class="insight-box">💡 ${data.insight}</div>
                             <div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div>
@@ -163,6 +167,7 @@
 
                     boletim += `📍 ${data.name.toUpperCase()}\n`;
                     boletim += `• Status: ${status.l} (${rc}% var)\n`;
+                    boletim += `• Sentimento: ${sentStatus.l} (${sentDesc})\n`;
                     boletim += `• Causa: ${causa}\n`;
                     boletim += `• Projeção: ${projecao}\n\n`;
                 }
