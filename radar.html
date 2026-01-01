@@ -19,11 +19,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
         body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; }
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--matrix-dark); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .login-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--accent-blue); text-align: center; max-width: 400px; width: 90%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.3); }
-        .login-box input { width: 100%; padding: 15px; margin: 20px 0; background: #161b22; border: 1px solid #30363d; color: white; border-radius: 10px; text-align: center; font-size: 1.1rem; }
-        .login-box button { width: 100%; padding: 15px; background: var(--accent-blue); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; display: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
         header { text-align: center; margin-bottom: 40px; padding-top: 20px; position: relative; }
         .header-nav { position: absolute; top: 20px; left: 0; display: flex; gap: 10px; z-index: 10; }
         .btn-nav { border: none; padding: 10px 15px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; }
@@ -64,16 +60,7 @@
 </head>
 <body oncontextmenu="return false;">
     <canvas id="matrix-canvas"></canvas>
-    <div id="login-overlay">
-        <img src="logo.png" alt="ABR" style="max-width: 200px; margin-bottom: 30px;">
-        <div class="login-box">
-            <h2 style="color: var(--accent-blue);">ACESSO RESTRITO</h2>
-            <input type="password" id="password-input" placeholder="Digite sua senha">
-            <button onclick="checkLogin()">Entrar no Radar</button>
-            <p id="login-error" style="color: #ff3131; font-size: 0.8rem; margin-top: 15px; display: none;">Senha incorreta.</p>
-        </div>
-    </div>
-    <div class="container" id="main-content">
+    <div class="container">
         <header>
             <div class="header-nav">
                 <a href="https://inspiring-peony-6a9450.netlify.app/" class="btn-nav btn-home">Voltar ao HUB</a>
@@ -119,15 +106,6 @@
         <footer>DEMAND PULSE — ABR ALL-IN-ONE — ATUALIZAÇÃO DIÁRIA</footer>
     </div>
     <script>
-        const SENHAS_VALIDAS = ["abr2025", "testeabr"];
-        function checkLogin() {
-            const input = document.getElementById('password-input').value.toLowerCase().trim();
-            if(SENHAS_VALIDAS.includes(input)) {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                loadData();
-            } else { document.getElementById('login-error').style.display = 'block'; }
-        }
         function logout() { if(confirm("Sair?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
         
         let pulseData = {};
@@ -170,7 +148,7 @@
                         data: data.timeline, 
                         borderColor: colors[i-1], 
                         backgroundColor: colors[i-1] + '22', 
-                        tension: 0.1, // REDUZIDO PARA MOSTRAR MAIS VARIAÇÃO
+                        tension: 0.1,
                         fill: true 
                     });
                     boletim += `• ${data.name}: ${status.l} (${rc}% var)\n`;
@@ -213,6 +191,9 @@
             if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
             if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
         }
+
+        // CARREGA OS DADOS AUTOMATICAMENTE AO ABRIR
+        window.onload = loadData;
     </script>
 </body>
 </html>
