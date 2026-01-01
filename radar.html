@@ -37,16 +37,19 @@
         .chart-container { height: 300px; width: 100%; }
         .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
         .comparison-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; }
+        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; position: relative; }
+        .atratividade-selo { position: absolute; top: 15px; right: 15px; font-size: 0.65rem; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
+        .selo-alta { background: var(--accent-green); color: #000; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
+        .selo-media { background: var(--accent-blue); color: #fff; }
         .dest-name { font-weight: 700; font-size: 1.1rem; }
-        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-top: 5px; display: inline-block; }
         .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; }
         .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; }
         .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; }
         .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .metric-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 12px; }
         .metric-label { font-size: 0.7rem; color: var(--text-dim); display: block; }
-        .metric-value { font-family: 'Fira Code', monospace; font-size: 1.2rem; font-weight: 600; }
+        .metric-value { font-family: 'Fira Code', monospace; font-size: 1.1rem; font-weight: 600; }
         .insight-box { background: rgba(0, 163, 255, 0.05); border: 1px solid rgba(0, 163, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #99d6ff; }
         .weather-forecast { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
         .forecast-day { text-align: center; flex: 1; }
@@ -139,6 +142,21 @@
                     const sentStatus = sentVal > 0.85 ? {l:'Positivo', i:'😊'} : (sentVal < 0.75 ? {l:'Alerta', i:'⚠️'} : {l:'Neutro', i:'😐'});
                     const sentDesc = sentVal > 0.85 ? "Fase de alto desejo e planejamento ativo." : (sentVal < 0.75 ? "Sinais de retração ou barreira de interesse." : "Interesse estável sem grandes oscilações de humor.");
 
+                    // LÓGICA DE ATRATIVIDADE CLIMÁTICA
+                    const avgTemp = data.weather.daily.reduce((acc, d) => acc + d.max, 0) / 5;
+                    let atrScore = 50;
+                    let atrLabel = "Condição Normal";
+                    let atrIcon = "☀️";
+                    let atrClass = "selo-media";
+
+                    if (data.climateProfile === "cold") {
+                        if (avgTemp < 18) { atrScore = 95; atrLabel = "Atratividade Máxima"; atrIcon = "❄️"; atrClass = "selo-alta"; }
+                        else if (avgTemp < 22) { atrScore = 75; atrLabel = "Condição Ideal"; atrIcon = "☁️"; }
+                    } else {
+                        if (avgTemp > 24) { atrScore = 90; atrLabel = "Atratividade Máxima"; atrIcon = "🔥"; atrClass = "selo-alta"; }
+                        else { atrScore = 70; atrLabel = "Condição Ideal"; atrIcon = "☀️"; }
+                    }
+
                     const causa = data.persistence > 0.8 
                         ? "Forte base orgânica e fidelidade de busca." 
                         : "Demanda com alta sensibilidade sazonal e picos de interesse.";
@@ -147,7 +165,9 @@
 
                     container.innerHTML += `
                         <div class="card">
-                            <div class="card-header"><span class="dest-name">${data.name}</span><span class="status-badge ${status.c}">${status.l}</span></div>
+                            <div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>
+                            <div class="card-header"><span class="dest-name">${data.name}</span>  
+<span class="status-badge ${status.c}">${status.l}</span></div>
                             <div class="metrics-row">
                                 <div class="metric-box"><span class="metric-label">Variação</span><span class="metric-value">${rc}%</span></div>
                                 <div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div>
@@ -168,6 +188,7 @@
                     boletim += `📍 ${data.name.toUpperCase()}\n`;
                     boletim += `• Status: ${status.l} (${rc}% var)\n`;
                     boletim += `• Sentimento: ${sentStatus.l} (${sentDesc})\n`;
+                    boletim += `• Atratividade Climática: ${atrScore}% (Gatilho de conversão ativado)\n`;
                     boletim += `• Causa: ${causa}\n`;
                     boletim += `• Projeção: ${projecao}\n\n`;
                 }
