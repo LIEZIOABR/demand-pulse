@@ -134,8 +134,11 @@
                     const rc = (data.recentChange * 100).toFixed(1);
                     const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'});
                     
-                    // LÓGICA DE INTELIGÊNCIA DO BOLETIM
-                    const causa = data.persistence > 0.8 ? "Forte base orgânica e fidelidade de busca." : "Oscilação sazonal com dependência de eventos.";
+                    // LÓGICA DE INTELIGÊNCIA DO BOLETIM (AJUSTADA)
+                    const causa = data.persistence > 0.8 
+                        ? "Forte base orgânica e fidelidade de busca." 
+                        : "Demanda com alta sensibilidade sazonal e picos de interesse."; // Opção 2 implementada
+                    
                     const projecao = data.recentChange > 0.2 ? "Tendência de aceleração máxima para os próximos 15 dias." : "Expectativa de estabilidade com viés de alta.";
 
                     container.innerHTML += `
