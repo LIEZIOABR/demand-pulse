@@ -8,6 +8,7 @@
     "climateProfile": "cold",
     "bookingPressure": 0.88,
     "proximityTrigger": 0.92,
+    "socialBuzz": 0.85,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 62},
       {"location": "Campinas/SP", "percent": 18},
@@ -32,11 +33,12 @@
     "sentiment": 0.92,
     "climateProfile": "cold",
     "bookingPressure": 0.94,
-    "proximityTrigger": 0.85,
+    "proximityTrigger": 0.88,
+    "socialBuzz": 0.92,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 68},
-      {"location": "Rio de Janeiro/RJ", "percent": 15},
-      {"location": "Santos/SP", "percent": 10}
+      {"location": "Campinas/SP", "percent": 15},
+      {"location": "S. J. Campos/SP", "percent": 10}
     ],
     "insight": "Liderança absoluta em buscas no estado de SP.",
     "weather": {
@@ -57,18 +59,19 @@
     "sentiment": 0.95,
     "climateProfile": "cold",
     "bookingPressure": 0.98,
-    "proximityTrigger": 0.70,
+    "proximityTrigger": 0.95,
+    "socialBuzz": 0.98,
     "topOrigins": [
       {"location": "Porto Alegre/RS", "percent": 45},
-      {"location": "São Paulo/Capital", "percent": 32},
-      {"location": "Curitiba/PR", "percent": 12}
+      {"location": "São Paulo/Capital", "percent": 30},
+      {"location": "Caxias do Sul/RS", "percent": 15}
     ],
     "insight": "Pico de demanda devido aos eventos de Natal.",
     "weather": {
       "daily": [
         {"max": 22, "cond": "Ensolarado"},
         {"max": 24, "cond": "Limpo"},
-        {"max": 23, "cond": "Parcial. Nublado"},
+        {"max": 23, "cond": "Nublado"},
         {"max": 21, "cond": "Chuva"},
         {"max": 20, "cond": "Nublado"}
       ]
@@ -76,42 +79,44 @@
   },
   "pocos_de_caldas_mg": {
     "name": "Poços de Caldas (MG)",
-    "timeline": [50, 52, 55, 54, 58, 60, 62, 65],
-    "recentChange": 0.05,
-    "persistence": 0.75,
-    "sentiment": 0.78,
-    "climateProfile": "mild",
-    "bookingPressure": 0.72,
-    "proximityTrigger": 0.60,
+    "timeline": [50, 52, 55, 53, 58, 60, 62, 65],
+    "recentChange": 0.08,
+    "persistence": 0.85,
+    "sentiment": 0.88,
+    "climateProfile": "cold",
+    "bookingPressure": 0.75,
+    "proximityTrigger": 0.70,
+    "socialBuzz": 0.65,
     "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 55},
-      {"location": "Campinas/SP", "percent": 22},
-      {"location": "Ribeirão Preto/SP", "percent": 15}
+      {"location": "São Paulo/Capital", "percent": 40},
+      {"location": "Campinas/SP", "percent": 25},
+      {"location": "Belo Horizonte/MG", "percent": 15}
     ],
-    "insight": "Crescimento estável com foco em turismo termal.",
+    "insight": "Turismo familiar e águas termais em estabilidade.",
     "weather": {
       "daily": [
-        {"max": 25, "cond": "Ensolarado"},
-        {"max": 26, "cond": "Limpo"},
-        {"max": 24, "cond": "Nublado"},
-        {"max": 23, "cond": "Chuva"},
-        {"max": 22, "cond": "Garoa"}
+        {"max": 24, "cond": "Limpo"},
+        {"max": 23, "cond": "Ensolarado"},
+        {"max": 25, "cond": "Limpo"},
+        {"max": 22, "cond": "Parcial. Nublado"},
+        {"max": 21, "cond": "Nublado"}
       ]
     }
   },
   "sao_bento_sapucai_sp": {
     "name": "São Bento do Sapucaí (SP)",
-    "timeline": [40, 42, 45, 44, 48, 52, 55, 58],
+    "timeline": [40, 42, 45, 44, 48, 50, 52, 55],
     "recentChange": 0.11,
-    "persistence": 0.70,
+    "persistence": 0.75,
     "sentiment": 0.82,
     "climateProfile": "cold",
     "bookingPressure": 0.80,
-    "proximityTrigger": 0.88,
+    "proximityTrigger": 0.85,
+    "socialBuzz": 0.78,
     "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 70},
-      {"location": "S. J. Campos/SP", "percent": 15},
-      {"location": "Taubaté/SP", "percent": 8}
+      {"location": "São Paulo/Capital", "percent": 65},
+      {"location": "S. J. Campos/SP", "percent": 20},
+      {"location": "Campinas/SP", "percent": 10}
     ],
     "insight": "Aumento no interesse por ecoturismo e aventura.",
     "weather": {
@@ -126,69 +131,72 @@
   },
   "passa_quatro_mg": {
     "name": "Passa Quatro (MG)",
-    "timeline": [30, 32, 35, 34, 38, 40, 42, 45],
-    "recentChange": 0.07,
-    "persistence": 0.65,
-    "sentiment": 0.75,
-    "climateProfile": "mild",
+    "timeline": [30, 32, 35, 34, 37, 39, 41, 43],
+    "recentChange": 0.09,
+    "persistence": 0.70,
+    "sentiment": 0.80,
+    "climateProfile": "cold",
     "bookingPressure": 0.65,
-    "proximityTrigger": 0.55,
+    "proximityTrigger": 0.60,
+    "socialBuzz": 0.55,
     "topOrigins": [
-      {"location": "Rio de Janeiro/RJ", "percent": 40},
-      {"location": "São Paulo/Capital", "percent": 35},
-      {"location": "Belo Horizonte/MG", "percent": 15}
+      {"location": "Rio de Janeiro/RJ", "percent": 50},
+      {"location": "São Paulo/Capital", "percent": 25},
+      {"location": "Belo Horizonte/MG", "percent": 10}
     ],
-    "insight": "Destino emergente para turismo ferroviário.",
+    "insight": "Público do RJ buscando refúgio na Mantiqueira.",
     "weather": {
       "daily": [
-        {"max": 23, "cond": "Ensolarado"},
-        {"max": 24, "cond": "Limpo"},
-        {"max": 22, "cond": "Nublado"},
-        {"max": 21, "cond": "Chuva"},
-        {"max": 20, "cond": "Garoa"}
+        {"max": 22, "cond": "Limpo"},
+        {"max": 21, "cond": "Ensolarado"},
+        {"max": 23, "cond": "Limpo"},
+        {"max": 20, "cond": "Parcial. Nublado"},
+        {"max": 19, "cond": "Nublado"}
       ]
     }
   },
   "serra_negra_sp": {
     "name": "Serra Negra (SP)",
-    "timeline": [55, 58, 60, 59, 63, 65, 68, 70],
-    "recentChange": 0.04,
-    "persistence": 0.80,
-    "sentiment": 0.80,
-    "climateProfile": "mild",
+    "timeline": [45, 47, 50, 49, 53, 55, 57, 60],
+    "recentChange": 0.10,
+    "persistence": 0.82,
+    "sentiment": 0.85,
+    "climateProfile": "cold",
     "bookingPressure": 0.78,
-    "proximityTrigger": 0.75,
+    "proximityTrigger": 0.82,
+    "socialBuzz": 0.70,
     "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 65},
-      {"location": "Campinas/SP", "percent": 20},
-      {"location": "Santos/SP", "percent": 8}
+      {"location": "São Paulo/Capital", "percent": 55},
+      {"location": "Campinas/SP", "percent": 30},
+      {"location": "Santos/SP", "percent": 5}
     ],
-    "insight": "Forte demanda por compras e turismo de lazer.",
+    "insight": "Turismo de compras e lazer em alta no interior.",
     "weather": {
       "daily": [
+        {"max": 23, "cond": "Limpo"},
+        {"max": 22, "cond": "Ensolarado"},
         {"max": 24, "cond": "Limpo"},
-        {"max": 25, "cond": "Ensolarado"},
-        {"max": 23, "cond": "Parcial. Nublado"},
-        {"max": 22, "cond": "Nublado"},
-        {"max": 21, "cond": "Limpo"}
+        {"max": 21, "cond": "Parcial. Nublado"},
+        {"max": 20, "cond": "Nublado"}
       ]
     }
   },
   "sao_lourenco_mg": {
     "name": "São Lourenço (MG)",
-    "timeline": [45, 48, 50, 49, 53, 55, 58, 60],
+    "timeline": [42, 44, 47, 46, 50, 52, 54, 56],
     "recentChange": 0.06,
-    "persistence": 0.72,
-    "sentiment": 0.76,
-    "climateProfile": "mild",
+    "persistence": 0.88,
+    "sentiment": 0.84,
+    "climateProfile": "cold",
     "bookingPressure": 0.70,
     "proximityTrigger": 0.65,
+    "socialBuzz": 0.60,
     "topOrigins": [
-      {"location": "Rio de Janeiro/RJ", "percent": 50},
+      {"location": "Rio de Janeiro/RJ", "percent": 45},
       {"location": "São Paulo/Capital", "percent": 30},
-      {"location": "Belo Horizonte/MG", "percent": 12}
+      {"location": "Belo Horizonte/MG", "percent": 15}
     ],
-    "insight": "Interesse crescente em bem-estar e águas minerais.",
+    "insight": "Destino consolidado com público fiel do RJ e SP.",
     "weather": {
       "daily": [
         {"max": 26, "cond": "Ensolarado"},
@@ -208,6 +216,7 @@
     "climateProfile": "cold",
     "bookingPressure": 0.85,
     "proximityTrigger": 0.90,
+    "socialBuzz": 0.82,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 75},
       {"location": "Campinas/SP", "percent": 15},
@@ -233,6 +242,7 @@
     "climateProfile": "cold",
     "bookingPressure": 0.82,
     "proximityTrigger": 0.84,
+    "socialBuzz": 0.75,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 72},
       {"location": "S. J. Campos/SP", "percent": 12},
