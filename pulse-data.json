@@ -1,82 +1,172 @@
 {
   "monte_verde_mg": {
     "name": "Monte Verde (MG)",
-    "recentChange": 0.3326,
-    "persistence": 0.71,
-    "insight": "Alta procura para o período de inverno. Tendência de ocupação acima de 85%.",
-    "timeline": [65, 68, 72, 70, 75, 78, 82, 85],
-    "weather": { "daily": [ {"max": 18, "cond": "Ensolarado"}, {"max": 17, "cond": "Parc. Nublado"}, {"max": 16, "cond": "Frio"}, {"max": 18, "cond": "Limpo"}, {"max": 19, "cond": "Ensolarado"} ] }
+    "timeline": [65, 68, 72, 70, 75, 82, 88, 92],
+    "recentChange": 0.12,
+    "persistence": 0.78,
+    "sentiment": 0.85,
+    "insight": "Alta procura por experiências de inverno e gastronomia.",
+    "weather": {
+      "daily": [
+        {"max": 18, "cond": "Ensolarado"},
+        {"max": 17, "cond": "Parcial. Nublado"},
+        {"max": 19, "cond": "Limpo"},
+        {"max": 16, "cond": "Nublado"},
+        {"max": 15, "cond": "Garoa"}
+      ]
+    }
   },
   "campos_do_jordao_sp": {
     "name": "Campos do Jordão (SP)",
-    "recentChange": 0.4617,
-    "persistence": 1.0,
-    "insight": "Destino âncora da temporada. Volume de buscas em nível recorde.",
-    "timeline": [70, 75, 80, 85, 88, 92, 95, 98],
-    "weather": { "daily": [ {"max": 16, "cond": "Frio"}, {"max": 15, "cond": "Nublado"}, {"max": 14, "cond": "Frio"}, {"max": 17, "cond": "Ensolarado"}, {"max": 18, "cond": "Limpo"} ] }
+    "timeline": [80, 82, 85, 84, 88, 90, 95, 98],
+    "recentChange": 0.09,
+    "persistence": 0.88,
+    "sentiment": 0.92,
+    "insight": "Liderança absoluta em buscas no estado de SP.",
+    "weather": {
+      "daily": [
+        {"max": 20, "cond": "Limpo"},
+        {"max": 19, "cond": "Ensolarado"},
+        {"max": 21, "cond": "Limpo"},
+        {"max": 18, "cond": "Parcial. Nublado"},
+        {"max": 17, "cond": "Nublado"}
+      ]
+    }
   },
   "gramado_canela_rs": {
     "name": "Gramado + Canela (RS)",
-    "recentChange": 0.3627,
-    "persistence": 1.0,
-    "insight": "Forte recuperação do fluxo aéreo. Eventos locais impulsionam a demanda.",
-    "timeline": [60, 65, 70, 75, 78, 82, 85, 90],
-    "weather": { "daily": [ {"max": 14, "cond": "Frio"}, {"max": 13, "cond": "Chuva"}, {"max": 15, "cond": "Nublado"}, {"max": 16, "cond": "Ensolarado"}, {"max": 17, "cond": "Limpo"} ] }
+    "timeline": [70, 75, 80, 78, 85, 92, 98, 100],
+    "recentChange": 0.15,
+    "persistence": 0.92,
+    "sentiment": 0.95,
+    "insight": "Pico de demanda devido aos eventos de Natal.",
+    "weather": {
+      "daily": [
+        {"max": 22, "cond": "Ensolarado"},
+        {"max": 24, "cond": "Limpo"},
+        {"max": 23, "cond": "Parcial. Nublado"},
+        {"max": 21, "cond": "Chuva"},
+        {"max": 20, "cond": "Nublado"}
+      ]
+    }
   },
   "pocos_de_caldas_mg": {
     "name": "Poços de Caldas (MG)",
-    "recentChange": 0.1587,
-    "persistence": 0.86,
-    "insight": "Turismo familiar em alta. Estabilidade nas reservas para fins de semana.",
-    "timeline": [55, 58, 60, 62, 65, 68, 70, 72],
-    "weather": { "daily": [ {"max": 22, "cond": "Ensolarado"}, {"max": 21, "cond": "Limpo"}, {"max": 23, "cond": "Ensolarado"}, {"max": 22, "cond": "Parc. Nublado"}, {"max": 20, "cond": "Nublado"} ] }
+    "timeline": [50, 52, 55, 54, 58, 60, 62, 65],
+    "recentChange": 0.05,
+    "persistence": 0.75,
+    "sentiment": 0.78,
+    "insight": "Crescimento estável com foco em turismo termal.",
+    "weather": {
+      "daily": [
+        {"max": 25, "cond": "Ensolarado"},
+        {"max": 26, "cond": "Limpo"},
+        {"max": 24, "cond": "Nublado"},
+        {"max": 23, "cond": "Chuva"},
+        {"max": 22, "cond": "Garoa"}
+      ]
+    }
   },
   "sao_bento_sapucai_sp": {
     "name": "São Bento do Sapucaí (SP)",
-    "recentChange": 0.2845,
-    "persistence": 0.75,
-    "insight": "Crescimento no segmento de ecoturismo e aventura.",
-    "timeline": [45, 48, 52, 55, 58, 62, 65, 68],
-    "weather": { "daily": [ {"max": 20, "cond": "Limpo"}, {"max": 19, "cond": "Ensolarado"}, {"max": 21, "cond": "Ensolarado"}, {"max": 20, "cond": "Parc. Nublado"}, {"max": 18, "cond": "Frio"} ] }
+    "timeline": [40, 42, 45, 44, 48, 52, 55, 58],
+    "recentChange": 0.11,
+    "persistence": 0.70,
+    "sentiment": 0.82,
+    "insight": "Aumento no interesse por ecoturismo e aventura.",
+    "weather": {
+      "daily": [
+        {"max": 21, "cond": "Limpo"},
+        {"max": 20, "cond": "Ensolarado"},
+        {"max": 22, "cond": "Limpo"},
+        {"max": 19, "cond": "Parcial. Nublado"},
+        {"max": 18, "cond": "Nublado"}
+      ]
+    }
   },
   "passa_quatro_mg": {
     "name": "Passa Quatro (MG)",
-    "recentChange": 0.1245,
-    "persistence": 0.68,
-    "insight": "Procura estável por hotéis fazenda e turismo ferroviário.",
-    "timeline": [40, 42, 45, 48, 50, 52, 55, 58],
-    "weather": { "daily": [ {"max": 21, "cond": "Ensolarado"}, {"max": 22, "cond": "Limpo"}, {"max": 20, "cond": "Nublado"}, {"max": 19, "cond": "Parc. Nublado"}, {"max": 21, "cond": "Ensolarado"} ] }
+    "timeline": [30, 32, 35, 34, 38, 40, 42, 45],
+    "recentChange": 0.07,
+    "persistence": 0.65,
+    "sentiment": 0.75,
+    "insight": "Destino emergente para turismo ferroviário.",
+    "weather": {
+      "daily": [
+        {"max": 23, "cond": "Ensolarado"},
+        {"max": 24, "cond": "Limpo"},
+        {"max": 22, "cond": "Nublado"},
+        {"max": 21, "cond": "Chuva"},
+        {"max": 20, "cond": "Garoa"}
+      ]
+    }
   },
   "serra_negra_sp": {
     "name": "Serra Negra (SP)",
-    "recentChange": 0.406,
-    "persistence": 0.86,
-    "insight": "Turismo de compras e malhas aquecido para a estação.",
-    "timeline": [50, 55, 60, 65, 70, 75, 80, 85],
-    "weather": { "daily": [ {"max": 23, "cond": "Ensolarado"}, {"max": 22, "cond": "Limpo"}, {"max": 24, "cond": "Ensolarado"}, {"max": 23, "cond": "Parc. Nublado"}, {"max": 21, "cond": "Nublado"} ] }
+    "timeline": [55, 58, 60, 59, 63, 65, 68, 70],
+    "recentChange": 0.04,
+    "persistence": 0.80,
+    "sentiment": 0.80,
+    "insight": "Forte demanda por compras e turismo de lazer.",
+    "weather": {
+      "daily": [
+        {"max": 24, "cond": "Limpo"},
+        {"max": 25, "cond": "Ensolarado"},
+        {"max": 23, "cond": "Parcial. Nublado"},
+        {"max": 22, "cond": "Nublado"},
+        {"max": 21, "cond": "Limpo"}
+      ]
+    }
   },
   "sao_lourenco_mg": {
     "name": "São Lourenço (MG)",
-    "recentChange": 0.2345,
-    "persistence": 0.86,
-    "insight": "Circuito das Águas com fluxo constante de visitantes.",
-    "timeline": [52, 55, 58, 60, 63, 65, 68, 70],
-    "weather": { "daily": [ {"max": 22, "cond": "Limpo"}, {"max": 21, "cond": "Ensolarado"}, {"max": 23, "cond": "Ensolarado"}, {"max": 22, "cond": "Parc. Nublado"}, {"max": 20, "cond": "Nublado"} ] }
+    "timeline": [45, 48, 50, 49, 53, 55, 58, 60],
+    "recentChange": 0.06,
+    "persistence": 0.72,
+    "sentiment": 0.76,
+    "insight": "Interesse crescente em bem-estar e águas minerais.",
+    "weather": {
+      "daily": [
+        {"max": 26, "cond": "Ensolarado"},
+        {"max": 27, "cond": "Limpo"},
+        {"max": 25, "cond": "Nublado"},
+        {"max": 24, "cond": "Chuva"},
+        {"max": 23, "cond": "Garoa"}
+      ]
+    }
   },
   "goncalves_mg": {
     "name": "Gonçalves (MG)",
-    "recentChange": 0.3122,
-    "persistence": 0.82,
-    "insight": "Destino de charme em expansão. Alta procura por pousadas boutique.",
-    "timeline": [48, 52, 55, 58, 62, 65, 70, 75],
-    "weather": { "daily": [ {"max": 19, "cond": "Frio"}, {"max": 18, "cond": "Limpo"}, {"max": 20, "cond": "Ensolarado"}, {"max": 19, "cond": "Parc. Nublado"}, {"max": 17, "cond": "Nublado"} ] }
+    "timeline": [35, 38, 40, 39, 43, 45, 48, 50],
+    "recentChange": 0.08,
+    "persistence": 0.68,
+    "sentiment": 0.88,
+    "insight": "Destaque para hospedagens de charme e isolamento.",
+    "weather": {
+      "daily": [
+        {"max": 19, "cond": "Limpo"},
+        {"max": 18, "cond": "Ensolarado"},
+        {"max": 20, "cond": "Limpo"},
+        {"max": 17, "cond": "Parcial. Nublado"},
+        {"max": 16, "cond": "Nublado"}
+      ]
+    }
   },
   "santo_antonio_pinhal_sp": {
     "name": "Santo Antônio do Pinhal (SP)",
-    "recentChange": 0.2567,
-    "persistence": 0.78,
-    "insight": "Proximidade com Campos do Jordão atrai público em busca de tranquilidade.",
-    "timeline": [50, 53, 56, 58, 62, 65, 68, 72],
-    "weather": { "daily": [ {"max": 18, "cond": "Limpo"}, {"max": 17, "cond": "Ensolarado"}, {"max": 19, "cond": "Ensolarado"}, {"max": 18, "cond": "Parc. Nublado"}, {"max": 16, "cond": "Frio"} ] }
+    "timeline": [38, 40, 42, 41, 45, 47, 50, 52],
+    "recentChange": 0.07,
+    "persistence": 0.70,
+    "sentiment": 0.84,
+    "insight": "Alternativa tranquila a Campos do Jordão em alta.",
+    "weather": {
+      "daily": [
+        {"max": 21, "cond": "Ensolarado"},
+        {"max": 22, "cond": "Limpo"},
+        {"max": 20, "cond": "Parcial. Nublado"},
+        {"max": 19, "cond": "Nublado"},
+        {"max": 18, "cond": "Limpo"}
+      ]
+    }
   }
 }
