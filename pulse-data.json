@@ -7,6 +7,11 @@
     "sentiment": 0.85,
     "climateProfile": "cold",
     "bookingPressure": 0.88,
+    "topOrigins": [
+      {"location": "São Paulo/Capital", "percent": 62},
+      {"location": "Campinas/SP", "percent": 18},
+      {"location": "S. J. Campos/SP", "percent": 12}
+    ],
     "insight": "Alta procura por experiências de inverno e gastronomia.",
     "weather": {
       "daily": [
@@ -26,6 +31,11 @@
     "sentiment": 0.92,
     "climateProfile": "cold",
     "bookingPressure": 0.94,
+    "topOrigins": [
+      {"location": "São Paulo/Capital", "percent": 68},
+      {"location": "Rio de Janeiro/RJ", "percent": 15},
+      {"location": "Santos/SP", "percent": 10}
+    ],
     "insight": "Liderança absoluta em buscas no estado de SP.",
     "weather": {
       "daily": [
@@ -45,6 +55,11 @@
     "sentiment": 0.95,
     "climateProfile": "cold",
     "bookingPressure": 0.98,
+    "topOrigins": [
+      {"location": "Porto Alegre/RS", "percent": 45},
+      {"location": "São Paulo/Capital", "percent": 32},
+      {"location": "Curitiba/PR", "percent": 12}
+    ],
     "insight": "Pico de demanda devido aos eventos de Natal.",
     "weather": {
       "daily": [
@@ -64,6 +79,11 @@
     "sentiment": 0.78,
     "climateProfile": "mild",
     "bookingPressure": 0.72,
+    "topOrigins": [
+      {"location": "São Paulo/Capital", "percent": 55},
+      {"location": "Campinas/SP", "percent": 22},
+      {"location": "Ribeirão Preto/SP", "percent": 15}
+    ],
     "insight": "Crescimento estável com foco em turismo termal.",
     "weather": {
       "daily": [
@@ -83,6 +103,11 @@
     "sentiment": 0.82,
     "climateProfile": "cold",
     "bookingPressure": 0.80,
+    "topOrigins": [
+      {"location": "São Paulo/Capital", "percent": 70},
+      {"location": "S. J. Campos/SP", "percent": 15},
+      {"location": "Taubaté/SP", "percent": 8}
+    ],
     "insight": "Aumento no interesse por ecoturismo e aventura.",
     "weather": {
       "daily": [
@@ -102,6 +127,11 @@
     "sentiment": 0.75,
     "climateProfile": "mild",
     "bookingPressure": 0.65,
+    "topOrigins": [
+      {"location": "Rio de Janeiro/RJ", "percent": 40},
+      {"location": "São Paulo/Capital", "percent": 35},
+      {"location": "Belo Horizonte/MG", "percent": 15}
+    ],
     "insight": "Destino emergente para turismo ferroviário.",
     "weather": {
       "daily": [
@@ -121,6 +151,11 @@
     "sentiment": 0.80,
     "climateProfile": "mild",
     "bookingPressure": 0.78,
+    "topOrigins": [
+      {"location": "São Paulo/Capital", "percent": 65},
+      {"location": "Campinas/SP", "percent": 20},
+      {"location": "Santos/SP", "percent": 8}
+    ],
     "insight": "Forte demanda por compras e turismo de lazer.",
     "weather": {
       "daily": [
@@ -140,6 +175,11 @@
     "sentiment": 0.76,
     "climateProfile": "mild",
     "bookingPressure": 0.70,
+    "topOrigins": [
+      {"location": "Rio de Janeiro/RJ", "percent": 50},
+      {"location": "São Paulo/Capital", "percent": 30},
+      {"location": "Belo Horizonte/MG", "percent": 12}
+    ],
     "insight": "Interesse crescente em bem-estar e águas minerais.",
     "weather": {
       "daily": [
@@ -159,6 +199,11 @@
     "sentiment": 0.88,
     "climateProfile": "cold",
     "bookingPressure": 0.85,
+    "topOrigins": [
+      {"location": "São Paulo/Capital", "percent": 75},
+      {"location": "Campinas/SP", "percent": 15},
+      {"location": "S. J. Campos/SP", "percent": 5}
+    ],
     "insight": "Destaque para hospedagens de charme e isolamento.",
     "weather": {
       "daily": [
@@ -178,6 +223,11 @@
     "sentiment": 0.84,
     "climateProfile": "cold",
     "bookingPressure": 0.82,
+    "topOrigins": [
+      {"location": "São Paulo/Capital", "percent": 72},
+      {"location": "S. J. Campos/SP", "percent": 12},
+      {"location": "Campinas/SP", "percent": 10}
+    ],
     "insight": "Alternativa tranquila a Campos do Jordão em alta.",
     "weather": {
       "daily": [
