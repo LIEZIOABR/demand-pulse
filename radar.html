@@ -61,8 +61,10 @@
         .forecast-day { text-align: center; flex: 1; }
         .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
         .forecast-cond { font-size: 0.55rem; color: var(--text-dim); display: block; }
-        .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; }
-        #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; }
+        .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; position: relative; }
+        .btn-copy { position: absolute; top: 20px; right: 20px; background: rgba(0, 163, 255, 0.2); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 5px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .btn-copy:hover { background: var(--accent-blue); color: white; }
+        #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; margin-top: 10px; }
         footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
         @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .header-nav { position: static; margin-bottom: 20px; width: 100%; } }
     </style>
@@ -108,6 +110,7 @@
             <div class="sidebar">
                 <div class="sidebar-card">
                     <span style="font-weight:700; display:block; margin-bottom:15px; color: var(--accent-blue);">BOLETIM ESTRATÉGICO ABR</span>
+                    <button class="btn-copy" onclick="copyBoletim()">Copiar Boletim</button>
                     <div id="boletim-texto">Carregando inteligência...</div>
                 </div>
             </div>
@@ -117,10 +120,26 @@
     <script>
         function logout() { if(confirm("Sair?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
         
+        function copyBoletim( ) {
+            const text = document.getElementById('boletim-texto').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.btn-copy');
+                const originalText = btn.innerText;
+                btn.innerText = "Copiado!";
+                btn.style.background = "var(--accent-green)";
+                btn.style.color = "black";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = "rgba(0, 163, 255, 0.2)";
+                    btn.style.color = "var(--accent-blue)";
+                }, 2000);
+            });
+        }
+
         let pulseData = {};
         let myChart = null;
 
-        async function loadData( ) {
+        async function loadData() {
             try {
                 const response = await fetch('pulse-data.json');
                 pulseData = await response.json();
@@ -135,7 +154,6 @@
             const chartData = { labels: manualDates, datasets: [] };
             const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
             
-            // CÁLCULO DE MARKET SHARE (ATUAL E ANTERIOR)
             let totalInterestNow = 0;
             let totalInterestPrev = 0;
             const selectedDests = [];
@@ -194,7 +212,6 @@
                     const proxVal = data.proximityTrigger || 0.6;
                     const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : "";
 
-                    // LÓGICA DE SETA DE SHARE NO CARD
                     const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100);
                     const sharePrev = ((data.timeline[data.timeline.length-2] / totalInterestPrev) * 100);
                     const shareTrend = shareNow > sharePrev ? {s:"▲", c:"#39ff14"} : (shareNow < sharePrev ? {s:"▼", c:"#ff3131"} : {s:"●", c:"#8b949e"});
