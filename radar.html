@@ -80,7 +80,8 @@
                 <button class="btn-nav btn-logout" onclick="logout( )">Sair do Sistema</button>
             </div>
             <img src="logo.png" alt="ABR" class="logo">
-            <h1>DEMAND PULSE — ABR ALL-IN-ONE BIG DATA & BUSINESS INTELLIGENCE</h1>
+            <h1>DEMAND PULSE — ABR ALL-IN-ONE</h1>
+            <h2 style="font-size: 1.1rem; font-weight: 600; color: var(--accent-blue); margin-bottom: 15px; letter-spacing: 2px;">BIG DATA & BUSINESS INTELLIGENCE</h2>
             <p class="subtitle">Análise Estratégica de Demanda e Inteligência de Mercado</p>
         </header>
         <div class="controls">
@@ -180,8 +181,10 @@
         // Matrix Background
         const canvas = document.getElementById('matrix-canvas');
         const ctxM = canvas.getContext('2d');
-        let w = canvas.width = window.innerWidth;
-        let h = canvas.height = window.innerHeight;
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
         const cols = w / 14;
         const drops = Array(Math.floor(cols)).fill(1);
         function draw() {
@@ -195,7 +198,14 @@
                 drops[i]++;
             });
         }
-        setInterval(draw, 50);
+        setInterval(draw, 80);
+        
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
     </script>
 </body>
 </html>
