@@ -145,11 +145,10 @@
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
             
-            // BUSCA AS DATAS REAIS DO PRIMEIRO DESTINO DISPONÍVEL
-            const firstDestId = Object.keys(pulseData)[0];
-            const realDates = pulseData[firstDestId] ? pulseData[firstDestId].dates : ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'];
+            // DATAS MANUAIS PARA EVITAR QUEBRA
+            const manualDates = ['01/11', '08/11', '15/11', '22/11', '29/11', '06/12', '13/12', '20/12'];
             
-            const chartData = { labels: realDates, datasets: [] };
+            const chartData = { labels: manualDates, datasets: [] };
             const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
             let boletim = "BOLETIM DEMAND PULSE\n\n";
 
