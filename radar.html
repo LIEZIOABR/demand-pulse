@@ -37,10 +37,11 @@
         .chart-container { height: 300px; width: 100%; }
         .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
         .comparison-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; position: relative; min-height: 420px; }
+        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; position: relative; min-height: 450px; }
         .atratividade-selo { position: absolute; top: 15px; right: 15px; font-size: 0.65rem; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
         .selo-alta { background: var(--accent-green); color: #000; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
         .selo-media { background: var(--accent-blue); color: #fff; }
+        .selo-urgente { background: #ff3131; color: #fff; box-shadow: 0 0 10px rgba(255, 49, 49, 0.4); }
         .dest-name { font-weight: 700; font-size: 1.1rem; }
         .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-top: 5px; display: inline-block; }
         .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; }
@@ -155,6 +156,12 @@
                         else { atrScore = 70; atrLabel = "Condição Ideal"; atrIcon = "☀️"; }
                     }
 
+                    // LÓGICA DE PRESSÃO DE RESERVA
+                    const pressVal = data.bookingPressure || 0.7;
+                    const pressLabel = pressVal > 0.9 ? "Pressão Crítica" : (pressVal > 0.8 ? "Pressão Alta" : "Pressão Normal");
+                    const pressIcon = pressVal > 0.9 ? "🚨" : "📈";
+                    const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente" style="top: 45px;">🚨 Janela Fechando</div>` : "";
+
                     const causa = data.persistence > 0.8 
                         ? "Forte base orgânica e fidelidade de busca." 
                         : "Demanda com alta sensibilidade sazonal e picos de interesse.";
@@ -164,11 +171,12 @@
                     container.innerHTML += `
                         <div class="card">
                             <div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>
+                            ${pressSelo}
                             <div class="card-header"><span class="dest-name">${data.name}</span>  
 <span class="status-badge ${status.c}">${status.l}</span></div>
                             <div class="metrics-row">
-                                <div class="metric-box"><span class="metric-label">Variação</span><span class="metric-value">${rc}%</span></div>
                                 <div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div>
+                                <div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div>
                             </div>
                             <div class="insight-box">💡 ${data.insight}</div>
                             <div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div>
@@ -186,6 +194,7 @@
                     boletim += `📍 ${data.name.toUpperCase()}\n`;
                     boletim += `• Status: ${status.l} (${rc}% var)\n`;
                     boletim += `• Sentimento: ${sentStatus.l} (${sentDesc})\n`;
+                    boletim += `• Pressão de Reserva: ${(pressVal*100).toFixed(0)}% (${pressLabel})\n`;
                     boletim += `• Atratividade Climática: ${atrScore}% (Gatilho de conversão ativado)\n`;
                     boletim += `• Causa: ${causa}\n`;
                     boletim += `• Projeção: ${projecao}\n\n`;
