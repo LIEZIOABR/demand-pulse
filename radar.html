@@ -98,8 +98,8 @@
             <div class="comparison-section" id="cards-container"></div>
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <span style="font-weight:700; display:block; margin-bottom:15px;">Boletim ABR ALL-IN-ONE</span>
-                    <div id="boletim-texto">Carregando...</div>
+                    <span style="font-weight:700; display:block; margin-bottom:15px; color: var(--accent-blue);">BOLETIM ESTRATÉGICO ABR</span>
+                    <div id="boletim-texto">Carregando inteligência...</div>
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
             const manualDates = ['01/11', '08/11', '15/11', '22/11', '29/11', '06/12', '13/12', '20/12'];
             const chartData = { labels: manualDates, datasets: [] };
             const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
-            let boletim = "BOLETIM DEMAND PULSE\n\n";
+            let boletim = "ANÁLISE SEMANAL DE MERCADO\n\n";
 
             for (let i = 1; i <= 4; i++) {
                 const id = document.getElementById(`dest-${i}`).value;
@@ -133,6 +133,11 @@
                 if (data) {
                     const rc = (data.recentChange * 100).toFixed(1);
                     const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'});
+                    
+                    // LÓGICA DE INTELIGÊNCIA DO BOLETIM
+                    const causa = data.persistence > 0.8 ? "Forte base orgânica e fidelidade de busca." : "Oscilação sazonal com dependência de eventos.";
+                    const projecao = data.recentChange > 0.2 ? "Tendência de aceleração máxima para os próximos 15 dias." : "Expectativa de estabilidade com viés de alta.";
+
                     container.innerHTML += `
                         <div class="card">
                             <div class="card-header"><span class="dest-name">${data.name}</span><span class="status-badge ${status.c}">${status.l}</span></div>
@@ -143,6 +148,7 @@
                             <div class="insight-box">💡 ${data.insight}</div>
                             <div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div>
                         </div>`;
+                    
                     chartData.datasets.push({ 
                         label: data.name, 
                         data: data.timeline, 
@@ -151,7 +157,11 @@
                         tension: 0.1,
                         fill: true 
                     });
-                    boletim += `• ${data.name}: ${status.l} (${rc}% var)\n`;
+
+                    boletim += `📍 ${data.name.toUpperCase()}\n`;
+                    boletim += `• Status: ${status.l} (${rc}% var)\n`;
+                    boletim += `• Causa: ${causa}\n`;
+                    boletim += `• Projeção: ${projecao}\n\n`;
                 }
             }
             document.getElementById('boletim-texto').innerText = boletim;
@@ -192,7 +202,6 @@
             if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
         }
 
-        // CARREGA OS DADOS AUTOMATICAMENTE AO ABRIR
         window.onload = loadData;
     </script>
 </body>
