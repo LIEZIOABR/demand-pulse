@@ -6,6 +6,7 @@
     "persistence": 0.78,
     "sentiment": 0.85,
     "climateProfile": "cold",
+    "bookingPressure": 0.88,
     "insight": "Alta procura por experiências de inverno e gastronomia.",
     "weather": {
       "daily": [
@@ -24,6 +25,7 @@
     "persistence": 0.88,
     "sentiment": 0.92,
     "climateProfile": "cold",
+    "bookingPressure": 0.94,
     "insight": "Liderança absoluta em buscas no estado de SP.",
     "weather": {
       "daily": [
@@ -42,6 +44,7 @@
     "persistence": 0.92,
     "sentiment": 0.95,
     "climateProfile": "cold",
+    "bookingPressure": 0.98,
     "insight": "Pico de demanda devido aos eventos de Natal.",
     "weather": {
       "daily": [
@@ -60,6 +63,7 @@
     "persistence": 0.75,
     "sentiment": 0.78,
     "climateProfile": "mild",
+    "bookingPressure": 0.72,
     "insight": "Crescimento estável com foco em turismo termal.",
     "weather": {
       "daily": [
@@ -78,6 +82,7 @@
     "persistence": 0.70,
     "sentiment": 0.82,
     "climateProfile": "cold",
+    "bookingPressure": 0.80,
     "insight": "Aumento no interesse por ecoturismo e aventura.",
     "weather": {
       "daily": [
@@ -96,6 +101,7 @@
     "persistence": 0.65,
     "sentiment": 0.75,
     "climateProfile": "mild",
+    "bookingPressure": 0.65,
     "insight": "Destino emergente para turismo ferroviário.",
     "weather": {
       "daily": [
@@ -114,6 +120,7 @@
     "persistence": 0.80,
     "sentiment": 0.80,
     "climateProfile": "mild",
+    "bookingPressure": 0.78,
     "insight": "Forte demanda por compras e turismo de lazer.",
     "weather": {
       "daily": [
@@ -132,6 +139,7 @@
     "persistence": 0.72,
     "sentiment": 0.76,
     "climateProfile": "mild",
+    "bookingPressure": 0.70,
     "insight": "Interesse crescente em bem-estar e águas minerais.",
     "weather": {
       "daily": [
@@ -150,6 +158,7 @@
     "persistence": 0.68,
     "sentiment": 0.88,
     "climateProfile": "cold",
+    "bookingPressure": 0.85,
     "insight": "Destaque para hospedagens de charme e isolamento.",
     "weather": {
       "daily": [
@@ -168,6 +177,7 @@
     "persistence": 0.70,
     "sentiment": 0.84,
     "climateProfile": "cold",
+    "bookingPressure": 0.82,
     "insight": "Alternativa tranquila a Campos do Jordão em alta.",
     "weather": {
       "daily": [
