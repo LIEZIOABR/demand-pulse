@@ -62,8 +62,8 @@
         .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
         .forecast-cond { font-size: 0.55rem; color: var(--text-dim); display: block; }
         .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; position: relative; }
-        .btn-copy { position: absolute; top: 20px; right: 20px; background: rgba(0, 163, 255, 0.2); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 5px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .btn-copy:hover { background: var(--accent-blue); color: white; }
+        .btn-copy { position: absolute; top: 18px; right: 15px; background: rgba(0, 163, 255, 0.15); border: 1px solid rgba(0, 163, 255, 0.4); color: var(--accent-blue); padding: 4px 10px; border-radius: 6px; font-size: 0.55rem; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .btn-copy:hover { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
         #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; margin-top: 10px; }
         footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
         @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .header-nav { position: static; margin-bottom: 20px; width: 100%; } }
@@ -109,7 +109,7 @@
             <div class="comparison-section" id="cards-container"></div>
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <span style="font-weight:700; display:block; margin-bottom:15px; color: var(--accent-blue);">BOLETIM ESTRATÉGICO ABR</span>
+                    <span style="font-weight:700; display:block; margin-bottom:15px; color: var(--accent-blue); padding-right: 100px;">BOLETIM ESTRATÉGICO ABR</span>
                     <button class="btn-copy" onclick="copyBoletim()">Copiar Boletim</button>
                     <div id="boletim-texto">Carregando inteligência...</div>
                 </div>
@@ -130,7 +130,7 @@
                 btn.style.color = "black";
                 setTimeout(() => {
                     btn.innerText = originalText;
-                    btn.style.background = "rgba(0, 163, 255, 0.2)";
+                    btn.style.background = "rgba(0, 163, 255, 0.15)";
                     btn.style.color = "var(--accent-blue)";
                 }, 2000);
             });
