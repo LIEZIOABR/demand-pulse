@@ -3,58 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABR MARKETING ESTRATÉGICO ALL-IN-ONE — HUB</title>
+    <title>ABR Marketing Estratégico — HUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --matrix-green: #00ff41; --matrix-dark: #0d0208; --card-bg: rgba(13, 18, 23, 0.9 ); --accent-blue: #00a3ff; --text-main: #e6edf3; --text-dim: #8b949e; }
+        :root {
+            --matrix-green: #00ff41;
+            --matrix-dark: #0d0208;
+            --card-bg: rgba(13, 18, 23, 0.9 );
+            --accent-blue: #00a3ff;
+            --text-main: #e6edf3;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
-        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
-        .container { max-width: 1000px; width: 90%; text-align: center; z-index: 1; }
-        header { margin-bottom: 50px; }
-        .logo { max-width: 240px; width: 100%; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(0, 163, 255, 0.5)); }
-        h1 { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-main); }
-        .subtitle { color: var(--matrix-green); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
-        .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 100%; }
-        .hub-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 40px; text-decoration: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
-        .hub-card:hover { transform: translateY(-10px); border-color: var(--accent-blue); box-shadow: 0 20px 40px rgba(0, 163, 255, 0.2); }
-        .card-icon { font-size: 3rem; margin-bottom: 20px; }
-        .card-title { color: var(--text-main); font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-        .card-desc { color: var(--text-dim); font-size: 0.8rem; line-height: 1.5; }
-        .status-badge { position: absolute; top: 15px; right: 15px; font-size: 0.6rem; padding: 4px 10px; border-radius: 20px; background: rgba(0, 255, 65, 0.1); color: var(--matrix-green); border: 1px solid var(--matrix-green); font-weight: 700; }
+        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+        
+        .logo { max-width: 280px; width: 100%; height: auto; margin-bottom: 40px; filter: drop-shadow(0 0 20px rgba(0, 163, 255, 0.3)); }
+
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { color: var(--matrix-green); font-size: 1.1rem; margin-bottom: 50px; font-weight: 600; letter-spacing: 1px; }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
+
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(0, 163, 255, 0.2); 
+            border-radius: 24px; 
+            padding: 40px; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            text-decoration: none; 
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover { transform: translateY(-10px); border-color: var(--accent-blue); box-shadow: 0 15px 40px rgba(0, 163, 255, 0.2); }
+        .card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); transition: 0.5s; }
+        .card:hover::before { left: 100%; }
+
+        .card-icon { font-size: 3rem; margin-bottom: 10px; }
+        .card-title { font-size: 1.4rem; font-weight: 700; color: var(--accent-blue); }
+        .card-desc { font-size: 0.9rem; color: #8b949e; line-height: 1.5; }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #25d366;
+            color: white;
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            margin-top: 20px;
+        }
+        .whatsapp-btn:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4); }
+
+        footer { margin-top: 80px; color: #8b949e; font-size: 0.8rem; letter-spacing: 1px; }
+
+        /* RESPONSIVIDADE MOBILE */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.5rem; }
+            .grid-cards { grid-template-columns: 1fr; }
+            .card { padding: 30px; }
+        }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <canvas id="matrix-canvas"></canvas>
+    
     <div class="container">
-        <header>
-            <img src="logo.png" alt="ABR" class="logo">
-            <h1>Estratégia All-in-One</h1>
-            <div class="subtitle">Sistemas de Inteligência Hoteleira</div>
-        </header>
-        <div class="hub-grid">
-            <a href="login-destino.html" class="hub-card">
-                <div class="status-badge">ATIVO</div>
-                <div class="card-icon">📡</div>
-                <div class="card-title">Radar de Destino</div>
-                <div class="card-desc">Análise de demanda e tendências do Google Trends em tempo real.</div>
-            </a>
-            <div class="hub-card" style="opacity: 0.5; cursor: not-allowed;">
-                <div class="status-badge" style="color: #888; border-color: #888;">EM BREVE</div>
+        <img src="logo.png" alt="ABR Marketing" class="logo">
+        <h1>ABR ALL-IN-ONE</h1>
+        <p class="subtitle">BIG DATA & BUSINESS INTELLIGENCE</p>
+
+        <div class="grid-cards">
+            <a href="destino.html" class="card">
                 <div class="card-icon">📊</div>
+                <div class="card-title">Radar de Destino</div>
+                <p class="card-desc">Inteligência de mercado e tendências de demanda para destinos turísticos.</p>
+            </a>
+
+            <a href="#" class="card" style="opacity: 0.6; cursor: not-allowed;">
+                <div class="card-icon">🗺️</div>
                 <div class="card-title">Radar do Estado</div>
-                <div class="card-desc">Monitoramento macroeconômico e performance regional.</div>
-            </div>
-            <div class="hub-card" style="opacity: 0.5; cursor: not-allowed;">
-                <div class="status-badge" style="color: #888; border-color: #888;">EM BREVE</div>
+                <p class="card-desc">Análise macroeconômica e fluxos turísticos em nível estadual. (Em breve)</p>
+            </a>
+
+            <a href="#" class="card" style="opacity: 0.6; cursor: not-allowed;">
                 <div class="card-icon">🏨</div>
                 <div class="card-title">Radar do Hotel</div>
-                <div class="card-desc">Inteligência competitiva e paridade tarifária direta.</div>
-            </div>
+                <p class="card-desc">BI focado em performance hoteleira e benchmarking competitivo. (Em breve)</p>
+            </a>
         </div>
+
+        <a href="https://wa.me/5535998270101" class="whatsapp-btn" target="_blank">
+            <span>Falar com Consultor Especialista</span>
+        </a>
+
+        <footer>© 2026 ABR MARKETING ESTRATÉGICO — SISTEMA BLINDADO</footer>
     </div>
+
     <script>
-        const canvas = document.getElementById('matrix-canvas');
+        const canvas = document.getElementById('matrix-canvas' );
         const ctx = canvas.getContext('2d');
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
@@ -62,6 +122,7 @@
         const fontSize = 14;
         const columns = width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
+
         function drawMatrix() {
             ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
             ctx.fillRect(0, 0, width, height);
@@ -74,7 +135,20 @@
                 drops[i]++;
             }
         }
-        setInterval(drawMatrix, 50);
+        setInterval(drawMatrix, 80);
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // BLINDAGEM DE SEGURANÇA
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
     </script>
 </body>
 </html>
