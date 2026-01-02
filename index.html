@@ -32,7 +32,7 @@
         .logo-section { margin-bottom: 30px; animation: fadeIn 1.5s ease-out; }
         .logo-section img { max-width: 260px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); pointer-events: none; }
 
-        .hero-title { font-size: 2.4rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
+        .hero-title { font-size: 2.1rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; transition: 0.3s; }
         .hero-subtitle { color: var(--accent); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
         .hero-tagline { font-size: 1.15rem; color: var(--text-main); font-weight: 500; font-style: italic; margin-bottom: 50px; opacity: 0.9; border-bottom: 1px solid rgba(0, 198, 255, 0.2); display: inline-block; padding-bottom: 10px; }
 
@@ -55,16 +55,26 @@
         }
 
         .card.active:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2); }
-        .card.disabled { opacity: 0.85; border-color: rgba(255,255,255,0.05); cursor: not-allowed; }
+        
+        .card.disabled { 
+            opacity: 0.85; 
+            border: 1px solid rgba(0, 198, 255, 0.3); 
+            cursor: not-allowed;
+            animation: borderPulse 3s infinite;
+        }
+
+        @keyframes borderPulse {
+            0% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
+            50% { border-color: rgba(0, 198, 255, 0.4); box-shadow: 0 0 15px rgba(0, 198, 255, 0.15); }
+            100% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
+        }
 
         .card-icon-svg { width: 65px; height: 65px; margin-bottom: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
         
         .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
         .card-status { font-size: 0.75rem; font-weight: 800; padding: 8px 16px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
         .status-online { background: rgba(0, 198, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); }
-        .status-homolog { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); border: 1px solid var(--panel-border); animation: pulse 2s infinite; }
-
-        @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+        .status-homolog { background: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid var(--panel-border); }
 
         .btn-access { 
             margin-top: 25px;
@@ -81,7 +91,7 @@
 
         .kpi-section { margin-top: 80px; text-align: left; background: rgba(255,255,255,0.02); padding: 50px; border-radius: 30px; border: 1px solid var(--panel-border); }
         .section-label { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; display: block; text-align: center; }
-        .section-creds { color: #ffffff; font-size: 0.95rem; font-weight: 500; text-align: center; display: block; margin-bottom: 45px; opacity: 0.95; }
+        .section-creds { color: #ffffff; font-size: 0.95rem; font-weight: 500; text-align: center; display: block; margin-bottom: 45px; opacity: 1; }
         
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .kpi-group-title { color: var(--text-main); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 12px; }
