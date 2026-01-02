@@ -235,6 +235,9 @@
                     const stayVal = data.stayIntent || 0.7;
                     const stayPerc = (stayVal * 100).toFixed(0);
                     const dayPerc = (100 - stayPerc);
+                    
+                    // Confiança Dinâmica
+                    const confVal = (data.confidence || 0.8) * 100;
 
                     const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100);
                     const sharePrev = ((data.timeline[data.timeline.length-2] / totalInterestPrev) * 100);
@@ -275,7 +278,7 @@
                             </div>
                             <div class="stay-box">
                                 <div class="stay-header">
-                                    <span class="stay-label">Intenção de Estadia <span class="stay-info-icon" title="Métrica baseada em padrões de busca composta. Grau de confiança estatística: 80%.">ⓘ</span></span>
+                                    <span class="stay-label">Intenção de Estadia <span class="stay-info-icon" title="Métrica baseada em padrões de busca composta. Grau de confiança estatística: ${confVal.toFixed(0)}%.">ⓘ</span></span>
                                 </div>
                                 <div class="stay-bar-bg">
                                     <div class="stay-bar-fill" style="width: ${stayPerc}%"></div>
@@ -306,6 +309,7 @@
                     boletim += `• Velocidade Viral: ${(buzzVal*100).toFixed(0)}% (Engajamento Social)\n`;
                     boletim += `• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n`;
                     boletim += `• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n`;
+                    boletim += `• Confiança Estatística: ${confVal.toFixed(0)}% (Baseada em volume de dados)\n`;
                     boletim += `• Atratividade Climática: ${atrScore}% (Gatilho de conversão ativado)\n`;
                     boletim += `• Top 3 Origens de Demanda:\n`;
                     if(data.topOrigins) {
