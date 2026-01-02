@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABR — Central de Inteligência Estratégica</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --accent: #00c6ff;
@@ -21,7 +21,7 @@
             color: var(--text-main); 
             overflow-x: hidden; 
             min-height: 100vh;
-            user-select: none; /* Blindagem: Impede seleção de texto */
+            user-select: none;
             -webkit-user-select: none;
         }
 
@@ -32,9 +32,9 @@
         .logo-section { margin-bottom: 30px; animation: fadeIn 1.5s ease-out; }
         .logo-section img { max-width: 260px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); pointer-events: none; }
 
-        .hero-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
-        .hero-subtitle { color: var(--accent); font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 15px; }
-        .hero-tagline { font-size: 0.95rem; color: var(--text-dim); font-style: italic; margin-bottom: 40px; opacity: 0.8; }
+        .hero-title { font-size: 2.4rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
+        .hero-subtitle { color: var(--accent); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
+        .hero-tagline { font-size: 1.15rem; color: var(--text-main); font-weight: 500; font-style: italic; margin-bottom: 50px; opacity: 0.9; border-bottom: 1px solid rgba(0, 198, 255, 0.2); display: inline-block; padding-bottom: 10px; }
 
         .systems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 60px; }
 
@@ -55,16 +55,16 @@
         }
 
         .card.active:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2); }
-        .card.disabled { opacity: 0.75; filter: grayscale(0.8); cursor: not-allowed; }
+        .card.disabled { opacity: 0.85; border-color: rgba(255,255,255,0.05); cursor: not-allowed; }
 
-        .card-icon-svg { width: 60px; height: 60px; margin-bottom: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .card-icon-svg { width: 65px; height: 65px; margin-bottom: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
         
         .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
-        .card-status { font-size: 0.7rem; font-weight: 800; padding: 6px 14px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
+        .card-status { font-size: 0.75rem; font-weight: 800; padding: 8px 16px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
         .status-online { background: rgba(0, 198, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); }
         .status-homolog { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); border: 1px solid var(--panel-border); animation: pulse 2s infinite; }
 
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
 
         .btn-access { 
             margin-top: 25px;
@@ -80,7 +80,8 @@
         }
 
         .kpi-section { margin-top: 80px; text-align: left; background: rgba(255,255,255,0.02); padding: 50px; border-radius: 30px; border: 1px solid var(--panel-border); }
-        .section-label { color: var(--accent); font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; display: block; text-align: center; }
+        .section-label { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; display: block; text-align: center; }
+        .section-creds { color: #ffffff; font-size: 0.95rem; font-weight: 500; text-align: center; display: block; margin-bottom: 45px; opacity: 0.95; }
         
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .kpi-group-title { color: var(--text-main); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 12px; }
@@ -88,9 +89,9 @@
         .kpi-name { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; }
         .kpi-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
 
-        footer { margin-top: 80px; padding-bottom: 40px; opacity: 0.6; font-size: 0.8rem; }
-        .footer-line { margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .footer-line svg { width: 14px; height: 14px; stroke: var(--accent); fill: none; }
+        footer { margin-top: 80px; padding-bottom: 40px; opacity: 0.7; font-size: 0.85rem; }
+        .footer-line { margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .footer-line svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; }
 
         .whatsapp-btn {
             position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%;
@@ -153,14 +154,14 @@
             </div>
 
             <div class="card disabled">
-                <svg class="card-icon-svg" style="stroke: var(--text-dim);" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><path d="M9 7h.01"/><path d="M9 11h.01"/><path d="M15 7h.01"/><path d="M15 11h.01"/></svg>
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><circle cx="9" cy="7" r="1"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="15" cy="11" r="1"/></svg>
                 <div class="card-title">Hotéis & Pousadas</div>
                 <p class="kpi-desc" style="text-align: center;">Monitoramento de performance e benchmarking para meios de hospedagem.</p>
                 <div class="card-status status-homolog">Sistema em Homologação</div>
             </div>
 
             <div class="card disabled">
-                <svg class="card-icon-svg" style="stroke: var(--text-dim);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                 <div class="card-title">Radar de Estados</div>
                 <p class="kpi-desc" style="text-align: center;">Visão macroeconômica e fluxo migratório de turistas por estado.</p>
                 <div class="card-status status-homolog">Sistema em Homologação</div>
@@ -169,6 +170,8 @@
 
         <div class="kpi-section">
             <span class="section-label">Dicionário de Inteligência (KPIs)</span>
+            <span class="section-creds">Dados reais coletados em milhões de pesquisas através do Google e seus associados.</span>
+            
             <div class="kpi-grid">
                 <div>
                     <div class="kpi-group-title">Análise de Demanda</div>
