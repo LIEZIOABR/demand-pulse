@@ -18,82 +18,92 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg); color: var(--text-main); overflow-x: hidden; min-height: 100vh; }
 
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.25; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
 
-        .logo-section { margin-bottom: 40px; animation: fadeIn 1.5s ease-out; }
-        .logo-section img { max-width: 280px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); }
+        .logo-section { margin-bottom: 30px; animation: fadeIn 1.5s ease-out; }
+        .logo-section img { max-width: 260px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); }
 
-        .hero-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; }
-        .hero-subtitle { color: var(--accent); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; }
+        .hero-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
+        .hero-subtitle { color: var(--accent); font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 40px; }
 
-        .systems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 60px; }
+        .systems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 60px; }
 
         .card { 
             background: var(--panel); 
             backdrop-filter: blur(15px); 
             border: 1px solid var(--panel-border); 
-            border-radius: 20px; 
-            padding: 35px; 
+            border-radius: 24px; 
+            padding: 40px; 
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
             color: inherit;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card.active:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 15px 30px rgba(0, 198, 255, 0.15); }
-        .card.disabled { opacity: 0.6; cursor: not-allowed; filter: grayscale(0.5); }
+        .card.active:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2); }
+        .card.disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .card-icon { font-size: 3rem; margin-bottom: 20px; }
-        .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
-        .card-status { font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; }
-        .status-online { background: rgba(0, 255, 65, 0.15); color: #00ff41; border: 1px solid #00ff41; }
-        .status-homolog { background: rgba(255, 171, 0, 0.15); color: #ffab00; border: 1px solid #ffab00; }
+        .card-icon-svg { width: 60px; height: 60px; margin-bottom: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+        .card-status { font-size: 0.7rem; font-weight: 800; padding: 6px 14px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
+        .status-online { background: rgba(0, 198, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .status-homolog { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); border: 1px solid var(--panel-border); }
 
         .btn-access { 
-            margin-top: 20px;
+            margin-top: 25px;
             background: var(--accent); 
             color: #000; 
-            padding: 12px 30px; 
-            border-radius: 10px; 
-            font-weight: 700; 
+            padding: 14px 35px; 
+            border-radius: 12px; 
+            font-weight: 800; 
             text-transform: uppercase;
+            font-size: 0.9rem;
             transition: 0.3s;
         }
 
-        .kpi-section { margin-top: 80px; text-align: left; }
-        .section-label { color: var(--accent); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: block; text-align: center; }
+        .kpi-section { margin-top: 80px; text-align: left; background: rgba(255,255,255,0.02); padding: 50px; border-radius: 30px; border: 1px solid var(--panel-border); }
+        .section-label { color: var(--accent); font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; display: block; text-align: center; }
         
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .kpi-item { background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); padding: 20px; border-radius: 15px; }
-        .kpi-name { color: var(--accent); font-weight: 700; font-size: 1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .kpi-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .kpi-group-title { color: var(--text-main); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 12px; }
+        .kpi-item { margin-bottom: 20px; }
+        .kpi-name { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; }
+        .kpi-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
 
         .whatsapp-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #25d366;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
-            z-index: 100;
+            position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.3s; z-index: 1000;
         }
-        .whatsapp-btn:hover { transform: scale(1.1); }
-        .whatsapp-btn svg { width: 35px; height: 35px; fill: white; }
+        .whatsapp-btn:hover { transform: scale(1.1) rotate(10deg); }
+        .whatsapp-btn svg { width: 32px; height: 32px; fill: white; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Overlay de Senha */
+        #password-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .pass-input {
+            background: #111; border: 1px solid var(--accent); color: white; padding: 15px 25px;
+            border-radius: 10px; font-size: 1.2rem; text-align: center; outline: none; margin-bottom: 20px;
+        }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
+    <div id="password-overlay">
+        <img src="logo.png" style="max-width: 200px; margin-bottom: 40px;">
+        <input type="password" id="pass" class="pass-input" placeholder="INSIRA A CHAVE DE ACESSO" autofocus>
+        <p style="color: var(--accent); font-size: 0.7rem; letter-spacing: 2px;">SISTEMA RESTRITO — ABR CONSULTORIA</p>
+    </div>
+
     <canvas id="matrix-canvas"></canvas>
 
     <div class="container">
@@ -107,56 +117,80 @@
         <div class="systems-grid">
             <!-- DEMAND PULSE ATIVO -->
             <a href="radar.html" class="card active">
-                <div class="card-icon">📡</div>
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 18c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z"/><path d="M12 14c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
                 <div class="card-title">Demand Pulse</div>
-                <p class="kpi-desc">Análise estratégica de demanda e tendências para destinos turísticos.</p>
+                <p class="kpi-desc" style="text-align: center;">Análise estratégica de demanda e tendências para destinos turísticos.</p>
                 <div class="card-status status-online">Sistema Ativo</div>
                 <div class="btn-access">Acessar Radar</div>
             </a>
 
             <!-- HOTÉIS EM HOMOLOGAÇÃO -->
             <div class="card disabled">
-                <div class="card-icon">🏨</div>
+                <svg class="card-icon-svg" style="stroke: var(--text-dim);" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><path d="M9 7h.01"/><path d="M9 11h.01"/><path d="M15 7h.01"/><path d="M15 11h.01"/></svg>
                 <div class="card-title">Hotéis & Pousadas</div>
-                <p class="kpi-desc">Monitoramento de performance e benchmarking para meios de hospedagem.</p>
+                <p class="kpi-desc" style="text-align: center;">Monitoramento de performance e benchmarking para meios de hospedagem.</p>
                 <div class="card-status status-homolog">Em Homologação</div>
             </div>
 
             <!-- ESTADOS EM HOMOLOGAÇÃO -->
             <div class="card disabled">
-                <div class="card-icon">🗺️</div>
+                <svg class="card-icon-svg" style="stroke: var(--text-dim);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                 <div class="card-title">Radar de Estados</div>
-                <p class="kpi-desc">Visão macroeconômica e fluxo migratório de turistas por estado.</p>
+                <p class="kpi-desc" style="text-align: center;">Visão macroeconômica e fluxo migratório de turistas por estado.</p>
                 <div class="card-status status-homolog">Em Homologação</div>
             </div>
         </div>
 
         <div class="kpi-section">
             <span class="section-label">Dicionário de Inteligência (KPIs)</span>
+            
             <div class="kpi-grid">
-                <div class="kpi-item">
-                    <div class="kpi-name">📊 Market Share</div>
-                    <div class="kpi-desc">Dominância relativa de buscas de um destino comparado aos seus concorrentes diretos.</div>
+                <div>
+                    <div class="kpi-group-title">Análise de Demanda</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Market Share & Dominância</div>
+                        <div class="kpi-desc">Proporção de buscas de um destino em relação aos seus concorrentes. Indica a liderança de mercado.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Pressão de Reserva</div>
+                        <div class="kpi-desc">Mede a urgência e a densidade de buscas por datas específicas, indicando lotação iminente.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Social Buzz & Velocidade Viral</div>
+                        <div class="kpi-desc">Detecta aceleração explosiva de interesse gerada por redes sociais e influenciadores digitais.</div>
+                    </div>
                 </div>
-                <div class="kpi-item">
-                    <div class="kpi-name">🌡️ Elasticidade Climática</div>
-                    <div class="kpi-desc">Mede o impacto real da previsão do tempo na intenção de reserva e cancelamento.</div>
+
+                <div>
+                    <div class="kpi-group-title">Gatilhos Táticos</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Atratividade Máxima & Condição Ideal</div>
+                        <div class="kpi-desc">Status ativado quando clima, feriados e interesse social convergem para o cenário perfeito de vendas.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Janela Fechando & Gatilho 48h</div>
+                        <div class="kpi-desc">Alertas de urgência para campanhas de última hora (Last-Minute) baseados no comportamento de busca.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Humor do Mercado & Sentimento</div>
+                        <div class="kpi-desc">Análise qualitativa que define se o interesse do público é positivo, neutro ou de retração.</div>
+                    </div>
                 </div>
-                <div class="kpi-item">
-                    <div class="kpi-name">🚀 Velocidade Viral</div>
-                    <div class="kpi-desc">Detecta aceleração súbita de interesse gerada por redes sociais e influenciadores.</div>
-                </div>
-                <div class="kpi-item">
-                    <div class="kpi-name">🏨 Intenção de Estadia</div>
-                    <div class="kpi-desc">Diferencia o perfil de público entre visitantes de um dia (Day-Trip) e pernoite.</div>
-                </div>
-                <div class="kpi-item">
-                    <div class="kpi-name">📍 Origem Dominante</div>
-                    <div class="kpi-desc">Identifica os principais polos emissores de turistas para o destino em tempo real.</div>
-                </div>
-                <div class="kpi-item">
-                    <div class="kpi-name">⚖️ Grau de Confiança</div>
-                    <div class="kpi-desc">Índice de precisão estatística baseado no volume de massa crítica de dados processada.</div>
+
+                <div>
+                    <div class="kpi-group-title">Perfil & Clima</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Elasticidade Climática (IEC)</div>
+                        <div class="kpi-desc">Algoritmo que prevê o impacto da variação meteorológica na conversão real de reservas.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Intenção de Estadia (Pernoite vs Day-Trip)</div>
+                        <div class="kpi-desc">Diferencia através de emojis e barras o perfil de público que pretende dormir no destino ou apenas visitá-lo.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Grau de Confiança Estatística</div>
+                        <div class="kpi-desc">Transparência sobre a precisão dos dados baseada no volume de massa crítica processada.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,7 +201,25 @@
     </a>
 
     <script>
-        const canvas = document.getElementById('matrix-canvas' );
+        // Sistema de Senhas
+        const passInput = document.getElementById('pass' );
+        const overlay = document.getElementById('password-overlay');
+        const S1 = "abr2026";
+        const S2 = "ABR2026";
+
+        passInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (this.value === S1 || this.value === S2) {
+                    overlay.style.display = 'none';
+                } else {
+                    alert('ACESSO NEGADO');
+                    this.value = '';
+                }
+            }
+        });
+
+        // Matrix Effect (90ms)
+        const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
@@ -177,7 +229,7 @@
         function matrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = '#00c6ff';
+            ctx.fillStyle = 'rgba(0, 198, 255, 0.4)';
             ctx.font = '15pt monospace';
             ypos.forEach((y, ind) => {
                 const text = String.fromCharCode(Math.random() * 128);
@@ -187,7 +239,15 @@
                 else ypos[ind] = y + 20;
             });
         }
-        setInterval(matrix, 50);
+        setInterval(matrix, 90);
+
+        // Proteção de Código
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
     </script>
 </body>
 </html>
