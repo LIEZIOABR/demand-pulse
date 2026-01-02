@@ -10,6 +10,7 @@
     "proximityTrigger": 0.92,
     "socialBuzz": 0.85,
     "audienceProfile": 0.75,
+    "stayIntent": 0.82,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 62},
       {"location": "Campinas/SP", "percent": 18},
@@ -37,6 +38,7 @@
     "proximityTrigger": 0.88,
     "socialBuzz": 0.92,
     "audienceProfile": 0.85,
+    "stayIntent": 0.88,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 68},
       {"location": "Campinas/SP", "percent": 15},
@@ -63,6 +65,7 @@
     "bookingPressure": 0.98,
     "proximityTrigger": 0.95,
     "socialBuzz": 0.98,
+    "stayIntent": 0.95,
     "audienceProfile": 0.80,
     "topOrigins": [
       {"location": "Porto Alegre/RS", "percent": 45},
@@ -90,6 +93,7 @@
     "bookingPressure": 0.75,
     "proximityTrigger": 0.70,
     "socialBuzz": 0.65,
+    "stayIntent": 0.78,
     "audienceProfile": 0.90,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 40},
@@ -117,6 +121,7 @@
     "bookingPressure": 0.80,
     "proximityTrigger": 0.85,
     "socialBuzz": 0.78,
+    "stayIntent": 0.65,
     "audienceProfile": 0.40,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 65},
@@ -144,6 +149,7 @@
     "bookingPressure": 0.65,
     "proximityTrigger": 0.60,
     "socialBuzz": 0.55,
+    "stayIntent": 0.60,
     "audienceProfile": 0.85,
     "topOrigins": [
       {"location": "Rio de Janeiro/RJ", "percent": 50},
@@ -171,6 +177,7 @@
     "bookingPressure": 0.78,
     "proximityTrigger": 0.82,
     "socialBuzz": 0.70,
+    "stayIntent": 0.55,
     "audienceProfile": 0.88,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 55},
@@ -198,6 +205,7 @@
     "bookingPressure": 0.70,
     "proximityTrigger": 0.65,
     "socialBuzz": 0.60,
+    "stayIntent": 0.85,
     "audienceProfile": 0.92,
     "topOrigins": [
       {"location": "Rio de Janeiro/RJ", "percent": 45},
@@ -225,6 +233,7 @@
     "bookingPressure": 0.85,
     "proximityTrigger": 0.90,
     "socialBuzz": 0.82,
+    "stayIntent": 0.70,
     "audienceProfile": 0.35,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 75},
@@ -252,6 +261,7 @@
     "bookingPressure": 0.82,
     "proximityTrigger": 0.84,
     "socialBuzz": 0.75,
+    "stayIntent": 0.68,
     "audienceProfile": 0.45,
     "topOrigins": [
       {"location": "São Paulo/Capital", "percent": 72},
