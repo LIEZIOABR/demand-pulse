@@ -25,9 +25,30 @@
             -webkit-user-select: none;
         }
 
+        /* Ticker Style */
+        .ticker-wrap {
+            position: fixed; top: 0; left: 0; width: 100%; height: 32px;
+            background: rgba(0, 198, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 198, 255, 0.2);
+            z-index: 2000;
+            overflow: hidden;
+            display: flex; align-items: center;
+        }
+        .ticker {
+            display: inline-block; white-space: nowrap; padding-right: 100%;
+            animation: ticker 60s linear infinite;
+            color: var(--accent); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .ticker span { margin-right: 50px; opacity: 0.8; }
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.25; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px 40px; text-align: center; }
 
         .logo-section { margin-bottom: 30px; animation: fadeIn 1.5s ease-out; }
         .logo-section img { max-width: 260px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); pointer-events: none; }
@@ -143,6 +164,14 @@
     </style>
 </head>
 <body oncontextmenu="return false;" ondragstart="return false;">
+    <div class="ticker-wrap">
+        <div class="ticker" id="live-ticker">
+            <span>CARREGANDO INTELIGÊNCIA DE MERCADO...</span>
+            <span>ABR MARKETING ESTRATÉGICO & CONSULTORIA HOTELEIRA</span>
+            <span>BIG DATA & BUSINESS INTELLIGENCE</span>
+        </div>
+    </div>
+
     <canvas id="matrix-canvas"></canvas>
 
     <div class="container">
@@ -164,7 +193,7 @@
             </div>
 
             <div class="card disabled">
-                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><circle cx="9" cy="7" r="1"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="15" cy="11" r="1"/></svg>
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2-2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><circle cx="9" cy="7" r="1"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="15" cy="11" r="1"/></svg>
                 <div class="card-title">Hotéis & Pousadas</div>
                 <p class="kpi-desc" style="text-align: center;">Monitoramento de performance e benchmarking para meios de hospedagem.</p>
                 <div class="card-status status-homolog">Sistema em Homologação</div>
@@ -262,6 +291,34 @@
     </div>
 
     <script>
+        // Ticker Logic with Fallback
+        async function initTicker() {
+            const tickerEl = document.getElementById('live-ticker');
+            const defaultPhrases = [
+                "ABR MARKETING ESTRATÉGICO & CONSULTORIA HOTELEIRA",
+                "INTELIGÊNCIA DE MERCADO PARA ALTA PERFORMANCE",
+                "BIG DATA & BUSINESS INTELLIGENCE APLICADO AO TURISMO",
+                "SISTEMA BLINDADO — ACESSO RESTRITO",
+                "CIÊNCIA DE DADOS PARA PREVISÃO DE DEMANDA"
+            ];
+
+            try {
+                const response = await fetch('pulse-data.json');
+                if (!response.ok) throw new Error('JSON not found');
+                const data = await response.json();
+                
+                let tickerHtml = '';
+                data.destinations.forEach(dest => {
+                    tickerHtml += `<span>📍 ${dest.name.toUpperCase()}: ${dest.status} (${dest.bookingPressure}% PRESSÃO)</span>`;
+                    tickerHtml += `<span>💡 INSIGHT: ${dest.insight.toUpperCase()}</span>`;
+                });
+                tickerEl.innerHTML = tickerHtml + tickerHtml; // Double for seamless loop
+            } catch (error) {
+                console.log("Ticker Fallback Active");
+                tickerEl.innerHTML = defaultPhrases.map(p => `<span>${p}</span>`).join('') + defaultPhrases.map(p => `<span>${p}</span>`).join('');
+            }
+        }
+
         const PASSWORDS = ["testecliente", "abrturbo"];
         function showModal() { document.getElementById('custom-modal').style.display = 'flex'; document.getElementById('modal-pass').focus(); document.getElementById('error-message').innerHTML = ''; }
         function validateModalPassword() {
@@ -297,6 +354,8 @@
         document.onkeydown = function(e) {
             if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
         }
+
+        initTicker();
     </script>
 </body>
 </html>
