@@ -97,10 +97,20 @@
             border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; width: 90%;
             box-shadow: 0 0 50px rgba(0, 198, 255, 0.3);
         }
+        .modal-title { color: var(--accent); margin-bottom: 10px; font-size: 1.5rem; font-weight: 700; }
+        .modal-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
+        
+        .input-group { position: relative; margin: 20px 0 10px; }
         .modal-input {
-            background: #111; border: 1px solid var(--panel-border); color: var(--text-main); padding: 15px 20px;
-            border-radius: 10px; font-size: 1rem; text-align: center; outline: none; margin: 20px 0; width: 100%;
+            background: #111; border: 1px solid var(--panel-border); color: var(--text-main); padding: 15px 50px 15px 20px;
+            border-radius: 10px; font-size: 1rem; text-align: left; outline: none; width: 100%;
         }
+        .toggle-password {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;
+            width: 20px; height: 20px; stroke: var(--text-dim); fill: none; stroke-width: 2;
+        }
+        .error-message { color: #ff4141; font-size: 0.8rem; height: 1.2em; margin-bottom: 10px; }
+
         .modal-btn {
             background: var(--accent); color: #000; padding: 10px 25px; border-radius: 8px; font-weight: 700;
             text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s;
@@ -208,22 +218,29 @@
     <!-- MODAL CUSTOMIZADO -->
     <div id="custom-modal">
         <div class="modal-content">
-            <h3 style="color: var(--accent ); margin-bottom: 10px;">SISTEMA RESTRITO</h3>
-            <p style="color: var(--text-dim); font-size: 0.9rem;">Insira a chave de acesso para o Demand Pulse.</p>
-            <input type="text" id="modal-pass" class="modal-input" placeholder="CHAVE DE ACESSO" autofocus>
+            <h3 class="modal-title">SISTEMA RESTRITO</h3>
+            <p class="modal-subtitle">Insira a chave de acesso para o Demand Pulse.</p>
+            
+            <div class="input-group">
+                <input type="password" id="modal-pass" class="modal-input" placeholder="CHAVE DE ACESSO" autofocus>
+                <svg class="toggle-password" id="toggle-pass" viewBox="0 0 24 24" onclick="togglePasswordVisibility( )"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            
+            <div id="error-message" class="error-message"></div>
+
             <button class="modal-btn" onclick="validateModalPassword()">ACESSAR</button>
         </div>
     </div>
 
     <script>
-        // Variáveis de Senha
-        const S1 = "abr2026";
-        const S2 = "ABR2026";
+        // Variáveis de Senha Permanentes
+        const PASSWORDS = ["testecliente", "abrturbo"];
 
         // Funções do Modal
         function showModal() {
             document.getElementById('custom-modal').style.display = 'flex';
             document.getElementById('modal-pass').focus();
+            document.getElementById('error-message').innerHTML = '';
         }
 
         function hideModal() {
@@ -232,12 +249,25 @@
         }
 
         function validateModalPassword() {
-            const input = document.getElementById('modal-pass').value;
-            if (input === S1 || input === S2) {
+            const input = document.getElementById('modal-pass').value.toLowerCase().trim();
+            if (PASSWORDS.includes(input)) {
                 window.location.href = 'radar.html';
             } else {
-                alert('ACESSO NEGADO. Tente novamente.');
+                document.getElementById('error-message').innerHTML = 'ACESSO NEGADO. Chave incorreta.';
                 document.getElementById('modal-pass').value = '';
+                document.getElementById('modal-pass').focus();
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('modal-pass');
+            const toggleIcon = document.getElementById('toggle-pass');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                toggleIcon.style.stroke = 'var(--accent)';
+            } else {
+                passInput.type = 'password';
+                toggleIcon.style.stroke = 'var(--text-dim)';
             }
         }
 
