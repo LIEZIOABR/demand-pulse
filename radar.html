@@ -37,7 +37,7 @@
         .chart-container { height: 300px; width: 100%; }
         .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
         .comparison-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; min-height: 680px; position: relative; }
+        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; min-height: 720px; position: relative; }
         .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; min-height: 100px; }
         .dest-name { font-weight: 700; font-size: 1.05rem; line-height: 1.3; flex: 1; }
         .selos-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
@@ -69,6 +69,17 @@
         .stay-bar-bg { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; display: flex; }
         .stay-bar-fill { height: 100%; background: var(--accent-blue); }
         .stay-values { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 600; }
+        
+        /* Novo Pilar: Elasticidade Climática */
+        .elasticity-box { background: rgba(255, 255, 255, 0.03); padding: 10px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.1); }
+        .elasticity-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .elasticity-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+        .elasticity-bar-bg { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; position: relative; overflow: hidden; }
+        .elasticity-center { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: rgba(255,255,255,0.3); z-index: 2; }
+        .elasticity-fill { height: 100%; position: absolute; top: 0; transition: 0.5s; }
+        .elasticity-pos { background: var(--accent-green); left: 50%; }
+        .elasticity-neg { background: #ff3131; right: 50%; }
+        
         .insight-box { background: rgba(0, 163, 255, 0.05); border: 1px solid rgba(0, 163, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #99d6ff; min-height: 60px; display: flex; align-items: center; }
         .weather-forecast { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: auto; }
         .forecast-day { text-align: center; flex: 1; }
@@ -236,8 +247,14 @@
                     const stayPerc = (stayVal * 100).toFixed(0);
                     const dayPerc = (100 - stayPerc);
                     
-                    // Confiança Dinâmica
                     const confVal = (data.confidence || 0.8) * 100;
+                    
+                    // Lógica do 10º Pilar: Elasticidade Climática
+                    const elastVal = data.elasticityIndex || 0;
+                    const elastWidth = Math.abs(elastVal) * 50;
+                    const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg';
+                    const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro")));
+                    const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️");
 
                     const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100);
                     const sharePrev = ((data.timeline[data.timeline.length-2] / totalInterestPrev) * 100);
@@ -250,6 +267,12 @@
                         : "Demanda com alta sensibilidade sazonal e picos de interesse.";
                     
                     const projecao = data.recentChange > 0.2 ? "Tendência de aceleração máxima para os próximos 15 dias." : "Expectativa de estabilidade com viés de alta.";
+                    
+                    // Recomendação Tática baseada no IEC
+                    let recomendacaoClima = "";
+                    if(elastVal > 0.6) recomendacaoClima = "Oportunidade de conversão imediata: Janela climática perfeita. Ativar campanhas de 'Última Hora'.";
+                    else if(elastVal < -0.3) recomendacaoClima = "Risco de descompressão: Clima desfavorável ao perfil do destino. Sugerido focar em atrativos indoor/gastronomia.";
+                    else recomendacaoClima = "Estabilidade climática: Manter estratégia de conversão orgânica.";
 
                     container.innerHTML += `
                         <div class="card">
@@ -288,6 +311,16 @@
                                     <span>Day-Trip: ${dayPerc}%</span>
                                 </div>
                             </div>
+                            <div class="elasticity-box">
+                                <div class="elasticity-header">
+                                    <span class="elasticity-label">Impacto Climático (IEC) <span class="stay-info-icon" title="Índice de Elasticidade Climática: Cruzamento de previsão meteorológica com sensibilidade histórica do destino. Confiança: 85%.">ⓘ</span></span>
+                                    <span style="font-size: 0.6rem; font-weight: 700; color: ${elastVal >= 0 ? 'var(--accent-green)' : '#ff3131'}">${elastIcon} ${elastLabel}</span>
+                                </div>
+                                <div class="elasticity-bar-bg">
+                                    <div class="elasticity-center"></div>
+                                    <div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div>
+                                </div>
+                            </div>
                             <div class="insight-box">💡 ${data.insight}</div>
                             <div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div>
                         </div>`;
@@ -310,6 +343,7 @@
                     boletim += `• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n`;
                     boletim += `• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n`;
                     boletim += `• Confiança Estatística: ${confVal.toFixed(0)}% (Baseada em volume de dados)\n`;
+                    boletim += `• ALERTA TÁTICO (CLIMA): ${recomendacaoClima}\n`;
                     boletim += `• Atratividade Climática: ${atrScore}% (Gatilho de conversão ativado)\n`;
                     boletim += `• Top 3 Origens de Demanda:\n`;
                     if(data.topOrigins) {
