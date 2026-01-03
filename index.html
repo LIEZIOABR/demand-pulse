@@ -39,10 +39,11 @@
             font-weight: 800; 
             font-size: 2.5rem; 
             letter-spacing: -1px; 
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             text-transform: lowercase;
         }
 
+        /* NOVA COPY ESTRATÉGICA */
         .strategic-copy { 
             color: #e2e8f0; 
             font-weight: 300; 
@@ -50,12 +51,11 @@
             margin-bottom: 4rem;
             text-transform: lowercase;
             line-height: 1.8;
-            max-width: 800px;
+            max-width: 850px;
             margin-left: auto;
             margin-right: auto;
         }
-
-        .strategic-copy span { color: var(--cyan); font-weight: 600; opacity: 0.9; }
+        .strategic-copy span { color: var(--cyan); font-weight: 600; }
 
         .grid-systems {
             display: grid;
@@ -125,6 +125,8 @@
 
         .dictionary-header { text-align: center; margin-bottom: 3rem; }
         .dictionary-header h2 { font-weight: 800; text-transform: lowercase; margin-bottom: 0.5rem; }
+        
+        /* NOTA DE ATUALIZAÇÃO */
         .update-note { font-size: 0.85rem; color: var(--cyan); opacity: 0.7; font-style: italic; font-weight: 400; text-transform: lowercase; }
 
         .kpi-grid {
@@ -174,7 +176,6 @@
         @media (max-width: 768px) {
             h1 { font-size: 1.8rem; }
             .dictionary-section { padding: 2rem; }
-            .strategic-copy { font-size: 1rem; }
         }
     </style>
 </head>
@@ -239,6 +240,14 @@
                     <h4>humor do mercado</h4>
                     <p>análise de sentimento das buscas (positivo, neutro ou alerta) para ajuste de tom de voz.</p>
                 </div>
+                <div class="kpi-item">
+                    <h4>origem dominante</h4>
+                    <p>identificação geográfica do maior polo emissor de turistas para o destino no período.</p>
+                </div>
+                <div class="kpi-item">
+                    <h4>intenção de estadia</h4>
+                    <p>distribuição entre pernoite (hotelaria) e day-trip (visitantes de um dia).</p>
+                </div>
             </div>
         </div>
 
@@ -256,7 +265,7 @@
     </div>
 
     <script>
-        // Matrix Effect
+        // Matrix Effect - RESTAURADO AO ORIGINAL
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
@@ -301,7 +310,7 @@
             }
         }
 
-        // Security
+        // Security - RESTAURADO AO ORIGINAL
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123) return false;
