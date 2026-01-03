@@ -272,7 +272,6 @@
 
         async function init() {
             try {
-                // TENTATIVA 1: SUPABASE
                 const response = await fetch(
                     'https://torogxfslkqwgzkclhay.supabase.co/rest/v1/rpc/api_demand_pulse_latest',
                     {
@@ -295,15 +294,13 @@
 
             } catch (err) {
                 console.warn("Falha Supabase — fallback para pulse-data.json", err);
-                
-                // TENTATIVA 2: FALLBACK LOCAL
                 try {
                     const fallback = await fetch('pulse-data.json');
                     pulseData = await fallback.json();
                     renderDashboard();
                 } catch (fatal) {
                     document.getElementById('bulletin-text').innerHTML = 
-                        '<span style="color: var(--danger)">Erro crítico: Não foi possível carregar dados do banco ou do arquivo local.</span>';
+                        '<span style="color: var(--danger)">Erro crítico: Não foi possível carregar dados.</span>';
                 }
             }
         }
@@ -357,7 +354,6 @@
                             <span class="share-num">${dest.marketShare}%</span>
                         </div>
                     </div>
-
                     <div class="tactic-badges">
                         ${dest.badges.map(b => `
                             <span class="badge" style="background: ${b.color}20; color: ${b.color}; border: 1px solid ${b.color}40">
@@ -365,11 +361,9 @@
                             </span>
                         `).join('')}
                     </div>
-
                     <div class="status-pill" style="background: ${dest.growth.startsWith('+') ? 'var(--success)' : 'var(--warning)'}20; color: ${dest.growth.startsWith('+') ? 'var(--success)' : 'var(--warning)'}">
                         ${dest.status.toUpperCase()}
                     </div>
-
                     <div class="metrics-row">
                         <div class="metric-box">
                             <span class="metric-label">Humor do Mercado</span>
@@ -383,11 +377,9 @@
                             <div class="metric-value">🚨 ${dest.bookingPressure}%</div>
                         </div>
                     </div>
-
                     <div class="origin-box">
                         <div class="origin-text">📍 Origem Dominante: ${dest.topOrigin} (${dest.originPower}%)</div>
                     </div>
-
                     <div class="progress-container">
                         <div class="progress-header">
                             <span>PERFIL DE PÚBLICO</span>
@@ -397,7 +389,6 @@
                             <div class="progress-fill" style="width: ${dest.loyalty}%"></div>
                         </div>
                     </div>
-
                     <div class="progress-container">
                         <div class="progress-header">
                             <span>INTENÇÃO DE ESTADIA</span>
@@ -407,7 +398,6 @@
                             <div class="progress-fill" style="width: ${dest.overnight}%; background: #00c6ff"></div>
                         </div>
                     </div>
-
                     <div class="progress-container">
                         <div class="progress-header">
                             <span>IMPACTO CLIMÁTICO (IEC)</span>
@@ -417,12 +407,10 @@
                             <div class="progress-fill" style="width: ${dest.iecValue}%; background: var(--success)"></div>
                         </div>
                     </div>
-
                     <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; border: 1px solid var(--border);">
                         <div style="color: var(--accent); font-size: 0.7rem; font-weight: 800; margin-bottom: 0.4rem;">💡 INSIGHT ESTRATÉGICO</div>
                         <div style="font-size: 0.8rem; line-height: 1.4; color: var(--text-dim);">${dest.insight}</div>
                     </div>
-
                     <div class="weather-grid">
                         ${dest.weather.map(w => `
                             <div class="weather-day">
@@ -444,7 +432,6 @@
 ')}
                 </div>
             `;
-
             pulseData.destinations.slice(0, 4).forEach(d => {
                 html += `
                     <div class="bulletin-section">
@@ -461,7 +448,6 @@
                     </div>
                 `;
             });
-
             container.innerHTML = html;
         }
 
