@@ -1,656 +1,303 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ABR — Demand Pulse Radar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABR — Central de Inteligência Estratégica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #00c6ff;
+            --bg: #000000;
+            --panel: rgba(15, 18, 22, 0.75  );
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --text-main: #eaf3ff;
+            --text-dim: #9ca3af;
+        }
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            overflow-x: hidden; 
+            min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
-  <style>
-    :root {
-      --bg: #0a0c10;
-      --card-bg: #12151a;
-      --accent: #00c6ff;
-      --accent-glow: rgba(0, 198, 255, 0.4);
-      --text-main: #e2e8f0;
-      --text-dim: #94a3b8;
-      --border: rgba(255, 255, 255, 0.08);
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-    }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.25; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
 
-    .header {
-      padding: 1.5rem 2rem;
-      background: rgba(10, 12, 16, 0.95);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-    }
+        .logo-section { margin-bottom: 30px; animation: fadeIn 1.5s ease-out; }
+        .logo-section img { max-width: 260px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); pointer-events: none; }
 
-    .logo { height: 40px; filter: drop-shadow(0 0 10px var(--accent-glow)); }
+        .hero-title { font-size: 2.1rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; transition: 0.3s; }
+        .hero-subtitle { color: var(--accent); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
+        .hero-tagline { font-size: 1.15rem; color: var(--text-main); font-weight: 500; font-style: italic; margin-bottom: 50px; opacity: 0.9; border-bottom: 1px solid rgba(0, 198, 255, 0.2); display: inline-block; padding-bottom: 10px; }
 
-    .logout-btn {
-      padding: 0.6rem 1.2rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-    .logout-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--text-dim); }
+        .systems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 60px; }
 
-    .main-container {
-      max-width: 1400px;
-      margin: 2rem auto;
-      padding: 0 2rem;
-      display: grid;
-      grid-template-columns: 1fr 350px;
-      gap: 2rem;
-    }
+        .card { 
+            background: var(--panel); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid var(--panel-border); 
+            border-radius: 24px; 
+            padding: 40px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .chart-section {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 2rem;
-      border: 1px solid var(--border);
-      height: fit-content;
-    }
+        .card.active:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2); }
+        
+        .card.disabled { 
+            opacity: 0.85; 
+            border: 1px solid rgba(0, 198, 255, 0.3); 
+            cursor: not-allowed;
+            animation: borderPulse 3s infinite;
+        }
 
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--accent);
-      margin-bottom: 1.2rem;
-      letter-spacing: 1px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+        @keyframes borderPulse {
+            0% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
+            50% { border-color: rgba(0, 198, 255, 0.4); box-shadow: 0 0 15px rgba(0, 198, 255, 0.15); }
+            100% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
+        }
 
-    .mini-status {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      font-weight: 700;
-      letter-spacing: .2px;
-    }
-    .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; background: var(--warning); }
-    .dot.ok { background: var(--success); }
-    .dot.bad { background: var(--danger); }
+        .card-icon-svg { width: 65px; height: 65px; margin-bottom: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+        .card-status { font-size: 0.75rem; font-weight: 800; padding: 8px 16px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
+        .status-online { background: rgba(0, 198, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .status-homolog { background: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid var(--panel-border); }
 
-    .bulletin-card {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 2rem;
-      border: 1px solid var(--border);
-      position: sticky;
-      top: 100px;
-      height: calc(100vh - 140px);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+        .btn-access { 
+            margin-top: 25px;
+            background: var(--accent); 
+            color: #000; 
+            padding: 14px 35px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            cursor: pointer;
+        }
 
-    .bulletin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-      gap: 10px;
-    }
+        .kpi-section { margin-top: 80px; text-align: left; background: rgba(255,255,255,0.02); padding: 50px; border-radius: 30px; border: 1px solid var(--panel-border); }
+        .section-label { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; display: block; text-align: center; }
+        .section-creds { color: #ffffff; font-size: 0.95rem; font-weight: 500; text-align: center; display: block; margin-bottom: 45px; opacity: 1; }
+        
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .kpi-group-title { color: var(--text-main); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 12px; }
+        .kpi-item { margin-bottom: 20px; }
+        .kpi-name { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; }
+        .kpi-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
 
-    .bulletin-title { font-weight: 800; font-size: 1.05rem; line-height: 1.2; max-width: 190px; }
+        footer { margin-top: 80px; padding-bottom: 40px; opacity: 0.7; font-size: 0.85rem; }
+        .footer-line { margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .footer-line svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; }
 
-    .copy-btn {
-      padding: 0.5rem 1rem;
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-    .copy-btn:hover { background: var(--accent); color: var(--bg); }
+        .whatsapp-btn {
+            position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.3s; z-index: 1000;
+        }
+        .whatsapp-btn:hover { transform: scale(1.1) rotate(10deg); }
+        .whatsapp-btn svg { width: 32px; height: 32px; fill: white; }
 
-    #bulletin-text {
-      flex: 1;
-      overflow-y: auto;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.85rem;
-      line-height: 1.6;
-      color: var(--text-dim);
-      padding-right: 10px;
-      white-space: pre-wrap;
-    }
-    #bulletin-text::-webkit-scrollbar { width: 4px; }
-    #bulletin-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        #custom-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85);
+            z-index: 9999; display: none; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--panel); backdrop-filter: blur(20px); border: 1px solid var(--accent);
+            border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; width: 90%;
+            box-shadow: 0 0 50px rgba(0, 198, 255, 0.3);
+        }
+        .modal-title { color: var(--accent); margin-bottom: 10px; font-size: 1.5rem; font-weight: 700; }
+        .modal-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
+        
+        .input-group { position: relative; margin: 20px 0 10px; }
+        .modal-input {
+            background: #111; border: 1px solid var(--panel-border); color: var(--text-main); padding: 15px 50px 15px 20px;
+            border-radius: 10px; font-size: 1rem; text-align: left; outline: none; width: 100%;
+        }
+        .toggle-password {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;
+            width: 20px; height: 20px; stroke: var(--text-dim); fill: none; stroke-width: 2;
+        }
+        .error-message { color: #ff4141; font-size: 0.8rem; height: 1.2em; margin-bottom: 10px; }
 
-    .bulletin-section { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .bulletin-h { color: var(--accent); font-weight: 800; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .modal-btn {
+            background: var(--accent); color: #000; padding: 10px 25px; border-radius: 8px; font-weight: 700;
+            text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s;
+        }
+        .modal-btn:hover { background: #00e0ff; }
 
-    .destinations-grid {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-
-    .dest-card {
-      background: var(--card-bg);
-      border-radius: 24px;
-      padding: 1.8rem;
-      border: 1px solid var(--border);
-      transition: transform 0.3s, border-color 0.3s;
-      position: relative;
-      overflow: hidden;
-      min-height: 520px;
-    }
-    .dest-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-
-    .dest-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.2rem; gap: 12px; }
-    .dest-name { font-size: 1.25rem; font-weight: 900; line-height: 1.2; max-width: 220px; }
-
-    .share-badge {
-      background: rgba(255,255,255,0.05);
-      padding: 0.4rem 0.8rem;
-      border-radius: 12px;
-      text-align: right;
-      border: 1px solid var(--border);
-    }
-    .share-val { font-size: 0.7rem; font-weight: 800; color: var(--text-dim); display: block; letter-spacing: .8px; }
-    .share-num { font-size: 1rem; font-weight: 900; color: var(--text-main); }
-
-    .tactic-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.1rem; min-height: 52px; align-content: flex-start; }
-    .badge {
-      padding: 0.4rem 0.8rem;
-      border-radius: 8px;
-      font-size: 0.65rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: 1px solid transparent;
-    }
-
-    .status-pill {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 900;
-      margin-bottom: 1.1rem;
-      border: 1px solid var(--border);
-    }
-
-    .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.1rem; }
-    .metric-box {
-      background: rgba(255,255,255,0.03);
-      padding: 1rem;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-    }
-    .metric-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.5rem; display: block; font-weight: 900; letter-spacing: .7px; }
-    .metric-value { font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 0.5rem; }
-
-    .origin-box {
-      background: rgba(0, 198, 255, 0.05);
-      padding: 1rem;
-      border-radius: 16px;
-      border: 1px solid rgba(0, 198, 255, 0.2);
-      margin-bottom: 1.1rem;
-    }
-    .origin-text { font-size: 0.85rem; font-weight: 800; color: var(--accent); }
-
-    .progress-container { margin-bottom: 1.1rem; }
-    .progress-header { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--text-dim); letter-spacing: .6px; }
-    .progress-bar { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
-    .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 1s ease-out; }
-
-    .weather-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-      margin-top: 1.2rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid var(--border);
-    }
-    .weather-day { text-align: center; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: .55rem .35rem; background: rgba(255,255,255,0.02); }
-    .weather-temp { font-size: 0.9rem; font-weight: 900; margin-bottom: 0.2rem; }
-    .weather-label { font-size: 0.55rem; color: var(--text-dim); text-transform: uppercase; font-weight: 900; letter-spacing: .7px; }
-
-    .error-panel {
-      margin-top: 1rem;
-      padding: 1rem;
-      border-radius: 16px;
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      background: rgba(239, 68, 68, 0.08);
-      color: #fecaca;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.78rem;
-      line-height: 1.5;
-      display: none;
-      white-space: pre-wrap;
-    }
-
-    @media (max-width: 1100px) {
-      .main-container { grid-template-columns: 1fr; }
-      .bulletin-card { position: static; height: auto; }
-    }
-    @media (max-width: 768px) {
-      .header { padding: 1rem; }
-      .main-container { padding: 0 1rem; }
-      .destinations-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
+<body oncontextmenu="return false;" ondragstart="return false;">
+    <canvas id="matrix-canvas"></canvas>
 
-<body>
-  <header class="header">
-    <img src="logo.png" alt="ABR Logo" class="logo">
-    <a href="index.html" class="logout-btn">Sair do Sistema</a>
-  </header>
-
-  <main class="main-container">
-    <section class="chart-section">
-      <div class="section-title">
-        TENDÊNCIA DE DEMANDA CONSOLIDADA (60 DIAS)
-        <div class="mini-status" title="Mostra de onde os dados vieram">
-          <span class="dot" id="statusDot"></span>
-          <span id="statusText">Inicializando…</span>
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="ABR Logo">
         </div>
-      </div>
 
-      <canvas id="mainChart" style="width: 100%; height: 350px;"></canvas>
+        <h1 class="hero-title">Central de Inteligência</h1>
+        <p class="hero-subtitle">Big Data & Business Intelligence</p>
+        <p class="hero-tagline">inteligência de demanda baseada na leitura recorrente de milhões de sinais digitais.  
+transformamos consultas dispersas em pulso real de mercado, com histórico, contexto e direção.</p>
 
-      <div class="error-panel" id="errorPanel"></div>
-    </section>
-
-    <aside class="bulletin-card">
-      <div class="bulletin-header">
-        <div class="bulletin-title">BOLETIM ESTRATÉGICO ABR</div>
-        <button class="copy-btn" onclick="copyBulletin()">COPIAR BOLETIM</button>
-      </div>
-      <div id="bulletin-text">Carregando inteligência de mercado...</div>
-    </aside>
-
-    <div class="destinations-grid" id="destinations-container"></div>
-  </main>
-
-  <script>
-    /*********************************************************************
-     * CONFIG — ÚNICO PONTO QUE VOCÊ PRECISA COLAR A ANON KEY (1 VEZ)
-     *********************************************************************/
-    const SUPABASE_URL = "https://torogxfslkqwqzkclhay.supabase.co";
-    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvcm9neGZzbGtxd3F6a2NsaGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NTA2NDAsImV4cCI6MjA4MzAyNjY0MH0.uzl18r5B8vZGA0X90E8mRo9ZgH0-4aZwDQc5mH3p94A
-; // <-- cole aqui, dentro das aspas
-    const RPC_NAME = "api_demand_pulse_latest"; // sua função RPC
-
-    // Fallback local (se existir no mesmo repositório/pasta)
-    const FALLBACK_JSON = "pulse-data.json";
-
-    /*********************************************************************/
-    let pulseData = null;
-    let chartInstance = null;
-
-    function setStatus(mode, text) {
-      const dot = document.getElementById("statusDot");
-      const st = document.getElementById("statusText");
-      dot.classList.remove("ok", "bad");
-      if (mode === "ok") dot.classList.add("ok");
-      if (mode === "bad") dot.classList.add("bad");
-      st.textContent = text;
-    }
-
-    function showError(message) {
-      const p = document.getElementById("errorPanel");
-      p.style.display = "block";
-      p.textContent = message;
-    }
-
-    function hideError() {
-      const p = document.getElementById("errorPanel");
-      p.style.display = "none";
-      p.textContent = "";
-    }
-
-    function safeJsonParse(x) {
-      try { return JSON.parse(x); } catch { return null; }
-    }
-
-    function normalizeRpcResponse(data) {
-      // Alguns RPCs retornam objeto; outros retornam array com 1 item.
-      if (Array.isArray(data) && data.length === 1) return data[0];
-      return data;
-    }
-
-    function validateShape(obj) {
-      // Esperado:
-      // {
-      //   chartData: { labels: [...], values: [...] },
-      //   destinations: [{ name, marketShare, badges[], growth, status, sentiment, bookingPressure, ... }]
-      // }
-      if (!obj || typeof obj !== "object") return "Resposta não é objeto JSON.";
-      if (!obj.chartData || !obj.chartData.labels || !obj.chartData.values) return "Faltou chartData.labels/values.";
-      if (!Array.isArray(obj.chartData.labels) || !Array.isArray(obj.chartData.values)) return "chartData.labels/values não são arrays.";
-      if (!Array.isArray(obj.destinations)) return "Faltou destinations (array).";
-      return null;
-    }
-
-    async function fetchFromSupabase() {
-      if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes("COLE_SUA_ANON_KEY_AQUI")) {
-        throw new Error("Anon key não foi colada no radar.html (campo SUPABASE_ANON_KEY).");
-      }
-
-      const url = `${SUPABASE_URL}/rest/v1/rpc/${RPC_NAME}`;
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
-          "Accept": "application/json"
-        },
-        body: "{}"
-      });
-
-      const text = await res.text();
-      const json = safeJsonParse(text);
-
-      if (!res.ok) {
-        const hint = json ? JSON.stringify(json, null, 2) : text;
-        const msg =
-`ERRO SUPABASE (${res.status} ${res.statusText})
-
-Endpoint:
-${url}
-
-Retorno:
-${hint}
-
-Leitura rápida:
-- 401 = chave/headers
-- 403 = RLS/policy
-- 404 = RPC não existe com esse nome
-- 500 = erro SQL na RPC`;
-
-        throw new Error(msg);
-      }
-
-      if (!json) {
-        throw new Error("Supabase retornou algo que não é JSON. Retorno bruto:\n" + text);
-      }
-
-      return normalizeRpcResponse(json);
-    }
-
-    async function fetchFallback() {
-      const res = await fetch(FALLBACK_JSON, { cache: "no-store" });
-      if (!res.ok) throw new Error("Fallback local não encontrado: " + FALLBACK_JSON);
-      return await res.json();
-    }
-
-    function renderDashboard() {
-      hideError();
-      renderChart();
-      renderCards();
-      renderBulletin();
-    }
-
-    function renderChart() {
-      const el = document.getElementById("mainChart");
-      if (!el) return;
-
-      const ctx = el.getContext("2d");
-
-      // destrói gráfico anterior se houver
-      if (chartInstance) {
-        chartInstance.destroy();
-        chartInstance = null;
-      }
-
-      // gradiente seguro
-      const grad = ctx.createLinearGradient(0, 0, 0, 400);
-      grad.addColorStop(0, "rgba(0,198,255,0.25)");
-      grad.addColorStop(1, "rgba(0,198,255,0.00)");
-
-      chartInstance = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: pulseData.chartData.labels,
-          datasets: [{
-            label: "Volume de Buscas",
-            data: pulseData.chartData.values,
-            borderColor: "#00c6ff",
-            borderWidth: 3,
-            pointRadius: 0,
-            fill: true,
-            backgroundColor: grad,
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { display: false },
-            x: {
-              grid: { display: false },
-              ticks: { color: "#94a3b8", font: { size: 10 } }
-            }
-          }
-        }
-      });
-    }
-
-    function renderCards() {
-      const container = document.getElementById("destinations-container");
-      container.innerHTML = "";
-
-      container.innerHTML = pulseData.destinations.map(dest => {
-        const growthIsUp = (dest.growth || "").toString().trim().startsWith("+");
-        const pillBg = growthIsUp ? "rgba(16,185,129,0.18)" : "rgba(245,158,11,0.18)";
-        const pillColor = growthIsUp ? "var(--success)" : "var(--warning)";
-
-        const badges = Array.isArray(dest.badges) ? dest.badges : [];
-        const weather = Array.isArray(dest.weather) ? dest.weather : [];
-
-        return `
-          <div class="dest-card">
-            <div class="dest-header">
-              <div class="dest-name">${dest.name ?? "Destino"}</div>
-              <div class="share-badge">
-                <span class="share-val">SHARE</span>
-                <span class="share-num">${dest.marketShare ?? "-"}%</span>
-              </div>
+        <div class="systems-grid">
+            <div class="card active">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 18c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z"/><path d="M12 14c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
+                <div class="card-title">Demand Pulse</div>
+                <p class="kpi-desc" style="text-align: center;">Análise estratégica de demanda e tendências para destinos turísticos.</p>
+                <div class="card-status status-online">Sistema Ativo</div>
+                <div class="btn-access" onclick="showModal()">Acessar Radar</div>
             </div>
 
-            <div class="tactic-badges">
-              ${badges.map(b => `
-                <span class="badge" style="background:${(b.color ?? "#00c6ff")}20; color:${(b.color ?? "#00c6ff")}; border-color:${(b.color ?? "#00c6ff")}40;">
-                  ${b.text ?? "Selo"}
-                </span>
-              `).join("")}
+            <div class="card disabled">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2-2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><circle cx="9" cy="7" r="1"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="15" cy="11" r="1"/></svg>
+                <div class="card-title">Hotéis & Pousadas</div>
+                <p class="kpi-desc" style="text-align: center;">Monitoramento de performance e benchmarking para meios de hospedagem.</p>
+                <div class="card-status status-homolog">Sistema em Homologação</div>
             </div>
 
-            <div class="status-pill" style="background:${pillBg}; color:${pillColor}">
-              ${(dest.status ?? "Status").toString().toUpperCase()}
-              ${dest.growth ? ` — ${dest.growth}` : ""}
+            <div class="card disabled">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <div class="card-title">Radar de Estados</div>
+                <p class="kpi-desc" style="text-align: center;">Visão macroeconômica e fluxo migratório de turistas por estado.</p>
+                <div class="card-status status-homolog">Sistema em Homologação</div>
             </div>
-
-            <div class="metrics-row">
-              <div class="metric-box">
-                <span class="metric-label">Humor do Mercado</span>
-                <div class="metric-value">
-                  ${dest.sentiment === "Positivo" ? "😊" : (dest.sentiment === "Neutro" ? "😐" : "😟")}
-                  ${dest.sentiment ?? "—"}
-                </div>
-              </div>
-              <div class="metric-box">
-                <span class="metric-label">Pressão de Reserva</span>
-                <div class="metric-value">🚨 ${dest.bookingPressure ?? "—"}%</div>
-              </div>
-            </div>
-
-            <div class="origin-box">
-              <div class="origin-text">📍 Origem Dominante: ${dest.topOrigin ?? "—"} (${dest.originPower ?? "—"}%)</div>
-            </div>
-
-            <div class="progress-container">
-              <div class="progress-header">
-                <span>PERFIL DE PÚBLICO</span>
-                <span>👥 ${dest.loyalty ?? "—"}% ✈️ ${typeof dest.loyalty === "number" ? (100 - dest.loyalty) : "—"}%</span>
-              </div>
-              <div class="progress-bar"><div class="progress-fill" style="width:${dest.loyalty ?? 0}%"></div></div>
-            </div>
-
-            <div class="progress-container">
-              <div class="progress-header">
-                <span>INTENÇÃO DE ESTADIA</span>
-                <span>🌙 ${dest.overnight ?? "—"}% ☀️ ${dest.daytrip ?? "—"}%</span>
-              </div>
-              <div class="progress-bar"><div class="progress-fill" style="width:${dest.overnight ?? 0}%; background:#00c6ff"></div></div>
-            </div>
-
-            <div class="progress-container">
-              <div class="progress-header">
-                <span>IMPACTO CLIMÁTICO (IEC)</span>
-                <span style="color:var(--success)">⚡ ${(dest.iecLabel ?? "Indicador")}</span>
-              </div>
-              <div class="progress-bar"><div class="progress-fill" style="width:${dest.iecValue ?? 0}%; background:var(--success)"></div></div>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; border: 1px solid var(--border);">
-              <div style="color: var(--accent); font-size: 0.7rem; font-weight: 900; margin-bottom: 0.4rem; letter-spacing:.7px;">💡 INSIGHT ESTRATÉGICO</div>
-              <div style="font-size: 0.8rem; line-height: 1.4; color: var(--text-dim); font-weight:600;">${dest.insight ?? "—"}</div>
-            </div>
-
-            <div class="weather-grid">
-              ${weather.slice(0,5).map(w => `
-                <div class="weather-day">
-                  <div class="weather-temp">${w.temp ?? "-"}°</div>
-                  <div class="weather-label">${w.cond ?? "-"}</div>
-                </div>
-              `).join("")}
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderBulletin() {
-      const container = document.getElementById("bulletin-text");
-      const dests = Array.isArray(pulseData.destinations) ? pulseData.destinations : [];
-
-      let html = `
-        <div class="bulletin-section">
-          <div class="bulletin-h">🏆 MARKET SHARE & DOMINÂNCIA</div>
-          ${dests.map(d => `• ${d.name ?? "Destino"}: ${d.marketShare ?? "-"}% ${d.shareTrend === "up" ? "▲" : (d.shareTrend === "down" ? "▼" : "●")}`).join("\n")}
         </div>
-      `;
 
-      dests.slice(0, 4).forEach(d => {
-        html += `
-          <div class="bulletin-section">
-            <div class="bulletin-h">📍 ${(d.name ?? "DESTINO").toString().toUpperCase()}</div>
-            • Status: ${d.status ?? "—"} ${d.growth ? `(${d.growth} var)` : ""}\n
-            • Sentimento: ${d.sentiment ?? "—"}\n
-            • Pressão de Reserva: ${d.bookingPressure ?? "—"}%\n
-            • Origem Dominante: ${d.topOrigin ?? "—"} (${d.originPower ?? "—"}%)\n
-            • Insight: ${d.insight ?? "—"}
-          </div>
-        `;
-      });
+        <div class="kpi-section">
+            <span class="section-label">Dicionário de Inteligência (KPIs)</span>
+            <span class="section-creds">monitoramento contínuo com atualização diária à 00:00h</span>
+            
+            <div class="kpi-grid">
+                <div>
+                    <div class="kpi-group-title">Análise de Demanda</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Diferenciação de Escala (Gráfico vs. Cards)</div>
+                        <div class="kpi-desc">O gráfico principal mede o volume histórico global de buscas, enquanto os cards individuais medem a pressão tática e o comportamento específico de cada destino em tempo real.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Market Share & Dominância</div>
+                        <div class="kpi-desc">Proporção de buscas de um destino em relação aos seus concorrentes. Indica a liderança de mercado.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Pressão de Reserva</div>
+                        <div class="kpi-desc">Mede a urgência e a densidade de buscas por datas específicas, indicando lotação iminente.</div>
+                    </div>
+                </div>
 
-      container.textContent = "";
-      container.innerHTML = html.replaceAll("\n", "<br>");
-    }
+                <div>
+                    <div class="kpi-group-title">Gatilhos Táticos</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Social Buzz & Velocidade Viral</div>
+                        <div class="kpi-desc">Detecta aceleração explosiva de interesse gerada por redes sociais e influenciadores, antecipando picos de demanda.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Atratividade Máxima & Condição Ideal</div>
+                        <div class="kpi-desc">Define o momento de pico de interesse onde a conversão é facilitada por fatores externos.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Humor do Mercado & Sentimento</div>
+                        <div class="kpi-desc">Análise qualitativa que define se o interesse do público é positivo, neutro ou de retração.</div>
+                    </div>
+                </div>
 
-    function copyBulletin() {
-      const text = document.getElementById("bulletin-text").innerText;
-      navigator.clipboard.writeText(text);
-      const btn = document.querySelector(".copy-btn");
-      const original = btn.innerText;
-      btn.innerText = "COPIADO!";
-      setTimeout(() => btn.innerText = original, 2000);
-    }
+                <div>
+                    <div class="kpi-group-title">Perfil & Clima</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Elasticidade Climática (IEC)</div>
+                        <div class="kpi-desc">Algoritmo que prevê o impacto da variação meteorológica na conversão real de reservas.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Intenção de Estadia (Pernoite vs Day-Trip)</div>
+                        <div class="kpi-desc">Diferencia o perfil de público que pretende dormir no destino ou apenas visitá-lo.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Grau de Confiança Estatística</div>
+                        <div class="kpi-desc">Transparência sobre a precisão dos dados baseada no volume de massa crítica processada.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    async function init() {
-      try {
-        setStatus("bad", "Conectando ao Supabase…");
-        const data = await fetchFromSupabase();
+        <footer>
+            <div class="footer-line">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Sistema Blindado
+            </div>
+            <div class="footer-line">
+                @ Todos os direitos reservados a ABR Marketing Estratégico & Consultoria Hoteleira.
+            </div>
+        </footer>
+    </div>
 
-        const shapeError = validateShape(data);
-        if (shapeError) throw new Error("Supabase respondeu, mas o JSON não está no formato esperado.\n\n" + shapeError + "\n\nJSON recebido:\n" + JSON.stringify(data, null, 2));
+    <a href="https://wa.me/5511999999999" class="whatsapp-btn" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48 2.242 2.242 3.48 5.227 3.48 8.557-5.332 11.888-11.888 11.888-2.019 0-3.999-.512-5.752-1.483l-6.231 1.709zm6.103-4.494l.352.208c1.61.955 3.461 1.46 5.381 1.46 5.755 0 10.435-4.68 10.435-10.435 0-2.778-1.082-5.39-3.046-7.354s-4.576-3.046-7.354-3.046c-5.756 0-10.435 4.679-10.435 10.435 0 2.108.632 4.169 1.826 5.928l.23.339-.997 3.642 3.735-.981z"/></svg>
+    </a>
 
-        pulseData = data;
-        setStatus("ok", "Dados: Supabase (OK)");
-        renderDashboard();
-        return;
+    <div id="custom-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">SISTEMA RESTRITO</h3>
+            <p class="modal-subtitle">Insira a chave de acesso para o Demand Pulse.</p>
+            <div class="input-group">
+                <input type="password" id="modal-pass" class="modal-input" placeholder="CHAVE DE ACESSO" autofocus>
+                <svg class="toggle-password" id="toggle-pass" viewBox="0 0 24 24" onclick="togglePasswordVisibility(  )"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div id="error-message" class="error-message"></div>
+            <button class="modal-btn" onclick="validateModalPassword()">ACESSAR</button>
+        </div>
+    </div>
 
-      } catch (err) {
-        console.warn(err);
-
-        try {
-          setStatus("bad", "Supabase falhou — tentando fallback…");
-          const fb = await fetchFallback();
-
-          const shapeError = validateShape(fb);
-          if (shapeError) throw new Error("Fallback local carregou, mas o JSON não está no formato esperado.\n\n" + shapeError);
-
-          pulseData = fb;
-          setStatus("ok", "Dados: Fallback local (OK)");
-          renderDashboard();
-          showError(
-            "AVISO: Supabase falhou e o Radar carregou o arquivo local.\n\n" +
-            "Erro Supabase (copie e me envie):\n\n" +
-            (err && err.message ? err.message : String(err))
-          );
-          return;
-
-        } catch (fatal) {
-          setStatus("bad", "Erro crítico de dados");
-          const msg =
-            "ERRO CRÍTICO: não foi possível carregar dados do Supabase nem do arquivo local.\n\n" +
-            "1) Erro Supabase:\n" + (err && err.message ? err.message : String(err)) + "\n\n" +
-            "2) Erro Fallback:\n" + (fatal && fatal.message ? fatal.message : String(fatal)) + "\n\n" +
-            "Ação: copie esse texto e me mande aqui.";
-          showError(msg);
-          document.getElementById("bulletin-text").textContent = "Erro crítico: dados indisponíveis.";
+    <script>
+        const PASSWORDS = ["testecliente", "abrturbo"];
+        function showModal() { document.getElementById('custom-modal').style.display = 'flex'; document.getElementById('modal-pass').focus(); document.getElementById('error-message').innerHTML = ''; }
+        function validateModalPassword() {
+            const input = document.getElementById('modal-pass').value.toLowerCase().trim();
+            if (PASSWORDS.includes(input)) { window.location.href = 'radar.html'; } 
+            else { document.getElementById('error-message').innerHTML = 'ACESSO NEGADO. Chave incorreta.'; document.getElementById('modal-pass').value = ''; document.getElementById('modal-pass').focus(); }
         }
-      }
-    }
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('modal-pass');
+            const toggleIcon = document.getElementById('toggle-pass');
+            if (passInput.type === 'password') { passInput.type = 'text'; toggleIcon.style.stroke = 'var(--accent)'; } 
+            else { passInput.type = 'password'; toggleIcon.style.stroke = 'var(--text-dim)'; }
+        }
+        document.getElementById('modal-pass').addEventListener('keypress', function(e) { if (e.key === 'Enter') validateModalPassword(); });
 
-    init();
-  </script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        const cols = Math.floor(w / 20);
+        const ypos = Array(cols).fill(0);
+        function matrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'rgba(0, 198, 255, 0.7)'; ctx.font = '15pt monospace';
+            ypos.forEach((y, ind) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                const x = ind * 20; ctx.fillText(text, x, y);
+                if (y > 100 + Math.random() * 10000) ypos[ind] = 0; else ypos[ind] = y + 20;
+            });
+        }
+        setInterval(matrix, 90);
+
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+        }
+    </script>
 </body>
 </html>
