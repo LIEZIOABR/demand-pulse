@@ -285,8 +285,8 @@ transformamos consultas dispersas em pulso real de mercado, com histórico, cont
         const cols = Math.floor(w / 20);
         const ypos = Array(cols).fill(0);
         function matrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = 'rgba(0, 198, 255, 0.4)'; ctx.font = '15pt monospace';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'rgba(0, 198, 255, 0.7)'; ctx.font = '15pt monospace';
             ypos.forEach((y, ind) => {
                 const text = String.fromCharCode(Math.random() * 128);
                 const x = ind * 20; ctx.fillText(text, x, y);
