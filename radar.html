@@ -8,17 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0"></script>
     <style>
-        :root {
-            --accent: #00c6ff;
-            --bg: #000000;
-            --panel: rgba(15, 18, 22, 0.75  );
-            --panel-border: rgba(255, 255, 255, 0.1);
-            --text-main: #eaf3ff;
-            --text-dim: #9ca3af;
-            --accent-green: #39ff14;
-            --accent-red: #ff3131;
-            --shadow: 0 14px 40px rgba(0,0,0,0.85);
-        }
+        :root { --accent: #00c6ff; --bg: #000000; --panel: rgba(15, 18, 22, 0.75  ); --panel-border: rgba(255, 255, 255, 0.1); --text-main: #eaf3ff; --text-dim: #9ca3af; --accent-green: #39ff14; --accent-red: #ff3131; --shadow: 0 14px 40px rgba(0,0,0,0.85); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
         body { background-color: var(--bg); color: var(--text-main); font-family: 'Poppins', sans-serif; overflow-x: hidden; min-height: 100vh; }
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; }
@@ -105,7 +95,10 @@
     <canvas id="matrix-canvas"></canvas>
     <div class="container">
         <header>
-            <div class="header-nav"><button class="btn-nav btn-logout" onclick="logout()">← Sair</button></div>
+            <div class="header-nav">
+                <button class="btn-nav" onclick="window.location.href='index.html'">← Voltar HUB</button>
+                <button class="btn-nav btn-logout" onclick="logout()">Sair</button>
+            </div>
             <img src="logo.png" alt="ABR Logo" class="logo">
             <h1>DEMAND PULSE <span id="data-source-indicator" class="status-indicator status-live">🟢 BD ATIVO</span></h1>
             <p class="subtitle">Inteligência de demanda em tempo real. Análise contínua de milhões de sinais digitais transformados em pulso de mercado.</p>
