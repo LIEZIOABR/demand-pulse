@@ -1,479 +1,656 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABR — Demand Pulse Radar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --bg: #0a0c10;
-            --card-bg: #12151a;
-            --accent: #00c6ff;
-            --accent-glow: rgba(0, 198, 255, 0.4 );
-            --text-main: #e2e8f0;
-            --text-dim: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABR — Demand Pulse Radar</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        .header {
-            padding: 1.5rem 2rem;
-            background: rgba(10, 12, 16, 0.95);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --card-bg: #12151a;
+      --accent: #00c6ff;
+      --accent-glow: rgba(0, 198, 255, 0.4);
+      --text-main: #e2e8f0;
+      --text-dim: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
 
-        .logo { height: 40px; filter: drop-shadow(0 0 10px var(--accent-glow)); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-        .logout-btn {
-            padding: 0.6rem 1.2rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
+    .header {
+      padding: 1.5rem 2rem;
+      background: rgba(10, 12, 16, 0.95);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
 
-        .logout-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--text-dim); }
+    .logo { height: 40px; filter: drop-shadow(0 0 10px var(--accent-glow)); }
 
-        .main-container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 2rem;
-        }
+    .logout-btn {
+      padding: 0.6rem 1.2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--text-dim); }
 
-        .chart-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--border);
-            height: fit-content;
-        }
+    .main-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 2rem;
+    }
 
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 2rem;
-            letter-spacing: 1px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .chart-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      height: fit-content;
+    }
 
-        .bulletin-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--border);
-            position: sticky;
-            top: 100px;
-            height: calc(100vh - 140px);
-            display: flex;
-            flex-direction: column;
-        }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
-        .bulletin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-        }
+    .mini-status {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; background: var(--warning); }
+    .dot.ok { background: var(--success); }
+    .dot.bad { background: var(--danger); }
 
-        .bulletin-title { font-weight: 800; font-size: 1.2rem; line-height: 1.2; max-width: 180px; }
+    .bulletin-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 100px;
+      height: calc(100vh - 140px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        .copy-btn {
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .bulletin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      gap: 10px;
+    }
 
-        .copy-btn:hover { background: var(--accent); color: var(--bg); }
+    .bulletin-title { font-weight: 800; font-size: 1.05rem; line-height: 1.2; max-width: 190px; }
 
-        #bulletin-text {
-            flex: 1;
-            overflow-y: auto;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            color: var(--text-dim);
-            padding-right: 10px;
-        }
+    .copy-btn {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: var(--accent); color: var(--bg); }
 
-        #bulletin-text::-webkit-scrollbar { width: 4px; }
-        #bulletin-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    #bulletin-text {
+      flex: 1;
+      overflow-y: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-dim);
+      padding-right: 10px;
+      white-space: pre-wrap;
+    }
+    #bulletin-text::-webkit-scrollbar { width: 4px; }
+    #bulletin-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
-        .bulletin-section { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-        .bulletin-h { color: var(--accent); font-weight: 700; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .bulletin-section { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .bulletin-h { color: var(--accent); font-weight: 800; margin-bottom: 0.5rem; font-size: 0.9rem; }
 
-        .destinations-grid {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 1rem;
-        }
+    .destinations-grid {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
 
-        .dest-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            transition: transform 0.3s, border-color 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
+    .dest-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, border-color 0.3s;
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+    }
+    .dest-card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-        .dest-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+    .dest-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.2rem; gap: 12px; }
+    .dest-name { font-size: 1.25rem; font-weight: 900; line-height: 1.2; max-width: 220px; }
 
-        .dest-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
-        .dest-name { font-size: 1.4rem; font-weight: 800; line-height: 1.2; max-width: 200px; }
+    .share-badge {
+      background: rgba(255,255,255,0.05);
+      padding: 0.4rem 0.8rem;
+      border-radius: 12px;
+      text-align: right;
+      border: 1px solid var(--border);
+    }
+    .share-val { font-size: 0.7rem; font-weight: 800; color: var(--text-dim); display: block; letter-spacing: .8px; }
+    .share-num { font-size: 1rem; font-weight: 900; color: var(--text-main); }
 
-        .share-badge {
-            background: rgba(255,255,255,0.05);
-            padding: 0.4rem 0.8rem;
-            border-radius: 12px;
-            text-align: right;
-        }
-        .share-val { font-size: 0.7rem; font-weight: 700; color: var(--text-dim); display: block; }
-        .share-num { font-size: 1rem; font-weight: 800; color: var(--text-main); }
+    .tactic-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.1rem; min-height: 52px; align-content: flex-start; }
+    .badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.65rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid transparent;
+    }
 
-        .tactic-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; min-height: 70px; align-content: flex-start; }
-        .badge {
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            font-size: 0.65rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .status-pill {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      margin-bottom: 1.1rem;
+      border: 1px solid var(--border);
+    }
 
-        .status-pill {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
+    .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.1rem; }
+    .metric-box {
+      background: rgba(255,255,255,0.03);
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .metric-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.5rem; display: block; font-weight: 900; letter-spacing: .7px; }
+    .metric-value { font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 0.5rem; }
 
-        .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-        .metric-box {
-            background: rgba(255,255,255,0.03);
-            padding: 1rem;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-        }
-        .metric-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
-        .metric-value { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .origin-box {
+      background: rgba(0, 198, 255, 0.05);
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 198, 255, 0.2);
+      margin-bottom: 1.1rem;
+    }
+    .origin-text { font-size: 0.85rem; font-weight: 800; color: var(--accent); }
 
-        .origin-box {
-            background: rgba(0, 198, 255, 0.05);
-            padding: 1rem;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 198, 255, 0.2);
-            margin-bottom: 1.5rem;
-        }
-        .origin-text { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
+    .progress-container { margin-bottom: 1.1rem; }
+    .progress-header { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--text-dim); letter-spacing: .6px; }
+    .progress-bar { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 1s ease-out; }
 
-        .progress-container { margin-bottom: 1.5rem; }
-        .progress-header { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-dim); }
-        .progress-bar { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 1s ease-out; }
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+    .weather-day { text-align: center; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: .55rem .35rem; background: rgba(255,255,255,0.02); }
+    .weather-temp { font-size: 0.9rem; font-weight: 900; margin-bottom: 0.2rem; }
+    .weather-label { font-size: 0.55rem; color: var(--text-dim); text-transform: uppercase; font-weight: 900; letter-spacing: .7px; }
 
-        .weather-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        .weather-day { text-align: center; }
-        .weather-temp { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
-        .weather-label { font-size: 0.55rem; color: var(--text-dim); text-transform: uppercase; }
+    .error-panel {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: rgba(239, 68, 68, 0.08);
+      color: #fecaca;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      display: none;
+      white-space: pre-wrap;
+    }
 
-        @media (max-width: 1100px) {
-            .main-container { grid-template-columns: 1fr; }
-            .bulletin-card { position: static; height: auto; }
-        }
-
-        @media (max-width: 768px) {
-            .header { padding: 1rem; }
-            .main-container { padding: 0 1rem; }
-            .destinations-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    @media (max-width: 1100px) {
+      .main-container { grid-template-columns: 1fr; }
+      .bulletin-card { position: static; height: auto; }
+    }
+    @media (max-width: 768px) {
+      .header { padding: 1rem; }
+      .main-container { padding: 0 1rem; }
+      .destinations-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
+
 <body>
-    <header class="header">
-        <img src="logo.png" alt="ABR Logo" class="logo">
-        <a href="index.html" class="logout-btn">Sair do Sistema</a>
-    </header>
+  <header class="header">
+    <img src="logo.png" alt="ABR Logo" class="logo">
+    <a href="index.html" class="logout-btn">Sair do Sistema</a>
+  </header>
 
-    <main class="main-container">
-        <section class="chart-section">
-            <div class="section-title">
-                TENDÊNCIA DE DEMANDA CONSOLIDADA (60 DIAS)
-                <div style="font-size: 0.7rem; color: var(--text-dim); display: flex; align-items: center; gap: 10px;">
-                    <span style="width: 12px; height: 12px; background: var(--accent); border-radius: 3px;"></span> Volume de Buscas
-                </div>
-            </div>
-            <canvas id="mainChart" style="width: 100%; height: 350px;"></canvas>
-        </section>
-
-        <aside class="bulletin-card">
-            <div class="bulletin-header">
-                <div class="bulletin-title">BOLETIM ESTRATÉGICO ABR</div>
-                <button class="copy-btn" onclick="copyBulletin()">COPIAR BOLETIM</button>
-            </div>
-            <div id="bulletin-text">Carregando inteligência de mercado...</div>
-        </aside>
-
-        <div class="destinations-grid" id="destinations-container">
-            <!-- Cards serão inseridos via JS -->
+  <main class="main-container">
+    <section class="chart-section">
+      <div class="section-title">
+        TENDÊNCIA DE DEMANDA CONSOLIDADA (60 DIAS)
+        <div class="mini-status" title="Mostra de onde os dados vieram">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText">Inicializando…</span>
         </div>
-    </main>
+      </div>
 
-    <script>
-        let pulseData = null;
+      <canvas id="mainChart" style="width: 100%; height: 350px;"></canvas>
 
-        async function init() {
-            try {
-                // TENTATIVA 1: SUPABASE
-                const response = await fetch(
-                    'https://torogxfslkqwgzkclhay.supabase.co/rest/v1/rpc/api_demand_pulse_latest',
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvcm9neGZzbGtxd3F6a2NsaGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NTA2NDAsImV4cCI6MjA4MzAyNjY0MH0.uzl18r5B8vZGA0X90E8mRo9ZgH0-4aZwDQc5mH3p94A'
-                        }
-                    }
-                 );
+      <div class="error-panel" id="errorPanel"></div>
+    </section>
 
-                const data = await response.json();
+    <aside class="bulletin-card">
+      <div class="bulletin-header">
+        <div class="bulletin-title">BOLETIM ESTRATÉGICO ABR</div>
+        <button class="copy-btn" onclick="copyBulletin()">COPIAR BOLETIM</button>
+      </div>
+      <div id="bulletin-text">Carregando inteligência de mercado...</div>
+    </aside>
 
-                if (!data || Object.keys(data).length === 0) {
-                    throw new Error("Supabase retornou JSON vazio");
-                }
+    <div class="destinations-grid" id="destinations-container"></div>
+  </main>
 
-                pulseData = data;
-                renderDashboard();
+  <script>
+    /*********************************************************************
+     * CONFIG — ÚNICO PONTO QUE VOCÊ PRECISA COLAR A ANON KEY (1 VEZ)
+     *********************************************************************/
+    const SUPABASE_URL = "https://torogxfslkqwqzkclhay.supabase.co";
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvcm9neGZzbGtxd3F6a2NsaGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NTA2NDAsImV4cCI6MjA4MzAyNjY0MH0.uzl18r5B8vZGA0X90E8mRo9ZgH0-4aZwDQc5mH3p94A
+; // <-- cole aqui, dentro das aspas
+    const RPC_NAME = "api_demand_pulse_latest"; // sua função RPC
 
-            } catch (err) {
-                console.warn("Falha Supabase — fallback para pulse-data.json", err);
-                
-                // TENTATIVA 2: FALLBACK LOCAL
-                try {
-                    const fallback = await fetch('pulse-data.json');
-                    pulseData = await fallback.json();
-                    renderDashboard();
-                } catch (fatal) {
-                    document.getElementById('bulletin-text').innerHTML = 
-                        '<span style="color: var(--danger)">Erro crítico: Não foi possível carregar dados do banco ou do arquivo local.</span>';
-                }
+    // Fallback local (se existir no mesmo repositório/pasta)
+    const FALLBACK_JSON = "pulse-data.json";
+
+    /*********************************************************************/
+    let pulseData = null;
+    let chartInstance = null;
+
+    function setStatus(mode, text) {
+      const dot = document.getElementById("statusDot");
+      const st = document.getElementById("statusText");
+      dot.classList.remove("ok", "bad");
+      if (mode === "ok") dot.classList.add("ok");
+      if (mode === "bad") dot.classList.add("bad");
+      st.textContent = text;
+    }
+
+    function showError(message) {
+      const p = document.getElementById("errorPanel");
+      p.style.display = "block";
+      p.textContent = message;
+    }
+
+    function hideError() {
+      const p = document.getElementById("errorPanel");
+      p.style.display = "none";
+      p.textContent = "";
+    }
+
+    function safeJsonParse(x) {
+      try { return JSON.parse(x); } catch { return null; }
+    }
+
+    function normalizeRpcResponse(data) {
+      // Alguns RPCs retornam objeto; outros retornam array com 1 item.
+      if (Array.isArray(data) && data.length === 1) return data[0];
+      return data;
+    }
+
+    function validateShape(obj) {
+      // Esperado:
+      // {
+      //   chartData: { labels: [...], values: [...] },
+      //   destinations: [{ name, marketShare, badges[], growth, status, sentiment, bookingPressure, ... }]
+      // }
+      if (!obj || typeof obj !== "object") return "Resposta não é objeto JSON.";
+      if (!obj.chartData || !obj.chartData.labels || !obj.chartData.values) return "Faltou chartData.labels/values.";
+      if (!Array.isArray(obj.chartData.labels) || !Array.isArray(obj.chartData.values)) return "chartData.labels/values não são arrays.";
+      if (!Array.isArray(obj.destinations)) return "Faltou destinations (array).";
+      return null;
+    }
+
+    async function fetchFromSupabase() {
+      if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes("COLE_SUA_ANON_KEY_AQUI")) {
+        throw new Error("Anon key não foi colada no radar.html (campo SUPABASE_ANON_KEY).");
+      }
+
+      const url = `${SUPABASE_URL}/rest/v1/rpc/${RPC_NAME}`;
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+          "Accept": "application/json"
+        },
+        body: "{}"
+      });
+
+      const text = await res.text();
+      const json = safeJsonParse(text);
+
+      if (!res.ok) {
+        const hint = json ? JSON.stringify(json, null, 2) : text;
+        const msg =
+`ERRO SUPABASE (${res.status} ${res.statusText})
+
+Endpoint:
+${url}
+
+Retorno:
+${hint}
+
+Leitura rápida:
+- 401 = chave/headers
+- 403 = RLS/policy
+- 404 = RPC não existe com esse nome
+- 500 = erro SQL na RPC`;
+
+        throw new Error(msg);
+      }
+
+      if (!json) {
+        throw new Error("Supabase retornou algo que não é JSON. Retorno bruto:\n" + text);
+      }
+
+      return normalizeRpcResponse(json);
+    }
+
+    async function fetchFallback() {
+      const res = await fetch(FALLBACK_JSON, { cache: "no-store" });
+      if (!res.ok) throw new Error("Fallback local não encontrado: " + FALLBACK_JSON);
+      return await res.json();
+    }
+
+    function renderDashboard() {
+      hideError();
+      renderChart();
+      renderCards();
+      renderBulletin();
+    }
+
+    function renderChart() {
+      const el = document.getElementById("mainChart");
+      if (!el) return;
+
+      const ctx = el.getContext("2d");
+
+      // destrói gráfico anterior se houver
+      if (chartInstance) {
+        chartInstance.destroy();
+        chartInstance = null;
+      }
+
+      // gradiente seguro
+      const grad = ctx.createLinearGradient(0, 0, 0, 400);
+      grad.addColorStop(0, "rgba(0,198,255,0.25)");
+      grad.addColorStop(1, "rgba(0,198,255,0.00)");
+
+      chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: pulseData.chartData.labels,
+          datasets: [{
+            label: "Volume de Buscas",
+            data: pulseData.chartData.values,
+            borderColor: "#00c6ff",
+            borderWidth: 3,
+            pointRadius: 0,
+            fill: true,
+            backgroundColor: grad,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { display: false },
+            x: {
+              grid: { display: false },
+              ticks: { color: "#94a3b8", font: { size: 10 } }
             }
+          }
         }
+      });
+    }
 
-        function renderDashboard() {
-            renderChart();
-            renderCards();
-            renderBulletin();
-        }
+    function renderCards() {
+      const container = document.getElementById("destinations-container");
+      container.innerHTML = "";
 
-        function renderChart() {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: pulseData.chartData.labels,
-                    datasets: [{
-                        label: 'Volume de Buscas',
-                        data: pulseData.chartData.values,
-                        borderColor: '#00c6ff',
-                        borderWidth: 3,
-                        pointRadius: 0,
-                        fill: true,
-                        backgroundColor: ctx.createLinearGradient(0, 0, 0, 400),
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { display: false },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#94a3b8', font: { size: 10 } }
-                        }
-                    }
-                }
-            });
-        }
+      container.innerHTML = pulseData.destinations.map(dest => {
+        const growthIsUp = (dest.growth || "").toString().trim().startsWith("+");
+        const pillBg = growthIsUp ? "rgba(16,185,129,0.18)" : "rgba(245,158,11,0.18)";
+        const pillColor = growthIsUp ? "var(--success)" : "var(--warning)";
 
-        function renderCards() {
-            const container = document.getElementById('destinations-container');
-            container.innerHTML = pulseData.destinations.map(dest => `
-                <div class="dest-card">
-                    <div class="dest-header">
-                        <div class="dest-name">${dest.name}</div>
-                        <div class="share-badge">
-                            <span class="share-val">SHARE</span>
-                            <span class="share-num">${dest.marketShare}%</span>
-                        </div>
-                    </div>
+        const badges = Array.isArray(dest.badges) ? dest.badges : [];
+        const weather = Array.isArray(dest.weather) ? dest.weather : [];
 
-                    <div class="tactic-badges">
-                        ${dest.badges.map(b => `
-                            <span class="badge" style="background: ${b.color}20; color: ${b.color}; border: 1px solid ${b.color}40">
-                                ${b.text}
-                            </span>
-                        `).join('')}
-                    </div>
+        return `
+          <div class="dest-card">
+            <div class="dest-header">
+              <div class="dest-name">${dest.name ?? "Destino"}</div>
+              <div class="share-badge">
+                <span class="share-val">SHARE</span>
+                <span class="share-num">${dest.marketShare ?? "-"}%</span>
+              </div>
+            </div>
 
-                    <div class="status-pill" style="background: ${dest.growth.startsWith('+') ? 'var(--success)' : 'var(--warning)'}20; color: ${dest.growth.startsWith('+') ? 'var(--success)' : 'var(--warning)'}">
-                        ${dest.status.toUpperCase()}
-                    </div>
+            <div class="tactic-badges">
+              ${badges.map(b => `
+                <span class="badge" style="background:${(b.color ?? "#00c6ff")}20; color:${(b.color ?? "#00c6ff")}; border-color:${(b.color ?? "#00c6ff")}40;">
+                  ${b.text ?? "Selo"}
+                </span>
+              `).join("")}
+            </div>
 
-                    <div class="metrics-row">
-                        <div class="metric-box">
-                            <span class="metric-label">Humor do Mercado</span>
-                            <div class="metric-value">
-                                ${dest.sentiment === 'Positivo' ? '😊' : (dest.sentiment === 'Neutro' ? '😐' : '😟')}
-                                ${dest.sentiment}
-                            </div>
-                        </div>
-                        <div class="metric-box">
-                            <span class="metric-label">Pressão de Reserva</span>
-                            <div class="metric-value">🚨 ${dest.bookingPressure}%</div>
-                        </div>
-                    </div>
+            <div class="status-pill" style="background:${pillBg}; color:${pillColor}">
+              ${(dest.status ?? "Status").toString().toUpperCase()}
+              ${dest.growth ? ` — ${dest.growth}` : ""}
+            </div>
 
-                    <div class="origin-box">
-                        <div class="origin-text">📍 Origem Dominante: ${dest.topOrigin} (${dest.originPower}%)</div>
-                    </div>
-
-                    <div class="progress-container">
-                        <div class="progress-header">
-                            <span>PERFIL DE PÚBLICO</span>
-                            <span>👥 ${dest.loyalty}% ✈️ ${100-dest.loyalty}%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${dest.loyalty}%"></div>
-                        </div>
-                    </div>
-
-                    <div class="progress-container">
-                        <div class="progress-header">
-                            <span>INTENÇÃO DE ESTADIA</span>
-                            <span>🌙 ${dest.overnight}% ☀️ ${dest.daytrip}%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${dest.overnight}%; background: #00c6ff"></div>
-                        </div>
-                    </div>
-
-                    <div class="progress-container">
-                        <div class="progress-header">
-                            <span>IMPACTO CLIMÁTICO (IEC)</span>
-                            <span style="color: var(--success)">⚡ Alavancagem Alta</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${dest.iecValue}%; background: var(--success)"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; border: 1px solid var(--border);">
-                        <div style="color: var(--accent); font-size: 0.7rem; font-weight: 800; margin-bottom: 0.4rem;">💡 INSIGHT ESTRATÉGICO</div>
-                        <div style="font-size: 0.8rem; line-height: 1.4; color: var(--text-dim);">${dest.insight}</div>
-                    </div>
-
-                    <div class="weather-grid">
-                        ${dest.weather.map(w => `
-                            <div class="weather-day">
-                                <div class="weather-temp">${w.temp}°</div>
-                                <div class="weather-label">${w.cond}</div>
-                            </div>
-                        `).join('')}
-                    </div>
+            <div class="metrics-row">
+              <div class="metric-box">
+                <span class="metric-label">Humor do Mercado</span>
+                <div class="metric-value">
+                  ${dest.sentiment === "Positivo" ? "😊" : (dest.sentiment === "Neutro" ? "😐" : "😟")}
+                  ${dest.sentiment ?? "—"}
                 </div>
-            `).join('');
-        }
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Pressão de Reserva</span>
+                <div class="metric-value">🚨 ${dest.bookingPressure ?? "—"}%</div>
+              </div>
+            </div>
 
-        function renderBulletin() {
-            const container = document.getElementById('bulletin-text');
-            let html = `
-                <div class="bulletin-section">
-                    <div class="bulletin-h">🏆 MARKET SHARE & DOMINÂNCIA</div>
-                    ${pulseData.destinations.map(d => `• ${d.name}: ${d.marketShare}% ${d.shareTrend === 'up' ? '▲' : '▼'}`).join('  
-')}
+            <div class="origin-box">
+              <div class="origin-text">📍 Origem Dominante: ${dest.topOrigin ?? "—"} (${dest.originPower ?? "—"}%)</div>
+            </div>
+
+            <div class="progress-container">
+              <div class="progress-header">
+                <span>PERFIL DE PÚBLICO</span>
+                <span>👥 ${dest.loyalty ?? "—"}% ✈️ ${typeof dest.loyalty === "number" ? (100 - dest.loyalty) : "—"}%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:${dest.loyalty ?? 0}%"></div></div>
+            </div>
+
+            <div class="progress-container">
+              <div class="progress-header">
+                <span>INTENÇÃO DE ESTADIA</span>
+                <span>🌙 ${dest.overnight ?? "—"}% ☀️ ${dest.daytrip ?? "—"}%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:${dest.overnight ?? 0}%; background:#00c6ff"></div></div>
+            </div>
+
+            <div class="progress-container">
+              <div class="progress-header">
+                <span>IMPACTO CLIMÁTICO (IEC)</span>
+                <span style="color:var(--success)">⚡ ${(dest.iecLabel ?? "Indicador")}</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:${dest.iecValue ?? 0}%; background:var(--success)"></div></div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; border: 1px solid var(--border);">
+              <div style="color: var(--accent); font-size: 0.7rem; font-weight: 900; margin-bottom: 0.4rem; letter-spacing:.7px;">💡 INSIGHT ESTRATÉGICO</div>
+              <div style="font-size: 0.8rem; line-height: 1.4; color: var(--text-dim); font-weight:600;">${dest.insight ?? "—"}</div>
+            </div>
+
+            <div class="weather-grid">
+              ${weather.slice(0,5).map(w => `
+                <div class="weather-day">
+                  <div class="weather-temp">${w.temp ?? "-"}°</div>
+                  <div class="weather-label">${w.cond ?? "-"}</div>
                 </div>
-            `;
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
 
-            pulseData.destinations.slice(0, 4).forEach(d => {
-                html += `
-                    <div class="bulletin-section">
-                        <div class="bulletin-h">📍 ${d.name.toUpperCase()}</div>
-                        • Status: ${d.status} (${d.growth} var)  
+    function renderBulletin() {
+      const container = document.getElementById("bulletin-text");
+      const dests = Array.isArray(pulseData.destinations) ? pulseData.destinations : [];
 
-                        • Sentimento: ${d.sentiment} (${d.insight})  
+      let html = `
+        <div class="bulletin-section">
+          <div class="bulletin-h">🏆 MARKET SHARE & DOMINÂNCIA</div>
+          ${dests.map(d => `• ${d.name ?? "Destino"}: ${d.marketShare ?? "-"}% ${d.shareTrend === "up" ? "▲" : (d.shareTrend === "down" ? "▼" : "●")}`).join("\n")}
+        </div>
+      `;
 
-                        • Pressão de Reserva: ${d.bookingPressure}%  
+      dests.slice(0, 4).forEach(d => {
+        html += `
+          <div class="bulletin-section">
+            <div class="bulletin-h">📍 ${(d.name ?? "DESTINO").toString().toUpperCase()}</div>
+            • Status: ${d.status ?? "—"} ${d.growth ? `(${d.growth} var)` : ""}\n
+            • Sentimento: ${d.sentiment ?? "—"}\n
+            • Pressão de Reserva: ${d.bookingPressure ?? "—"}%\n
+            • Origem Dominante: ${d.topOrigin ?? "—"} (${d.originPower ?? "—"}%)\n
+            • Insight: ${d.insight ?? "—"}
+          </div>
+        `;
+      });
 
-                        • Gatilho de Proximidade: ${d.originPower}% (${d.topOrigin})  
+      container.textContent = "";
+      container.innerHTML = html.replaceAll("\n", "<br>");
+    }
 
-                        • Alerta Tático: Oportunidade de conversão imediata via IEC.
-                    </div>
-                `;
-            });
+    function copyBulletin() {
+      const text = document.getElementById("bulletin-text").innerText;
+      navigator.clipboard.writeText(text);
+      const btn = document.querySelector(".copy-btn");
+      const original = btn.innerText;
+      btn.innerText = "COPIADO!";
+      setTimeout(() => btn.innerText = original, 2000);
+    }
 
-            container.innerHTML = html;
+    async function init() {
+      try {
+        setStatus("bad", "Conectando ao Supabase…");
+        const data = await fetchFromSupabase();
+
+        const shapeError = validateShape(data);
+        if (shapeError) throw new Error("Supabase respondeu, mas o JSON não está no formato esperado.\n\n" + shapeError + "\n\nJSON recebido:\n" + JSON.stringify(data, null, 2));
+
+        pulseData = data;
+        setStatus("ok", "Dados: Supabase (OK)");
+        renderDashboard();
+        return;
+
+      } catch (err) {
+        console.warn(err);
+
+        try {
+          setStatus("bad", "Supabase falhou — tentando fallback…");
+          const fb = await fetchFallback();
+
+          const shapeError = validateShape(fb);
+          if (shapeError) throw new Error("Fallback local carregou, mas o JSON não está no formato esperado.\n\n" + shapeError);
+
+          pulseData = fb;
+          setStatus("ok", "Dados: Fallback local (OK)");
+          renderDashboard();
+          showError(
+            "AVISO: Supabase falhou e o Radar carregou o arquivo local.\n\n" +
+            "Erro Supabase (copie e me envie):\n\n" +
+            (err && err.message ? err.message : String(err))
+          );
+          return;
+
+        } catch (fatal) {
+          setStatus("bad", "Erro crítico de dados");
+          const msg =
+            "ERRO CRÍTICO: não foi possível carregar dados do Supabase nem do arquivo local.\n\n" +
+            "1) Erro Supabase:\n" + (err && err.message ? err.message : String(err)) + "\n\n" +
+            "2) Erro Fallback:\n" + (fatal && fatal.message ? fatal.message : String(fatal)) + "\n\n" +
+            "Ação: copie esse texto e me mande aqui.";
+          showError(msg);
+          document.getElementById("bulletin-text").textContent = "Erro crítico: dados indisponíveis.";
         }
+      }
+    }
 
-        function copyBulletin() {
-            const text = document.getElementById('bulletin-text').innerText;
-            navigator.clipboard.writeText(text);
-            const btn = document.querySelector('.copy-btn');
-            btn.innerText = 'COPIADO!';
-            setTimeout(() => btn.innerText = 'COPIAR BOLETIM', 2000);
-        }
-
-        init();
-    </script>
+    init();
+  </script>
 </body>
 </html>
