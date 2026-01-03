@@ -1,232 +1,492 @@
 {
-  "monte_verde_mg": {
-    "name": "Monte Verde (MG)",
-    "timeline": [65, 68, 72, 70, 75, 82, 88, 92],
-    "recentChange": 0.12,
-    "persistence": 0.78,
-    "sentiment": 0.85,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.92,
-    "elasticityIndex": 0.85,
-    "bookingPressure": 0.88,
-    "proximityTrigger": 0.92,
-    "socialBuzz": 0.85,
-    "audienceProfile": 0.75,
-    "stayIntent": 0.82,
-    "confidence": 0.88,
-    "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 62},
-      {"location": "Campinas/SP", "percent": 18},
-      {"location": "S. J. Campos/SP", "percent": 12}
-    ],
-    "insight": "Alta procura por experiências de inverno e gastronomia.",
-    "weather": { "daily": [ {"max": 18, "cond": "Ensolarado"}, {"max": 17, "cond": "Nublado"}, {"max": 19, "cond": "Limpo"}, {"max": 16, "cond": "Nublado"}, {"max": 15, "cond": "Garoa"} ] }
-  },
-  "campos_do_jordao_sp": {
-    "name": "Campos do Jordão (SP)",
-    "timeline": [80, 82, 85, 84, 88, 90, 95, 98],
-    "recentChange": 0.09,
-    "persistence": 0.85,
-    "sentiment": 0.92,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.95,
-    "elasticityIndex": 0.90,
-    "bookingPressure": 0.94,
-    "proximityTrigger": 0.88,
-    "socialBuzz": 0.92,
-    "audienceProfile": 0.85,
-    "stayIntent": 0.88,
-    "confidence": 0.94,
-    "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 68},
-      {"location": "Campinas/SP", "percent": 15},
-      {"location": "S. J. Campos/SP", "percent": 10}
-    ],
-    "insight": "Destaque para hospedagens de charme e isolamento.",
-    "weather": { "daily": [ {"max": 19, "cond": "Limpo"}, {"max": 18, "cond": "Ensolarado"}, {"max": 20, "cond": "Limpo"}, {"max": 17, "cond": "Nublado"}, {"max": 16, "cond": "Nublado"} ] }
-  },
-  "gramado_canela_rs": {
-    "name": "Gramado + Canela (RS)",
-    "timeline": [75, 78, 82, 80, 85, 88, 92, 95],
-    "recentChange": 0.15,
-    "persistence": 0.90,
-    "sentiment": 0.94,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.88,
-    "elasticityIndex": 0.82,
-    "bookingPressure": 0.98,
-    "proximityTrigger": 0.95,
-    "socialBuzz": 0.98,
-    "audienceProfile": 0.80,
-    "stayIntent": 0.95,
-    "confidence": 0.96,
-    "topOrigins": [
-      {"location": "Porto Alegre/RS", "percent": 45},
-      {"location": "São Paulo/Capital", "percent": 30},
-      {"location": "Caxias do Sul/RS", "percent": 15}
-    ],
-    "insight": "Pico de demanda devido aos eventos de Natal.",
-    "weather": { "daily": [ {"max": 22, "cond": "Ensolarado"}, {"max": 24, "cond": "Limpo"}, {"max": 23, "cond": "Nublado"}, {"max": 21, "cond": "Chuva"}, {"max": 20, "cond": "Nublado"} ] }
-  },
-  "pocos_de_caldas_mg": {
-    "name": "Poços de Caldas (MG)",
-    "timeline": [50, 52, 55, 54, 58, 60, 62, 65],
-    "recentChange": 0.08,
-    "persistence": 0.75,
-    "sentiment": 0.82,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.70,
-    "elasticityIndex": 0.65,
-    "bookingPressure": 0.78,
-    "proximityTrigger": 0.82,
-    "socialBuzz": 0.70,
-    "audienceProfile": 0.60,
-    "stayIntent": 0.75,
-    "confidence": 0.85,
-    "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 40},
-      {"location": "Belo Horizonte/MG", "percent": 25},
-      {"location": "Campinas/SP", "percent": 15}
-    ],
-    "insight": "Turismo familiar e águas termais em alta estável.",
-    "weather": { "daily": [ {"max": 24, "cond": "Ensolarado"}, {"max": 25, "cond": "Limpo"}, {"max": 23, "cond": "Parcial. Nublado"}, {"max": 22, "cond": "Nublado"}, {"max": 21, "cond": "Limpo"} ] }
-  },
-  "sao_bento_sapucai_sp": {
-    "name": "São Bento do Sapucaí (SP)",
-    "timeline": [40, 42, 45, 44, 48, 50, 55, 58],
-    "recentChange": 0.10,
-    "persistence": 0.72,
-    "sentiment": 0.88,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.90,
-    "elasticityIndex": 0.80,
-    "bookingPressure": 0.82,
-    "proximityTrigger": 0.85,
-    "socialBuzz": 0.75,
-    "audienceProfile": 0.55,
-    "stayIntent": 0.70,
-    "confidence": 0.80,
-    "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 65},
-      {"location": "S. J. Campos/SP", "percent": 20},
-      {"location": "Taubaté/SP", "percent": 8}
-    ],
-    "insight": "Crescimento no turismo de aventura e montanhismo.",
-    "weather": { "daily": [ {"max": 20, "cond": "Limpo"}, {"max": 19, "cond": "Ensolarado"}, {"max": 21, "cond": "Limpo"}, {"max": 18, "cond": "Nublado"}, {"max": 17, "cond": "Parcial. Nublado"} ] }
-  },
-  "passa_quatro_mg": {
-    "name": "Passa Quatro (MG)",
-    "timeline": [30, 32, 35, 34, 36, 38, 40, 42],
-    "recentChange": 0.05,
-    "persistence": 0.65,
-    "sentiment": 0.80,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.60,
-    "elasticityIndex": 0.50,
-    "bookingPressure": 0.65,
-    "proximityTrigger": 0.70,
-    "socialBuzz": 0.60,
-    "audienceProfile": 0.40,
-    "stayIntent": 0.60,
-    "confidence": 0.72,
-    "topOrigins": [
-      {"location": "Rio de Janeiro/RJ", "percent": 45},
-      {"location": "São Paulo/Capital", "percent": 30},
-      {"location": "S. J. Campos/SP", "percent": 10}
-    ],
-    "insight": "Destino ferroviário histórico com demanda constante.",
-    "weather": { "daily": [ {"max": 22, "cond": "Ensolarado"}, {"max": 23, "cond": "Limpo"}, {"max": 21, "cond": "Nublado"}, {"max": 20, "cond": "Parcial. Nublado"}, {"max": 19, "cond": "Limpo"} ] }
-  },
-  "serra_negra_sp": {
-    "name": "Serra Negra (SP)",
-    "timeline": [55, 58, 60, 59, 62, 65, 68, 70],
-    "recentChange": 0.07,
-    "persistence": 0.80,
-    "sentiment": 0.85,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.75,
-    "elasticityIndex": 0.70,
-    "bookingPressure": 0.80,
-    "proximityTrigger": 0.88,
-    "socialBuzz": 0.75,
-    "audienceProfile": 0.65,
-    "stayIntent": 0.65,
-    "confidence": 0.88,
-    "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 55},
-      {"location": "Campinas/SP", "percent": 25},
-      {"location": "Santos/SP", "percent": 10}
-    ],
-    "insight": "Forte apelo para compras e turismo de malhas.",
-    "weather": { "daily": [ {"max": 25, "cond": "Ensolarado"}, {"max": 26, "cond": "Limpo"}, {"max": 24, "cond": "Nublado"}, {"max": 23, "cond": "Parcial. Nublado"}, {"max": 22, "cond": "Limpo"} ] }
-  },
-  "sao_lourenco_mg": {
-    "name": "São Lourenço (MG)",
-    "timeline": [45, 48, 50, 49, 52, 55, 58, 60],
-    "recentChange": 0.06,
-    "persistence": 0.78,
-    "sentiment": 0.84,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.65,
-    "elasticityIndex": 0.60,
-    "bookingPressure": 0.75,
-    "proximityTrigger": 0.80,
-    "socialBuzz": 0.70,
-    "audienceProfile": 0.50,
-    "stayIntent": 0.72,
-    "confidence": 0.84,
-    "topOrigins": [
-      {"location": "Rio de Janeiro/RJ", "percent": 50},
-      {"location": "São Paulo/Capital", "percent": 25},
-      {"location": "Belo Horizonte/MG", "percent": 15}
-    ],
-    "insight": "Circuito das Águas com foco em bem-estar.",
-    "weather": { "daily": [ {"max": 26, "cond": "Ensolarado"}, {"max": 27, "cond": "Limpo"}, {"max": 25, "cond": "Nublado"}, {"max": 24, "cond": "Parcial. Nublado"}, {"max": 23, "cond": "Limpo"} ] }
-  },
-  "goncalves_mg": {
-    "name": "Gonçalves (MG)",
-    "timeline": [35, 38, 40, 39, 42, 45, 48, 50],
-    "recentChange": 0.08,
-    "persistence": 0.70,
-    "sentiment": 0.90,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.92,
-    "elasticityIndex": 0.85,
-    "bookingPressure": 0.85,
-    "proximityTrigger": 0.90,
-    "socialBuzz": 0.82,
-    "audienceProfile": 0.35,
-    "stayIntent": 0.70,
-    "confidence": 0.78,
-    "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 75},
-      {"location": "Campinas/SP", "percent": 15},
-      {"location": "S. J. Campos/SP", "percent": 5}
-    ],
-    "insight": "Destaque para hospedagens de charme e isolamento.",
-    "weather": { "daily": [ {"max": 19, "cond": "Limpo"}, {"max": 18, "cond": "Ensolarado"}, {"max": 20, "cond": "Limpo"}, {"max": 17, "cond": "Parcial. Nublado"}, {"max": 16, "cond": "Nublado"} ] }
-  },
-  "santo_antonio_pinhal_sp": {
-    "name": "Santo Antônio do Pinhal (SP)",
-    "timeline": [38, 40, 42, 41, 45, 47, 50, 52],
-    "recentChange": 0.07,
-    "persistence": 0.70,
-    "sentiment": 0.84,
-    "climateProfile": "cold",
-    "climateSensitivity": 0.92,
-    "elasticityIndex": 0.80,
-    "bookingPressure": 0.82,
-    "proximityTrigger": 0.84,
-    "socialBuzz": 0.75,
-    "audienceProfile": 0.45,
-    "stayIntent": 0.68,
-    "confidence": 0.76,
-    "topOrigins": [
-      {"location": "São Paulo/Capital", "percent": 72},
-      {"location": "S. J. Campos/SP", "percent": 12},
-      {"location": "Campinas/SP", "percent": 10}
-    ],
-    "insight": "Alternativa tranquila a Campos do Jordão em alta.",
-    "weather": { "daily": [ {"max": 21, "cond": "Ensolarado"}, {"max": 22, "cond": "Limpo"}, {"max": 20, "cond": "Parcial. Nublado"}, {"max": 19, "cond": "Nublado"}, {"max": 18, "cond": "Limpo"} ] }
-  }
+    "monte_verde_mg": {
+        "name": "Monte Verde",
+        "recentChange": 0.3467,
+        "persistence": 0.7007,
+        "timeline": [
+            53.1,
+            62.7,
+            38.9,
+            42.6,
+            47.1,
+            49.6,
+            65.4,
+            66.5
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Demanda por Monte Verde segue em alta. Foco em pacotes de experiência gastronômica.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "campos_do_jordao_sp": {
+        "name": "Campos do Jordão",
+        "recentChange": 0.2873,
+        "persistence": 0.7592,
+        "timeline": [
+            61.4,
+            67.1,
+            53.4,
+            55.0,
+            55.4,
+            58.3,
+            81.0,
+            80.2
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Campos do Jordão apresenta comportamento em alta. Otimizar tarifas para o próximo final de semana.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "gramado_canela_rs": {
+        "name": "Gramado + Canela",
+        "recentChange": 0.0776,
+        "persistence": 0.826,
+        "timeline": [
+            60.9,
+            64.3,
+            64.3,
+            62.6,
+            71.7,
+            64.1,
+            87.9,
+            76.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Serra Gaúcha em alta. Oportunidade para campanhas de antecipação de temporada.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "pocos_de_caldas_mg": {
+        "name": "Poços de Caldas",
+        "recentChange": 0.1322,
+        "persistence": 0.8758,
+        "timeline": [
+            74.6,
+            75.1,
+            68.3,
+            72.1,
+            73.9,
+            76.0,
+            83.4,
+            86.8
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Turismo de águas em Poços em alta. Manter visibilidade em canais diretos.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "sao_bento_sapucai_sp": {
+        "name": "São Bento do Sapucaí",
+        "recentChange": 1.9104,
+        "persistence": 0,
+        "timeline": [
+            40.7,
+            33.4,
+            19.3,
+            9.4,
+            8.1,
+            25.9,
+            68.4,
+            89.3
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Destino de natureza em alta. Potencial para turismo de aventura e isolamento.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "passa_quatro_mg": {
+        "name": "Passa Quatro",
+        "recentChange": 1.9928,
+        "persistence": 0,
+        "timeline": [
+            0.0,
+            12.7,
+            0.0,
+            12.1,
+            0.0,
+            13.7,
+            57.0,
+            57.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Passa Quatro em alta. Foco no público regional e ferroviário.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "serra_negra_sp": {
+        "name": "Serra Negra",
+        "recentChange": 0.4653,
+        "persistence": 0.6196,
+        "timeline": [
+            73.1,
+            65.9,
+            53.1,
+            50.7,
+            42.0,
+            56.1,
+            77.0,
+            84.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Circuito das Águas em alta. Excelente para ações de última hora.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "sao_lourenco_mg": {
+        "name": "São Lourenço",
+        "recentChange": 0.3138,
+        "persistence": 0.8029,
+        "timeline": [
+            68.1,
+            73.4,
+            67.7,
+            69.7,
+            60.4,
+            68.6,
+            83.3,
+            92.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "São Lourenço em alta. Monitorar concorrência direta no Sul de Minas.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "goncalves_mg": {
+        "name": "Gonçalves",
+        "recentChange": 0.6495,
+        "persistence": 0.4081,
+        "timeline": [
+            44.0,
+            50.4,
+            36.9,
+            55.6,
+            40.3,
+            33.4,
+            62.6,
+            66.5
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Gonçalves em alta. Destino boutique em crescimento, ideal para casais.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    },
+    "santo_antonio_pinhal_sp": {
+        "name": "Santo Antônio do Pinhal",
+        "recentChange": 0.5149,
+        "persistence": 0.5039,
+        "timeline": [
+            29.7,
+            39.3,
+            32.7,
+            19.7,
+            23.1,
+            32.1,
+            48.0,
+            49.3
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Santo Antônio em alta. Proximidade com Campos do Jordão favorece transbordo de demanda.",
+        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
+    }
 }
