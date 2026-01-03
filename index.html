@@ -138,13 +138,6 @@
             text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s;
         }
         .modal-btn:hover { background: #00e0ff; }
-        
-        .modal-cancel-btn {
-            display: block; margin: 15px auto 0; background: transparent; border: none;
-            color: var(--text-dim); font-size: 0.8rem; font-weight: 600; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s;
-        }
-        .modal-cancel-btn:hover { color: #fff; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -266,14 +259,12 @@ transformamos consultas dispersas em pulso real de mercado, com histórico, cont
             </div>
             <div id="error-message" class="error-message"></div>
             <button class="modal-btn" onclick="validateModalPassword()">ACESSAR</button>
-            <button class="modal-cancel-btn" onclick="hideModal()">CANCELAR</button>
         </div>
     </div>
 
     <script>
         const PASSWORDS = ["testecliente", "abrturbo"];
         function showModal() { document.getElementById('custom-modal').style.display = 'flex'; document.getElementById('modal-pass').focus(); document.getElementById('error-message').innerHTML = ''; }
-        function hideModal() { document.getElementById('custom-modal').style.display = 'none'; document.getElementById('modal-pass').value = ''; }
         function validateModalPassword() {
             const input = document.getElementById('modal-pass').value.toLowerCase().trim();
             if (PASSWORDS.includes(input)) { window.location.href = 'radar.html'; } 
