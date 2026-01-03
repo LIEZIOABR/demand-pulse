@@ -3,321 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABR — Central de Inteligência</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>ABR — Central de Inteligência Estratégica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cyan: #00c6ff;
+            --accent: #00c6ff;
             --bg: #000000;
-            --panel: rgba(15, 18, 22, 0.75 );
-            --border: rgba(0, 198, 255, 0.3);
+            --panel: rgba(15, 18, 22, 0.75  );
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --text-main: #eaf3ff;
+            --text-dim: #9ca3af;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { 
-            background: var(--bg); 
-            color: #fff; 
-            font-family: 'Poppins', sans-serif; 
-            overflow-x: hidden;
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            overflow-x: hidden; 
             min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.25; }
 
-        .content-wrapper {
-            position: relative;
-            z-index: 2;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
 
-        .logo { height: 80px; margin-bottom: 2rem; filter: drop-shadow(0 0 15px var(--cyan)); }
+        .logo-section { margin-bottom: 30px; animation: fadeIn 1.5s ease-out; }
+        .logo-section img { max-width: 260px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); pointer-events: none; }
 
-        h1 { 
-            font-weight: 800; 
-            font-size: 2.5rem; 
-            letter-spacing: -1px; 
-            margin-bottom: 1rem;
-            text-transform: lowercase;
-        }
+        .hero-title { font-size: 2.1rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; transition: 0.3s; }
+        .hero-subtitle { color: var(--accent); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
+        .hero-tagline { font-size: 1.15rem; color: var(--text-main); font-weight: 500; font-style: italic; margin-bottom: 50px; opacity: 0.9; border-bottom: 1px solid rgba(0, 198, 255, 0.2); display: inline-block; padding-bottom: 10px; }
 
-        /* NOVA COPY ESTRATÉGICA */
-        .strategic-copy { 
-            color: #e2e8f0; 
-            font-weight: 300; 
-            font-size: 1.1rem; 
-            margin-bottom: 4rem;
-            text-transform: lowercase;
-            line-height: 1.8;
-            max-width: 850px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .strategic-copy span { color: var(--cyan); font-weight: 600; }
+        .systems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 60px; }
 
-        .grid-systems {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 5rem;
-        }
-
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2.5rem;
-            backdrop-filter: blur(10px);
+        .card { 
+            background: var(--panel); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid var(--panel-border); 
+            border-radius: 24px; 
+            padding: 40px; 
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
             position: relative;
             overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--cyan);
-            box-shadow: 0 0 30px rgba(0, 198, 255, 0.2);
-        }
-
-        .card.locked { opacity: 0.6; cursor: not-allowed; }
-        .card.locked:hover { transform: none; border-color: var(--border); }
-
-        .card h3 { font-weight: 800; margin-bottom: 1rem; text-transform: lowercase; }
-        .card p { font-size: 0.9rem; color: #ccc; line-height: 1.6; margin-bottom: 2rem; }
-
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background: transparent;
-            border: 1px solid var(--cyan);
-            color: var(--cyan);
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            text-transform: lowercase;
-        }
-
-        .card:hover .btn { background: var(--cyan); color: #000; }
-
-        .badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 0.3rem 0.8rem;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .dictionary-section {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 4rem;
-            text-align: left;
-            margin-top: 4rem;
-        }
-
-        .dictionary-header { text-align: center; margin-bottom: 3rem; }
-        .dictionary-header h2 { font-weight: 800; text-transform: lowercase; margin-bottom: 0.5rem; }
+        .card.active:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2); }
         
-        /* NOTA DE ATUALIZAÇÃO */
-        .update-note { font-size: 0.85rem; color: var(--cyan); opacity: 0.7; font-style: italic; font-weight: 400; text-transform: lowercase; }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
+        .card.disabled { 
+            opacity: 0.85; 
+            border: 1px solid rgba(0, 198, 255, 0.3); 
+            cursor: not-allowed;
+            animation: borderPulse 3s infinite;
         }
 
-        .kpi-item h4 { color: var(--cyan); font-weight: 800; margin-bottom: 0.5rem; text-transform: lowercase; }
-        .kpi-item p { font-size: 0.85rem; color: #aaa; line-height: 1.5; }
-
-        #authModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
+        @keyframes borderPulse {
+            0% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
+            50% { border-color: rgba(0, 198, 255, 0.4); box-shadow: 0 0 15px rgba(0, 198, 255, 0.15); }
+            100% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
         }
 
+        .card-icon-svg { width: 65px; height: 65px; margin-bottom: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+        .card-status { font-size: 0.75rem; font-weight: 800; padding: 8px 16px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
+        .status-online { background: rgba(0, 198, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .status-homolog { background: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid var(--panel-border); }
+
+        .btn-access { 
+            margin-top: 25px;
+            background: var(--accent); 
+            color: #000; 
+            padding: 14px 35px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .kpi-section { margin-top: 80px; text-align: left; background: rgba(255,255,255,0.02); padding: 50px; border-radius: 30px; border: 1px solid var(--panel-border); }
+        .section-label { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; display: block; text-align: center; }
+        .section-creds { color: #ffffff; font-size: 0.95rem; font-weight: 500; text-align: center; display: block; margin-bottom: 45px; opacity: 1; }
+        
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .kpi-group-title { color: var(--text-main); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 12px; }
+        .kpi-item { margin-bottom: 20px; }
+        .kpi-name { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; }
+        .kpi-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
+
+        footer { margin-top: 80px; padding-bottom: 40px; opacity: 0.7; font-size: 0.85rem; }
+        .footer-line { margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .footer-line svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; }
+
+        .whatsapp-btn {
+            position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.3s; z-index: 1000;
+        }
+        .whatsapp-btn:hover { transform: scale(1.1) rotate(10deg); }
+        .whatsapp-btn svg { width: 32px; height: 32px; fill: white; }
+
+        #custom-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85);
+            z-index: 9999; display: none; align-items: center; justify-content: center;
+        }
         .modal-content {
-            background: #111;
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid var(--cyan);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
+            background: var(--panel); backdrop-filter: blur(20px); border: 1px solid var(--accent);
+            border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; width: 90%;
+            box-shadow: 0 0 50px rgba(0, 198, 255, 0.3);
         }
-
-        input {
-            width: 100%;
-            padding: 1rem;
-            background: #000;
-            border: 1px solid var(--border);
-            color: var(--cyan);
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
+        .modal-title { color: var(--accent); margin-bottom: 10px; font-size: 1.5rem; font-weight: 700; }
+        .modal-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
+        
+        .input-group { position: relative; margin: 20px 0 10px; }
+        .modal-input {
+            background: #111; border: 1px solid var(--panel-border); color: var(--text-main); padding: 15px 50px 15px 20px;
+            border-radius: 10px; font-size: 1rem; text-align: left; outline: none; width: 100%;
         }
-
-        footer { margin-top: 6rem; padding-bottom: 4rem; color: #444; font-size: 0.8rem; }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 1.8rem; }
-            .dictionary-section { padding: 2rem; }
+        .toggle-password {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;
+            width: 20px; height: 20px; stroke: var(--text-dim); fill: none; stroke-width: 2;
         }
+        .error-message { color: #ff4141; font-size: 0.8rem; height: 1.2em; margin-bottom: 10px; }
+
+        .modal-btn {
+            background: var(--accent); color: #000; padding: 10px 25px; border-radius: 8px; font-weight: 700;
+            text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s;
+        }
+        .modal-btn:hover { background: #00e0ff; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;" ondragstart="return false;">
+    <canvas id="matrix-canvas"></canvas>
 
-    <canvas id="matrix"></canvas>
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="ABR Logo">
+        </div>
 
-    <div class="content-wrapper">
-        <img src="logo.png" alt="ABR Logo" class="logo">
-        <h1>central de inteligência</h1>
-        
-        <p class="strategic-copy">
-            inteligência de demanda baseada na leitura recorrente de <span>milhões de sinais digitais</span>.  
+        <h1 class="hero-title">Central de Inteligência</h1>
+        <p class="hero-subtitle">Big Data & Business Intelligence</p>
+        <p class="hero-tagline">inteligência de demanda baseada na leitura recorrente de milhões de sinais digitais.  
+transformamos consultas dispersas em pulso real de mercado, com histórico, contexto e direção.</p>
 
-            transformamos consultas dispersas em <span>pulso real de mercado</span>,  
-
-            com histórico, contexto e direção.
-        </p>
-
-        <div class="grid-systems">
-            <div class="card" onclick="openAuth()">
-                <span class="badge" style="color: var(--cyan)">ativo</span>
-                <h3>demand pulse radar</h3>
-                <p>análise em tempo real da demanda turística via big data google. métricas de share, pressão de reserva e elasticidade climática.</p>
-                <span class="btn">acessar sistema</span>
+        <div class="systems-grid">
+            <div class="card active">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 18c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z"/><path d="M12 14c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
+                <div class="card-title">Demand Pulse</div>
+                <p class="kpi-desc" style="text-align: center;">Análise estratégica de demanda e tendências para destinos turísticos.</p>
+                <div class="card-status status-online">Sistema Ativo</div>
+                <div class="btn-access" onclick="showModal()">Acessar Radar</div>
             </div>
 
-            <div class="card locked">
-                <span class="badge">homologação</span>
-                <h3>hotéis & pousadas</h3>
-                <p>módulo de monitoramento de performance individual e benchmarking competitivo. em fase de testes.</p>
-                <span class="btn">indisponível</span>
+            <div class="card disabled">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2-2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><circle cx="9" cy="7" r="1"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="15" cy="11" r="1"/></svg>
+                <div class="card-title">Hotéis & Pousadas</div>
+                <p class="kpi-desc" style="text-align: center;">Monitoramento de performance e benchmarking para meios de hospedagem.</p>
+                <div class="card-status status-homolog">Sistema em Homologação</div>
             </div>
 
-            <div class="card locked">
-                <span class="badge">homologação</span>
-                <h3>radar de estados</h3>
-                <p>visão macro da movimentação turística por unidades federativas e fluxos interestaduais.</p>
-                <span class="btn">indisponível</span>
+            <div class="card disabled">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <div class="card-title">Radar de Estados</div>
+                <p class="kpi-desc" style="text-align: center;">Visão macroeconômica e fluxo migratório de turistas por estado.</p>
+                <div class="card-status status-homolog">Sistema em Homologação</div>
             </div>
         </div>
 
-        <div class="dictionary-section">
-            <div class="dictionary-header">
-                <h2>dicionário de inteligência (kpis)</h2>
-                <p class="update-note">monitoramento contínuo com atualização diária à 00:00h</p>
-            </div>
+        <div class="kpi-section">
+            <span class="section-label">Dicionário de Inteligência (KPIs)</span>
+            <span class="section-creds">monitoramento contínuo com atualização diária à 00:00h</span>
+            
             <div class="kpi-grid">
-                <div class="kpi-item">
-                    <h4>market share</h4>
-                    <p>porcentagem de domínio do destino ou hotel em relação ao volume total de buscas do cluster.</p>
+                <div>
+                    <div class="kpi-group-title">Análise de Demanda</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Diferenciação de Escala (Gráfico vs. Cards)</div>
+                        <div class="kpi-desc">O gráfico principal mede o volume histórico global de buscas, enquanto os cards individuais medem a pressão tática e o comportamento específico de cada destino em tempo real.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Market Share & Dominância</div>
+                        <div class="kpi-desc">Proporção de buscas de um destino em relação aos seus concorrentes. Indica a liderança de mercado.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Pressão de Reserva</div>
+                        <div class="kpi-desc">Mede a urgência e a densidade de buscas por datas específicas, indicando lotação iminente.</div>
+                    </div>
                 </div>
-                <div class="kpi-item">
-                    <h4>pressão de reserva</h4>
-                    <p>indicador de urgência baseado na velocidade de buscas vs. proximidade de datas festivas.</p>
+
+                <div>
+                    <div class="kpi-group-title">Gatilhos Táticos</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Social Buzz & Velocidade Viral</div>
+                        <div class="kpi-desc">Detecta aceleração explosiva de interesse gerada por redes sociais e influenciadores, antecipando picos de demanda.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Atratividade Máxima & Condição Ideal</div>
+                        <div class="kpi-desc">Define o momento de pico de interesse onde a conversão é facilitada por fatores externos.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Humor do Mercado & Sentimento</div>
+                        <div class="kpi-desc">Análise qualitativa que define se o interesse do público é positivo, neutro ou de retração.</div>
+                    </div>
                 </div>
-                <div class="kpi-item">
-                    <h4>iec (elasticidade)</h4>
-                    <p>índice de elasticidade climática. mede o quanto o clima previsto altera a intenção de viagem.</p>
-                </div>
-                <div class="kpi-item">
-                    <h4>humor do mercado</h4>
-                    <p>análise de sentimento das buscas (positivo, neutro ou alerta) para ajuste de tom de voz.</p>
-                </div>
-                <div class="kpi-item">
-                    <h4>origem dominante</h4>
-                    <p>identificação geográfica do maior polo emissor de turistas para o destino no período.</p>
-                </div>
-                <div class="kpi-item">
-                    <h4>intenção de estadia</h4>
-                    <p>distribuição entre pernoite (hotelaria) e day-trip (visitantes de um dia).</p>
+
+                <div>
+                    <div class="kpi-group-title">Perfil & Clima</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Elasticidade Climática (IEC)</div>
+                        <div class="kpi-desc">Algoritmo que prevê o impacto da variação meteorológica na conversão real de reservas.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Intenção de Estadia (Pernoite vs Day-Trip)</div>
+                        <div class="kpi-desc">Diferencia o perfil de público que pretende dormir no destino ou apenas visitá-lo.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Grau de Confiança Estatística</div>
+                        <div class="kpi-desc">Transparência sobre a precisão dos dados baseada no volume de massa crítica processada.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <footer>
-            &copy; 2026 abr consultoria hoteleira | sistema de alta segurança
+            <div class="footer-line">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Sistema Blindado
+            </div>
+            <div class="footer-line">
+                @ Todos os direitos reservados a ABR Marketing Estratégico & Consultoria Hoteleira.
+            </div>
         </footer>
     </div>
 
-    <div id="authModal">
+    <a href="https://wa.me/5511999999999" class="whatsapp-btn" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48 2.242 2.242 3.48 5.227 3.48 8.557-5.332 11.888-11.888 11.888-2.019 0-3.999-.512-5.752-1.483l-6.231 1.709zm6.103-4.494l.352.208c1.61.955 3.461 1.46 5.381 1.46 5.755 0 10.435-4.68 10.435-10.435 0-2.778-1.082-5.39-3.046-7.354s-4.576-3.046-7.354-3.046c-5.756 0-10.435 4.679-10.435 10.435 0 2.108.632 4.169 1.826 5.928l.23.339-.997 3.642 3.735-.981z"/></svg>
+    </a>
+
+    <div id="custom-modal">
         <div class="modal-content">
-            <h3>acesso restrito</h3>
-            <input type="password" id="passInput" placeholder="digite sua senha">
-            <button class="btn" onclick="checkPass()" style="cursor: pointer; width: 100%;">entrar</button>
+            <h3 class="modal-title">SISTEMA RESTRITO</h3>
+            <p class="modal-subtitle">Insira a chave de acesso para o Demand Pulse.</p>
+            <div class="input-group">
+                <input type="password" id="modal-pass" class="modal-input" placeholder="CHAVE DE ACESSO" autofocus>
+                <svg class="toggle-password" id="toggle-pass" viewBox="0 0 24 24" onclick="togglePasswordVisibility(  )"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div id="error-message" class="error-message"></div>
+            <button class="modal-btn" onclick="validateModalPassword()">ACESSAR</button>
         </div>
     </div>
 
     <script>
-        // Matrix Effect - RESTAURADO AO ORIGINAL
-        const canvas = document.getElementById('matrix');
+        const PASSWORDS = ["testecliente", "abrturbo"];
+        function showModal() { document.getElementById('custom-modal').style.display = 'flex'; document.getElementById('modal-pass').focus(); document.getElementById('error-message').innerHTML = ''; }
+        function validateModalPassword() {
+            const input = document.getElementById('modal-pass').value.toLowerCase().trim();
+            if (PASSWORDS.includes(input)) { window.location.href = 'radar.html'; } 
+            else { document.getElementById('error-message').innerHTML = 'ACESSO NEGADO. Chave incorreta.'; document.getElementById('modal-pass').value = ''; document.getElementById('modal-pass').focus(); }
+        }
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('modal-pass');
+            const toggleIcon = document.getElementById('toggle-pass');
+            if (passInput.type === 'password') { passInput.type = 'text'; toggleIcon.style.stroke = 'var(--accent)'; } 
+            else { passInput.type = 'password'; toggleIcon.style.stroke = 'var(--text-dim)'; }
+        }
+        document.getElementById('modal-pass').addEventListener('keypress', function(e) { if (e.key === 'Enter') validateModalPassword(); });
+
+        const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^";
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-
-        for (let i = 0; i < columns; i++) drops[i] = 1;
-
-        function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#00c6ff";
-            ctx.font = fontSize + "px arial";
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        const cols = Math.floor(w / 20);
+        const ypos = Array(cols).fill(0);
+        function matrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'rgba(0, 198, 255, 0.4)'; ctx.font = '15pt monospace';
+            ypos.forEach((y, ind) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                const x = ind * 20; ctx.fillText(text, x, y);
+                if (y > 100 + Math.random() * 10000) ypos[ind] = 0; else ypos[ind] = y + 20;
+            });
         }
+        setInterval(matrix, 90);
 
-        setInterval(draw, 33);
-
-        // Auth Logic
-        function openAuth() {
-            document.getElementById('authModal').style.display = 'flex';
-            document.getElementById('passInput').focus();
-        }
-
-        function checkPass() {
-            const pass = document.getElementById('passInput').value;
-            if (pass === "testecliente" || pass === "abrturbo") {
-                window.location.href = "radar.html";
-            } else {
-                alert("Senha incorreta. Acesso negado.");
-            }
-        }
-
-        // Security - RESTAURADO AO ORIGINAL
-        document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
         }
     </script>
 </body>
