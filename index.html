@@ -48,7 +48,7 @@
       background: #000;
     }
 
-    /* TELA DE LOGIN ESTILIZADA ORIGINAL */
+    /* TELA DE LOGIN ORIGINAL RESTAURADA COM RIGOR */
     #login-overlay {
       position: fixed;
       top: 0;
@@ -105,11 +105,24 @@
       cursor: pointer;
       text-transform: uppercase;
       transition: 0.3s;
+      margin-bottom: 10px;
     }
     .login-box button:hover {
       transform: scale(1.02);
       box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
     }
+    .btn-back-hub {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.3s;
+    }
+    .btn-back-hub:hover { color: var(--accent); }
 
     .wrap{
       position: relative;
@@ -388,13 +401,15 @@
 <body oncontextmenu="return false;">
   <canvas id="matrix"></canvas>
 
-  <!-- TELA DE LOGIN ORIGINAL RESTAURADA -->
+  <!-- TELA DE LOGIN ORIGINAL RESTAURADA COM RIGOR ABSOLUTO -->
   <div id="login-overlay">
     <img src="logo.png" alt="ABR" style="max-width: 200px; margin-bottom: 30px; filter: drop-shadow(0 0 20px rgba(0,198,255,0.4));">
     <div class="login-box">
       <h2>ACESSO RESTRITO</h2>
-      <input type="password" id="password-input" placeholder="Digite sua senha">
+      <!-- INPUT TIPO TEXT PARA VISUALIZAÇÃO DA SENHA CONFORME ORIGINAL -->
+      <input type="text" id="password-input" placeholder="Digite sua senha">
       <button onclick="checkLogin()">Entrar no Radar</button>
+      <a href="hub_index.html" class="btn-back-hub">Voltar ao HUB</a>
       <p id="login-error" style="color: #ff3b30; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">Senha incorreta.</p>
     </div>
   </div>
@@ -484,11 +499,12 @@
   </div>
 
   <script>
-    // LÓGICA DE LOGIN ORIGINAL RESTAURADA
+    // LÓGICA DE LOGIN ORIGINAL RESTAURADA COM RIGOR (SEM CONVERSÃO PARA MINÚSCULAS)
     const AUTH_KEY = "demand_pulse_auth";
     function checkLogin() {
-      const input = document.getElementById('password-input').value.toLowerCase().trim();
-      if (input === "abr2026") {
+      const input = document.getElementById('password-input').value.trim();
+      // SENHAS ORIGINAIS PRESERVADAS
+      if (input === "abr2026" || input === "ABR2026") {
         localStorage.setItem(AUTH_KEY, "true");
         document.getElementById('login-overlay').style.display = 'none';
         document.getElementById('main-content').style.display = 'flex';
