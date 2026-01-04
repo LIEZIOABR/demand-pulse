@@ -4,89 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEMAND PULSE — ABR ALL-IN-ONE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0"></script>
     <style>
-        :root {
-            --matrix-green: #00ff41;
-            --matrix-dark: #0d0208;
-            --card-bg: rgba(13, 18, 23, 0.95);
-            --accent-blue: #00a3ff;
-            --accent-green: #39ff14;
-            --text-main: #e6edf3;
-            --text-dim: #8b949e;
-        }
+        :root { --accent: #00c6ff; --bg: #000000; --panel: rgba(15, 18, 22, 0.75  ); --panel-border: rgba(255, 255, 255, 0.1); --text-main: #eaf3ff; --text-dim: #9ca3af; --accent-green: #39ff14; --accent-red: #ff3131; --shadow: 0 14px 40px rgba(0,0,0,0.85); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
-        body { background-color: var(--matrix-dark); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; }
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--matrix-dark); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .login-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--accent-blue); text-align: center; max-width: 400px; width: 90%; box-shadow: 0 0 30px rgba(0, 163, 255, 0.3); }
-        .login-box input { width: 100%; padding: 15px; margin: 20px 0; background: #161b22; border: 1px solid #30363d; color: white; border-radius: 10px; text-align: center; font-size: 1.1rem; }
-        .login-box button { width: 100%; padding: 15px; background: var(--accent-blue); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; display: none; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: 'Poppins', sans-serif; overflow-x: hidden; min-height: 100vh; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
         header { text-align: center; margin-bottom: 40px; padding-top: 20px; position: relative; }
         .header-nav { position: absolute; top: 20px; left: 0; display: flex; gap: 10px; z-index: 10; }
-        .btn-nav { border: none; padding: 10px 15px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; }
-        .btn-logout { background: #ff3131; color: white; box-shadow: 0 4px 15px rgba(255, 49, 49, 0.3); }
-        .btn-home { background: var(--accent-blue); color: white; box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3); }
-        .logo { max-width: 240px; width: 100%; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(0, 163, 255, 0.4)); }
-        h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { color: var(--text-dim); font-size: 0.95rem; max-width: 600px; margin: 0 auto; line-height: 1.5; }
-        .controls { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 24px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        select { background: #161b22; border: 1px solid #30363d; color: white; padding: 12px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; }
-        .btn-update { grid-column: 1 / -1; background: linear-gradient(135deg, #00a3ff 0%, #0066ff 100%); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .bi-section { background: var(--card-bg); border: 1px solid rgba(0, 163, 255, 0.2); border-radius: 20px; padding: 24px; margin-bottom: 30px; }
-        .bi-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent-blue); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-        .bi-legend { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+        .btn-nav { border: 1px solid var(--accent); padding: 8px 16px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.3s; text-transform: uppercase; text-decoration: none; background: rgba(0,0,0,0.8); color: var(--accent); box-shadow: 0 0 12px rgba(0,198,255,0.2); }
+        .btn-nav:hover { background: rgba(0,198,255,0.15); box-shadow: 0 0 20px rgba(0,198,255,0.4); }
+        .btn-logout { border-color: var(--accent-red); color: var(--accent-red); }
+        .btn-logout:hover { background: rgba(255,49,49,0.15); box-shadow: 0 0 20px rgba(255,49,49,0.4); }
+        .status-indicator { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-left: 10px; }
+        .status-live { background: rgba(57, 255, 20, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .status-fallback { background: rgba(255, 234, 0, 0.2); color: #ffea00; border: 1px solid #ffea00; }
+        .logo { max-width: 230px; width: 100%; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); }
+        h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
+        .subtitle { color: var(--text-dim); font-size: 0.9rem; max-width: 700px; margin: 0 auto; line-height: 1.5; font-weight: 400; }
+        
+        /* CONTROLES E SELETOR DE DATA */
+        .controls { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; padding: 24px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; backdrop-filter: blur(14px); box-shadow: var(--shadow); }
+        .date-filter-group { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--panel-border); margin-bottom: 5px; align-items: center; }
+        .filter-label { font-size: 0.7rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+        select, input[type="date"] { background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border); color: white; padding: 10px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; font-family: inherit; outline: none; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        .btn-update { grid-column: 1 / -1; background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); color: #001018; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .btn-update:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,198,255,0.4); }
+        
+        .bi-section { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; margin-bottom: 30px; backdrop-filter: blur(14px); box-shadow: var(--shadow); }
+        .bi-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .bi-legend { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; display: block; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px; }
         .chart-container { height: 300px; width: 100%; }
-        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        .comparison-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; }
-        .dest-name { font-weight: 700; font-size: 1.1rem; }
-        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-        .status-up { background: rgba(57, 255, 20, 0.15); color: #39ff14; }
-        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; }
-        .status-down { background: rgba(255, 49, 49, 0.15); color: #ff3131; }
-        .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .metric-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 12px; }
-        .metric-label { font-size: 0.7rem; color: var(--text-dim); display: block; }
-        .metric-value { font-family: 'Fira Code', monospace; font-size: 1.2rem; font-weight: 600; }
-        .insight-box { background: rgba(0, 163, 255, 0.05); border: 1px solid rgba(0, 163, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #99d6ff; }
-        .weather-forecast { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .dashboard-grid { display: flex; align-items: flex-start; gap: 30px; }
+        .comparison-section { flex: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .sidebar { flex: 1; position: sticky; top: 20px; }
+        .sidebar-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; backdrop-filter: blur(18px); box-shadow: var(--shadow); height: 100%; min-height: 740px; display: flex; flex-direction: column; }
+        .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; min-height: 740px; position: relative; backdrop-filter: blur(18px); box-shadow: var(--shadow); }
+        .card:hover { border-color: rgba(0,198,255,0.4); }
+        .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; min-height: 100px; }
+        .dest-name { font-weight: 800; font-size: 1.1rem; line-height: 1.3; flex: 1; color: var(--text-main); }
+        .selos-stack { display: flex; flex-direction: column; gap: 5px; align-items: flex-end; }
+        .atratividade-selo { font-size: 0.6rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; white-space: nowrap; }
+        .selo-alta { background: var(--accent-green); color: #000; }
+        .selo-media { background: var(--accent); color: #000; }
+        .selo-urgente { background: var(--accent-red); color: #fff; }
+        .selo-gatilho { background: #ffea00; color: #000; }
+        .selo-share { background: #fff; color: #000; font-weight: 900; }
+        .selo-buzz { background: #ff00ff; color: #fff; animation: pulse-buzz 1.5s infinite; }
+        @keyframes pulse-buzz { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: inline-block; margin-top: 5px; text-transform: uppercase; }
+        .status-up { background: rgba(57, 255, 20, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+        .status-down { background: rgba(255, 49, 49, 0.15); color: var(--accent-red); border: 1px solid var(--accent-red); }
+        .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .metric-box { background: rgba(255, 255, 255, 0.04); padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .metric-label { font-size: 0.65rem; color: var(--text-dim); display: block; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .metric-value { font-family: 'Fira Code', monospace; font-size: 1rem; font-weight: 700; color: var(--text-main); }
+        .origin-box { background: rgba(255, 234, 0, 0.05); border: 1px solid rgba(255, 234, 0, 0.2); padding: 12px; border-radius: 14px; font-size: 0.75rem; color: #ffea00; font-weight: 600; }
+        .audience-box { background: rgba(255, 255, 255, 0.04); padding: 12px; border-radius: 14px; font-size: 0.75rem; display: flex; align-items: center; justify-content: space-between; }
+        .audience-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; font-weight: 800; }
+        .audience-icons { display: flex; gap: 12px; }
+        .audience-item { cursor: help; display: flex; align-items: center; gap: 4px; font-weight: 700; }
+        .stay-box { background: rgba(0, 198, 255, 0.05); padding: 12px; border-radius: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .stay-header { display: flex; justify-content: space-between; align-items: center; }
+        .stay-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+        .stay-info-icon { cursor: help; color: var(--accent); font-size: 0.85rem; }
+        .stay-bar-bg { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; display: flex; }
+        .stay-bar-fill { height: 100%; background: var(--accent); box-shadow: 0 0 10px rgba(0,198,255,0.5); }
+        .stay-values { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 700; color: var(--text-main); }
+        .elasticity-box { background: rgba(255, 255, 255, 0.03); padding: 12px; border-radius: 14px; border: 1px dashed rgba(255,255,255,0.15); }
+        .elasticity-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .elasticity-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+        .elasticity-bar-bg { height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; position: relative; overflow: hidden; }
+        .elasticity-center { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: rgba(255,255,255,0.4); z-index: 2; }
+        .elasticity-fill { height: 100%; position: absolute; top: 0; transition: 0.5s; }
+        .elasticity-pos { background: var(--accent-green); left: 50%; box-shadow: 0 0 10px rgba(57,255,20,0.4); }
+        .elasticity-neg { background: var(--accent-red); right: 50%; box-shadow: 0 0 10px rgba(255,49,49,0.4); }
+        .insight-box { background: rgba(0, 198, 255, 0.05); border: 1px solid rgba(0, 198, 255, 0.2); padding: 14px; border-radius: 16px; font-size: 0.85rem; color: #99d6ff; min-height: 60px; display: flex; align-items: center; line-height: 1.4; }
+        .weather-forecast { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: auto; }
         .forecast-day { text-align: center; flex: 1; }
-        .forecast-temp { font-size: 0.7rem; font-weight: 600; display: block; }
-        .forecast-cond { font-size: 0.55rem; color: var(--text-dim); display: block; }
-        .sidebar-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 24px; }
-        #boletim-texto { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; white-space: pre-wrap; }
-        footer { text-align: center; margin-top: 60px; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; }
-        @media (max-width: 968px) { .dashboard-grid { grid-template-columns: 1fr; } .header-nav { position: static; margin-bottom: 20px; width: 100%; } }
+        .forecast-temp { font-size: 0.8rem; font-weight: 700; display: block; color: var(--text-main); }
+        .forecast-cond { font-size: 0.6rem; color: var(--text-dim); display: block; margin-top: 2px; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .sidebar-title { font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+        .btn-copy { background: rgba(0, 198, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-copy:hover { background: rgba(0, 198, 255, 0.2); }
+        #boletim-texto { font-size: 0.75rem; color: var(--text-dim); line-height: 1.6; font-family: 'Fira Code', monospace; white-space: pre-wrap; word-wrap: break-word; }
+        footer { margin-top: 40px; padding: 20px 0; text-align: center; opacity: 0.6; font-size: 0.75rem; border-top: 1px solid var(--panel-border); }
+        @media (max-width: 1024px) { .dashboard-grid { flex-direction: column; } .comparison-section { width: 100%; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body oncontextmenu="return false;" ondragstart="return false;">
     <canvas id="matrix-canvas"></canvas>
-    <div id="login-overlay">
-        <img src="logo.png" alt="ABR" style="max-width: 200px; margin-bottom: 30px;">
-        <div class="login-box">
-            <h2 style="color: var(--accent-blue);">ACESSO RESTRITO</h2>
-            <input type="password" id="password-input" placeholder="Digite sua senha">
-            <button onclick="checkLogin()">Entrar no Radar</button>
-            <p id="login-error" style="color: #ff3131; font-size: 0.8rem; margin-top: 15px; display: none;">Senha incorreta.</p>
-        </div>
-    </div>
-    <div class="container" id="main-content">
+    <div class="container">
         <header>
             <div class="header-nav">
-                <a href="https://inspiring-peony-6a9450.netlify.app/" class="btn-nav btn-home">Voltar ao HUB</a>
-                <button class="btn-nav btn-logout" onclick="logout()">Sair do Sistema</button>
+                <button class="btn-nav" onclick="window.location.href='index.html'">← Voltar HUB</button>
+                <button class="btn-nav btn-logout" onclick="logout()">Sair</button>
             </div>
-            <img src="logo.png" alt="ABR" class="logo">
-            <h1>DEMAND PULSE — ABR ALL-IN-ONE</h1>
-            <h2 style="font-size: 1.1rem; font-weight: 600; color: var(--accent-blue); margin-bottom: 15px; letter-spacing: 2px;">BIG DATA & BUSINESS INTELLIGENCE</h2>
-            <p class="subtitle">Análise Estratégica de Demanda e Inteligência de Mercado</p>
+            <img src="logo.png" alt="ABR Logo" class="logo">
+            <h1>DEMAND PULSE <span id="data-source-indicator" class="status-indicator status-live">🟢 BD ATIVO</span></h1>
+            <p class="subtitle">Inteligência de demanda em tempo real. Análise contínua de milhões de sinais digitais transformados em pulso de mercado.</p>
         </header>
+        
         <div class="controls">
+            <div class="date-filter-group">
+                <span class="filter-label">📅 Período:</span>
+                <select id="date-preset" onchange="handleDatePreset()">
+                    <option value="30">Últimos 30 dias</option>
+                    <option value="current_month">Mês Atual</option>
+                    <option value="last_month">Mês Anterior</option>
+                    <option value="custom">Personalizado</option>
+                </select>
+                <div id="custom-dates" style="display:none; gap:10px; align-items:center;">
+                    <input type="date" id="start-date">
+                    <span style="font-size:0.7rem; color:var(--text-dim)">até</span>
+                    <input type="date" id="end-date">
+                </div>
+            </div>
             <select id="dest-1">
-                <option value="monte_verde_mg">Monte Verde (MG) - Destino Âncora</option>
+                <option value="monte_verde_mg" selected>Monte Verde (MG)</option>
                 <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
                 <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
                 <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
@@ -97,116 +138,238 @@
                 <option value="goncalves_mg">Gonçalves (MG)</option>
                 <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
             </select>
-            <select id="dest-2"><option value="campos_do_jordao_sp" selected>Campos do Jordão (SP)</option><option value="monte_verde_mg">Monte Verde (MG)</option><option value="gramado_canela_rs">Gramado + Canela (RS)</option><option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option><option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option><option value="passa_quatro_mg">Passa Quatro (MG)</option><option value="serra_negra_sp">Serra Negra (SP)</option><option value="sao_lourenco_mg">São Lourenço (MG)</option><option value="goncalves_mg">Gonçalves (MG)</option><option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option></select>
-            <select id="dest-3"><option value="gramado_canela_rs" selected>Gramado + Canela (RS)</option><option value="monte_verde_mg">Monte Verde (MG)</option><option value="campos_do_jordao_sp">Campos do Jordão (SP)</option><option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option><option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option><option value="passa_quatro_mg">Passa Quatro (MG)</option><option value="serra_negra_sp">Serra Negra (SP)</option><option value="sao_lourenco_mg">São Lourenço (MG)</option><option value="goncalves_mg">Gonçalves (MG)</option><option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option></select>
-            <select id="dest-4"><option value="goncalves_mg" selected>Gonçalves (MG)</option><option value="monte_verde_mg">Monte Verde (MG)</option><option value="campos_do_jordao_sp">Campos do Jordão (SP)</option><option value="gramado_canela_rs">Gramado + Canela (RS)</option><option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option><option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option><option value="passa_quatro_mg">Passa Quatro (MG)</option><option value="serra_negra_sp">Serra Negra (SP)</option><option value="sao_lourenco_mg">São Lourenço (MG)</option><option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option></select>
+            <select id="dest-2">
+                <option value="campos_do_jordao_sp" selected>Campos do Jordão (SP)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-3">
+                <option value="gramado_canela_rs" selected>Gramado + Canela (RS)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-4">
+                <option value="goncalves_mg" selected>Gonçalves (MG)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
             <button class="btn-update" onclick="updateDashboard()">Atualizar Análise de BI</button>
         </div>
+
         <div class="bi-section">
             <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência</div>
             <span class="bi-legend">💡 Gráfico: Volume de Interesse (0-100) | Cards: Variação Percentual (%) de crescimento recente.</span>
             <div class="chart-container"><canvas id="biChart"></canvas></div>
         </div>
+
         <div class="dashboard-grid">
             <div class="comparison-section" id="cards-container"></div>
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <span style="font-weight:700; display:block; margin-bottom:15px;">Boletim ABR ALL-IN-ONE</span>
-                    <div id="boletim-texto">Carregando...</div>
+                    <div class="sidebar-header"><span class="sidebar-title">Boletim Estratégico ABR</span><button class="btn-copy" onclick="copyBoletim()">Copiar Boletim</button></div>
+                    <div id="boletim-texto">Carregando inteligência...</div>
                 </div>
             </div>
         </div>
-        <footer>DEMAND PULSE — ABR ALL-IN-ONE — ATUALIZAÇÃO DIÁRIA</footer>
+        <footer>© 2026 ABR CONSULTORIA & INTELIGÊNCIA — DEMAND PULSE v25.1 (Supabase Live)</footer>
     </div>
+
     <script>
-        const SENHAS_VALIDAS = ["abr2025", "testeabr"];
-        function checkLogin() {
-            const input = document.getElementById('password-input').value.toLowerCase().trim();
-            if(SENHAS_VALIDAS.includes(input)) {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                loadData();
-            } else { document.getElementById('login-error').style.display = 'block'; }
-        }
-        function logout() { if(confirm("Sair?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
+        const SUPABASE_URL = 'https://torogxfslkqwqzkclhay.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvcm9neGZzbGtxd3F6a2NsaGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NTA2NDAsImV4cCI6MjA4MzAyNjY0MH0.uzl18r5B8vZGA0X90E8mRo9ZgH0-4aZwDQc5mH3p94A';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
         
-        let pulseData = {};
-        let myChart = null;
+        function logout() { if(confirm("Sair do sistema?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
+        function copyBoletim( ) { const text = document.getElementById('boletim-texto').innerText; navigator.clipboard.writeText(text).then(() => { const btn = document.querySelector('.btn-copy'); const originalText = btn.innerText; btn.innerText = "Copiado!"; btn.style.background = "var(--accent-green)"; btn.style.color = "black"; setTimeout(() => { btn.innerText = originalText; btn.style.background = "rgba(0, 198, 255, 0.1)"; btn.style.color = "var(--accent)"; }, 2000); }); }
+        
+        let pulseData = {}; let myChart = null; let dataSourceMode = 'supabase';
+        let historicalSnapshots = [];
 
-        async function loadData() {
-            try {
-                const response = await fetch('pulse-data.json');
-                pulseData = await response.json();
-                updateDashboard();
-            } catch (e) { console.error("Erro ao carregar dados."); }
+        function handleDatePreset() {
+            const preset = document.getElementById('date-preset').value;
+            const customDiv = document.getElementById('custom-dates');
+            customDiv.style.display = preset === 'custom' ? 'flex' : 'none';
         }
 
-        function updateDashboard() {
-            const container = document.getElementById('cards-container');
-            container.innerHTML = '';
-            const chartData = { labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'], datasets: [] };
-            const colors = ['#00a3ff', '#39ff14', '#ff3131', '#ffea00'];
-            let boletim = "BOLETIM DEMAND PULSE\n\n";
+        async function loadDataFromSupabase() { 
+            try { 
+                // BUSCA HISTÓRICO: Agora pegamos os últimos 100 registros para ter dados para o seletor
+                const { data, error } = await supabase.from('demand_pulse_snapshots')
+                    .select('payload, captured_at')
+                    .order('captured_at', { ascending: false })
+                    .limit(100);
+                
+                if (error) throw error; 
+                if (!data || data.length === 0) throw new Error('Dados vazios'); 
+                
+                historicalSnapshots = data;
+                // O dado mais recente continua sendo o padrão para os cards
+                const latestPayload = data[0].payload; 
+                pulseData = transformSupabaseData(latestPayload);
+                dataSourceMode = 'supabase'; 
+                updateDataSourceIndicator(true); 
+                return true;
+            } catch (error) { console.error('Falha ao carregar do Supabase:', error); return false; } 
+        }
 
-            for (let i = 1; i <= 4; i++) {
-                const id = document.getElementById(`dest-${i}`).value;
-                const data = pulseData[id];
-                if (data) {
-                    const rc = (data.recentChange * 100).toFixed(1);
-                    const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'});
-                    container.innerHTML += `
-                        <div class="card">
-                            <div class="card-header"><span class="dest-name">${data.name}</span><span class="status-badge ${status.c}">${status.l}</span></div>
-                            <div class="metrics-row">
-                                <div class="metric-box"><span class="metric-label">Variação</span><span class="metric-value">${rc}%</span></div>
-                                <div class="metric-box"><span class="metric-label">Persistência</span><span class="metric-value">${(data.persistence*100).toFixed(0)}%</span></div>
-                            </div>
-                            <div class="insight-box">💡 ${data.insight}</div>
-                            <div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div>
-                        </div>`;
-                    chartData.datasets.push({ label: data.name, data: data.timeline, borderColor: colors[i-1], backgroundColor: colors[i-1] + '22', tension: 0.4, fill: true });
-                    boletim += `• ${data.name}: ${status.l} (${rc}% var)\n`;
-                }
+        function transformSupabaseData(payload) { 
+            const transformed = {}; 
+            if (payload && payload.destinations) { 
+                payload.destinations.forEach(dest => { 
+                    const idKey = dest.id ? dest.id.toLowerCase() : "";
+                    const nameKey = dest.name ? dest.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_').replace(/[^\w]/g, '') : "";
+                    const finalData = { ...dest, timeline: dest.timeline || [45, 48, 52, 55, 58, 62, 65, 68] };
+                    if (idKey) transformed[idKey] = finalData;
+                    if (nameKey) transformed[nameKey] = finalData;
+                }); 
+            } 
+            return transformed; 
+        }
+
+        function updateDataSourceIndicator(isSupabase) { 
+            const indicator = document.getElementById('data-source-indicator'); 
+            indicator.className = isSupabase ? 'status-indicator status-live' : 'status-indicator status-fallback'; 
+            indicator.textContent = isSupabase ? '🟢 BD ATIVO' : '🟡 MODO FALLBACK'; 
+        }
+
+        async function loadData() { await loadDataFromSupabase(); updateDashboard(); }
+
+        function getFilteredTimeline(destId) {
+            const preset = document.getElementById('date-preset').value;
+            let startDate, endDate = new Date();
+            
+            if (preset === '30') {
+                startDate = new Date(); startDate.setDate(endDate.getDate() - 30);
+            } else if (preset === 'current_month') {
+                startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+            } else if (preset === 'last_month') {
+                startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 1, 1);
+                endDate = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+            } else if (preset === 'custom') {
+                startDate = new Date(document.getElementById('start-date').value);
+                endDate = new Date(document.getElementById('end-date').value);
             }
-            document.getElementById('boletim-texto').innerText = boletim;
-            renderChart(chartData);
+
+            // Filtra os snapshots que estão dentro do período
+            const filtered = historicalSnapshots.filter(s => {
+                const d = new Date(s.captured_at);
+                return d >= startDate && d <= endDate;
+            }).reverse(); // Ordem cronológica
+
+            if (filtered.length > 0) {
+                return {
+                    labels: filtered.map(s => {
+                        const d = new Date(s.captured_at);
+                        return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+                    }),
+                    values: filtered.map(s => {
+                        const dest = s.payload.destinations.find(d => d.id.toLowerCase() === destId.toLowerCase());
+                        return dest ? dest.timeline[dest.timeline.length - 1] : 0;
+                    })
+                };
+            }
+            
+            // Fallback caso não tenha histórico suficiente ainda
+            return { labels: ['Sem Dados'], values: [0] };
         }
 
-        function renderChart(data) {
-            const ctx = document.getElementById('biChart').getContext('2d');
-            if (myChart) myChart.destroy();
-            myChart = new Chart(ctx, { type: 'line', data: data, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8b949e' } } } } });
+        function updateDashboard() { 
+            const container = document.getElementById('cards-container'); 
+            container.innerHTML = ''; 
+            const colors = ['#00c6ff', '#39ff14', '#ff3131', '#ffea00']; 
+            let totalInterestNow = 0; let totalInterestPrev = 0; const selectedDests = []; 
+            let globalLabels = [];
+            
+            const chartDatasets = [];
+
+            for(let i=1; i<=4; i++) { 
+                const id = document.getElementById(`dest-${i}`).value; 
+                let data = pulseData[id];
+                if(data) { 
+                    const timelineData = getFilteredTimeline(id);
+                    globalLabels = timelineData.labels;
+                    
+                    chartDatasets.push({
+                        label: data.name,
+                        data: timelineData.values,
+                        borderColor: colors[i-1],
+                        backgroundColor: colors[i-1] + '22',
+                        tension: 0.2,
+                        fill: true
+                    });
+
+                    const valNow = data.timeline[data.timeline.length - 1]; 
+                    const valPrev = data.timeline[data.timeline.length - 2]; 
+                    totalInterestNow += valNow; totalInterestPrev += valPrev; 
+                    selectedDests.push({id, data, valNow, valPrev}); 
+                } 
+            }
+            
+            let boletim = "ANÁLISE SEMANAL DE MERCADO\n\n🏆 DOMINÂNCIA RELATIVA (MARKET SHARE):\n"; 
+            selectedDests.forEach(d => { 
+                const shareNow = ((d.valNow / totalInterestNow) * 100).toFixed(1); 
+                const sharePrev = ((d.valPrev / totalInterestPrev) * 100).toFixed(1); 
+                const trend = shareNow > sharePrev ? "▲" : (shareNow < sharePrev ? "▼" : "●"); 
+                boletim += `• ${d.data.name}: ${shareNow}% ${trend}\n`; 
+            }); 
+            boletim += "----------------------------------\n\n";
+            
+            selectedDests.forEach((d, idx) => {
+                const data = d.data;
+                const rc = (data.recentChange * 100).toFixed(1); 
+                const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'}); 
+                const sentVal = data.sentiment || 0.8; 
+                const sentStatus = sentVal > 0.85 ? {l:'Positivo', i:'😊'} : (sentVal < 0.75 ? {l:'Alerta', i:'⚠️'} : {l:'Neutro', i:'😐'}); 
+                const avgTemp = data.weather.daily.reduce((acc, d) => acc + d.max, 0) / 5; 
+                let atrLabel = "Condição Normal"; let atrIcon = "☀️"; let atrClass = "selo-media"; 
+                if (data.climateProfile === "cold") { 
+                    if (avgTemp < 18) { atrLabel = "Atratividade Máxima"; atrIcon = "❄️"; atrClass = "selo-alta"; } 
+                } else { 
+                    if (avgTemp > 24) { atrLabel = "Atratividade Máxima"; atrIcon = "🔥"; atrClass = "selo-alta"; } 
+                }
+                const pressVal = data.bookingPressure || 0.7; const pressIcon = pressVal > 0.9 ? "🚨" : "📈"; const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : ""; const proxVal = data.proximityTrigger || 0.6; const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : ""; const buzzVal = data.socialBuzz || 0.5; const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : ""; const audVal = data.audienceProfile || 0.5; const fidPerc = (audVal * 100).toFixed(0); const descPerc = (100 - fidPerc); const stayVal = data.stayIntent || 0.7; const stayPerc = (stayVal * 100).toFixed(0); const dayPerc = (100 - stayPerc); const elastVal = data.elasticityIndex || 0; const elastWidth = Math.abs(elastVal) * 50; const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg'; const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro"))); const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️"); const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100); const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0};
+                
+                container.innerHTML += `<div class="card"><div class="card-header-top"><span class="dest-name">${data.name}</span><div class="selos-stack"><div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}%</div><div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>${pressSelo} ${proxSelo} ${buzzSelo}</div></div><div><span class="status-badge ${status.c}">${status.l}</span></div><div class="metrics-row"><div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div><div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div></div><div class="origin-box">📍 Origem Dominante: ${topOrigin.location} (${topOrigin.percent}%)</div><div class="audience-box"><span class="audience-label">Perfil de Público</span><div class="audience-icons"><div class="audience-item">🔄 ${fidPerc}%</div><div class="audience-item">✨ ${descPerc}%</div></div></div><div class="stay-box"><div class="stay-header"><span class="stay-label">Intenção de Estadia</span></div><div class="stay-bar-bg"><div class="stay-bar-fill" style="width: ${stayPerc}%"></div></div><div class="stay-values"><span>Pernoite: ${stayPerc}%</span><span>Day-Trip: ${dayPerc}%</span></div></div><div class="elasticity-box"><div class="elasticity-header"><span class="elasticity-label">Impacto Climático (IEC)</span><span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span></div><div class="elasticity-bar-bg"><div class="elasticity-center"></div><div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div></div></div><div class="insight-box">💡 ${data.insight}</div><div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div></div>`;
+                
+                boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l}\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}%\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}%\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}%\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• ALERTA TÁTICO (CLIMA): ${elastLabel}\n• TOP 3 ORIGENS DE DEMANDA:\n`;
+                if(data.topOrigins) {
+                    data.topOrigins.forEach((o, i) => {
+                        const label = i === 0 ? "Primário" : (i === 1 ? "Secundário" : "Terciário");
+                        boletim += `  - ${label}: ${o.location} (${o.percent}%)\n`;
+                    });
+                }
+                boletim += `\n`;
+            }); 
+            document.getElementById('boletim-texto').innerText = boletim; 
+            renderChart({ labels: globalLabels, datasets: chartDatasets }); 
         }
 
-        // Matrix Background
-        const canvas = document.getElementById('matrix-canvas');
-        const ctxM = canvas.getContext('2d');
-        let w = window.innerWidth;
-        let h = window.innerHeight;
-        canvas.width = w;
-        canvas.height = h;
-        const cols = w / 14;
-        const drops = Array(Math.floor(cols)).fill(1);
-        function draw() {
-            ctxM.fillStyle = 'rgba(13, 2, 8, 0.05)';
-            ctxM.fillRect(0, 0, w, h);
-            ctxM.fillStyle = '#00ff41';
-            ctxM.font = '14px monospace';
-            drops.forEach((y, i) => {
-                ctxM.fillText(Math.floor(Math.random()*2), i*14, y*14);
-                if(y*14 > h && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(draw, 80);
-        
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123) return false;
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
-        }
+        function renderChart(data) { const ctx = document.getElementById('biChart').getContext('2d'); if (myChart) myChart.destroy(); myChart = new Chart(ctx, { type: 'line', data: data, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#9ca3af', font: { family: 'Poppins', size: 11 } } } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } }, x: { grid: { display: false }, ticks: { color: '#9ca3af' } } } } }); }
+        const canvas = document.getElementById('matrix-canvas'); const ctxM = canvas.getContext('2d'); let w = window.innerWidth; let h = window.innerHeight; canvas.width = w; canvas.height = h; const cols = w / 16; const drops = Array(Math.floor(cols)).fill(1);
+        function draw() { ctxM.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctxM.fillRect(0, 0, w, h); ctxM.fillStyle = 'rgba(0, 198, 255, 0.4)'; ctxM.font = '16px monospace'; drops.forEach((y, i) => { const text = String.fromCharCode(0x30A0 + Math.random() * 96); ctxM.fillText(text, i*16, y*16); if(y*16 > h && Math.random() > 0.975) drops[i] = 0; drops[i]++; }); }
+        setInterval(draw, 90); document.onkeydown = function(e) { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; }
+        window.onload = loadData;
     </script>
 </body>
 </html>
