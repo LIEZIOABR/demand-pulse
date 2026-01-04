@@ -1,336 +1,303 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABR — Central de Inteligência Estratégica</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-cyan: #00c0ff;
-            --matrix-dark: #0a0a0a;
-            --card-bg: rgba(20, 20, 20, 0.9);
-            --text-gray: #a0a0a0;
+            --accent: #00c6ff;
+            --bg: #000000;
+            --panel: rgba(15, 18, 22, 0.75  );
+            --panel-border: rgba(255, 255, 255, 0.1);
+            --text-main: #eaf3ff;
+            --text-dim: #9ca3af;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--matrix-dark);
-            color: white;
-            overflow-x: hidden;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            overflow-x: hidden; 
             min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.25; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+
+        .logo-section { margin-bottom: 30px; animation: fadeIn 1.5s ease-out; }
+        .logo-section img { max-width: 260px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); pointer-events: none; }
+
+        .hero-title { font-size: 2.1rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; transition: 0.3s; }
+        .hero-subtitle { color: var(--accent); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
+        .hero-tagline { font-size: 1.15rem; color: var(--text-main); font-weight: 500; font-style: italic; margin-bottom: 50px; opacity: 0.9; border-bottom: 1px solid rgba(0, 198, 255, 0.2); display: inline-block; padding-bottom: 10px; }
+
+        .systems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 60px; }
+
+        .card { 
+            background: var(--panel); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid var(--panel-border); 
+            border-radius: 24px; 
+            padding: 40px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(0, 192, 255, 0.05) 0%, transparent 70%);
-        }
-
-        /* Efeito Matrix de Fundo */
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            opacity: 0.1;
-            font-size: 10px;
-            line-height: 10px;
-            white-space: pre;
-            pointer-events: none;
-        }
-
-        /* Estilos do Ticker (Letreiro Digital) */
-        .ticker-wrap {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 28px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            overflow: hidden;
-            border-bottom: 1px solid var(--neon-cyan);
-            box-shadow: 0 2px 5px rgba(0, 192, 255, 0.2);
-            display: flex;
-            align-items: center;
-            padding-top: 4px;
-        }
-
-        .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: ticker-scroll 60s linear infinite;
-            font-size: 12px;
-            color: var(--neon-cyan);
-        }
-
-        @keyframes ticker-scroll {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            padding: 60px 20px;
-            text-align: center;
-            margin-top: 28px;
-        }
-
-        .logo-section {
-            margin-bottom: 60px;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        .logo-section img {
-            max-width: 280px;
-            filter: drop-shadow(0 0 15px rgba(0, 192, 255, 0.3));
-        }
-
-        .hero-text {
-            margin-bottom: 80px;
-            animation: fadeIn 1.5s ease-out;
-        }
-
-        .hero-text h1 {
-            font-size: 2.5rem;
-            letter-spacing: 4px;
-            color: var(--neon-cyan);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(0, 192, 255, 0.5);
-        }
-
-        .hero-text p {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .grid-systems {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .system-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 40px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
             position: relative;
             overflow: hidden;
         }
 
-        .system-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-            transform: translateX(-100%);
-            transition: 0.5s;
+        .card.active:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2); }
+        
+        .card.disabled { 
+            opacity: 0.85; 
+            border: 1px solid rgba(0, 198, 255, 0.3); 
+            cursor: not-allowed;
+            animation: borderPulse 3s infinite;
         }
 
-        .system-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 10px 30px rgba(0, 192, 255, 0.1);
+        @keyframes borderPulse {
+            0% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
+            50% { border-color: rgba(0, 198, 255, 0.4); box-shadow: 0 0 15px rgba(0, 198, 255, 0.15); }
+            100% { border-color: rgba(0, 198, 255, 0.1); box-shadow: 0 0 5px rgba(0, 198, 255, 0.05); }
         }
 
-        .system-card:hover::before {
-            transform: translateX(100%);
-        }
+        .card-icon-svg { width: 65px; height: 65px; margin-bottom: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        .card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+        .card-status { font-size: 0.75rem; font-weight: 800; padding: 8px 16px; border-radius: 50px; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
+        .status-online { background: rgba(0, 198, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .status-homolog { background: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid var(--panel-border); }
 
-        .system-icon {
-            font-size: 3rem;
-            color: var(--neon-cyan);
-            margin-bottom: 25px;
-            opacity: 0.8;
-        }
-
-        .system-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        .system-card p {
-            color: var(--text-gray);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 30px;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
+        .btn-access { 
+            margin-top: 25px;
+            background: var(--accent); 
+            color: #000; 
+            padding: 14px 35px; 
+            border-radius: 12px; 
+            font-weight: 800; 
             text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .status-active {
-            background: rgba(0, 192, 255, 0.1);
-            color: var(--neon-cyan);
-            border: 1px solid var(--neon-cyan);
-        }
-
-        .status-dev {
-            background: rgba(255, 255, 255, 0.05);
-            color: #666;
-            border: 1px solid #333;
-        }
-
-        .btn-access {
-            display: inline-block;
-            padding: 12px 35px;
-            background: var(--neon-cyan);
-            color: black;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 0.9rem;
             transition: 0.3s;
-            border: none;
             cursor: pointer;
         }
 
-        .btn-access:hover {
-            background: white;
-            box-shadow: 0 0 20px var(--neon-cyan);
-            transform: scale(1.05);
-        }
+        .kpi-section { margin-top: 80px; text-align: left; background: rgba(255,255,255,0.02); padding: 50px; border-radius: 30px; border: 1px solid var(--panel-border); }
+        .section-label { color: var(--accent); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; display: block; text-align: center; }
+        .section-creds { color: #ffffff; font-size: 0.95rem; font-weight: 500; text-align: center; display: block; margin-bottom: 45px; opacity: 1; }
+        
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .kpi-group-title { color: var(--text-main); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 12px; }
+        .kpi-item { margin-bottom: 20px; }
+        .kpi-name { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; }
+        .kpi-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
 
-        .btn-disabled {
-            background: #222;
-            color: #444;
-            cursor: not-allowed;
-        }
+        footer { margin-top: 80px; padding-bottom: 40px; opacity: 0.7; font-size: 0.85rem; }
+        .footer-line { margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .footer-line svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; }
 
-        footer {
-            margin-top: auto;
-            padding: 40px;
-            color: #444;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
+        .whatsapp-btn {
+            position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: 0.3s; z-index: 1000;
         }
+        .whatsapp-btn:hover { transform: scale(1.1) rotate(10deg); }
+        .whatsapp-btn svg { width: 32px; height: 32px; fill: white; }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        #custom-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85);
+            z-index: 9999; display: none; align-items: center; justify-content: center;
         }
+        .modal-content {
+            background: var(--panel); backdrop-filter: blur(20px); border: 1px solid var(--accent);
+            border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; width: 90%;
+            box-shadow: 0 0 50px rgba(0, 198, 255, 0.3);
+        }
+        .modal-title { color: var(--accent); margin-bottom: 10px; font-size: 1.5rem; font-weight: 700; }
+        .modal-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
+        
+        .input-group { position: relative; margin: 20px 0 10px; }
+        .modal-input {
+            background: #111; border: 1px solid var(--panel-border); color: var(--text-main); padding: 15px 50px 15px 20px;
+            border-radius: 10px; font-size: 1rem; text-align: left; outline: none; width: 100%;
+        }
+        .toggle-password {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;
+            width: 20px; height: 20px; stroke: var(--text-dim); fill: none; stroke-width: 2;
+        }
+        .error-message { color: #ff4141; font-size: 0.8rem; height: 1.2em; margin-bottom: 10px; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .modal-btn {
+            background: var(--accent); color: #000; padding: 10px 25px; border-radius: 8px; font-weight: 700;
+            text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s;
         }
+        .modal-btn:hover { background: #00e0ff; }
 
-        @media (max-width: 768px) {
-            .hero-text h1 { font-size: 1.8rem; }
-            .grid-systems { grid-template-columns: 1fr; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
-    <div class="matrix-bg" id="matrix-bg"></div>
-
-    <div class="ticker-wrap">
-        <div class="ticker" id="ticker-content">
-            AGUARDANDO SINCRONIZAÇÃO... MV-SHARE: N/A | PRESSÃO-RESERVA: N/A | CLIMA-MV: N/A | STATUS-BD: N/A | ROAD-PRESSURE: AGUARDANDO API... | RATE-INDEX: AGUARDANDO API...
-        </div>
-    </div>
+<body oncontextmenu="return false;" ondragstart="return false;">
+    <canvas id="matrix-canvas"></canvas>
 
     <div class="container">
         <div class="logo-section">
             <img src="logo.png" alt="ABR Logo">
         </div>
 
-        <div class="hero-text">
-            <h1>Central de Inteligência</h1>
-            <p>Ecossistema de análise estratégica e monitoramento de mercado em tempo real. Transformamos dados complexos em decisões precisas para o setor turístico.</p>
+        <h1 class="hero-title">Central de Inteligência</h1>
+        <p class="hero-subtitle">Big Data & Business Intelligence</p>
+        <p class="hero-tagline">inteligência de demanda baseada na leitura recorrente de milhões de sinais digitais.  
+transformamos consultas dispersas em pulso real de mercado, com histórico, contexto e direção.</p>
+
+        <div class="systems-grid">
+            <div class="card active">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 18c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z"/><path d="M12 14c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
+                <div class="card-title">Demand Pulse</div>
+                <p class="kpi-desc" style="text-align: center;">Análise estratégica de demanda e tendências para destinos turísticos.</p>
+                <div class="card-status status-online">Sistema Ativo</div>
+                <div class="btn-access" onclick="showModal()">Acessar Radar</div>
+            </div>
+
+            <div class="card disabled">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2-2v16"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/><circle cx="9" cy="7" r="1"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="15" cy="11" r="1"/></svg>
+                <div class="card-title">Hotéis & Pousadas</div>
+                <p class="kpi-desc" style="text-align: center;">Monitoramento de performance e benchmarking para meios de hospedagem.</p>
+                <div class="card-status status-homolog">Sistema em Homologação</div>
+            </div>
+
+            <div class="card disabled">
+                <svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <div class="card-title">Radar de Estados</div>
+                <p class="kpi-desc" style="text-align: center;">Visão macroeconômica e fluxo migratório de turistas por estado.</p>
+                <div class="card-status status-homolog">Sistema em Homologação</div>
+            </div>
         </div>
 
-        <div class="grid-systems">
-            <!-- Demand Pulse - Radar -->
-            <div class="system-card">
-                <div class="status-badge status-active">Sistema Ativo</div>
-                <div class="system-icon"><i class="fas fa-satellite-dish"></i></div>
-                <h3>Demand Pulse</h3>
-                <p>Análise estratégica de demanda e tendências para destinos turísticos baseada em Big Data.</p>
-                <a href="radar.html" class="btn-access">Acessar Radar</a>
-            </div>
+        <div class="kpi-section">
+            <span class="section-label">Dicionário de Inteligência (KPIs)</span>
+            <span class="section-creds">monitoramento contínuo com atualização diária à 00:00h</span>
+            
+            <div class="kpi-grid">
+                <div>
+                    <div class="kpi-group-title">Análise de Demanda</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Diferenciação de Escala (Gráfico vs. Cards)</div>
+                        <div class="kpi-desc">O gráfico principal mede o volume histórico global de buscas, enquanto os cards individuais medem a pressão tática e o comportamento específico de cada destino em tempo real.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Market Share & Dominância</div>
+                        <div class="kpi-desc">Proporção de buscas de um destino em relação aos seus concorrentes. Indica a liderança de mercado.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Pressão de Reserva</div>
+                        <div class="kpi-desc">Mede a urgência e a densidade de buscas por datas específicas, indicando lotação iminente.</div>
+                    </div>
+                </div>
 
-            <!-- Hotéis & Pousadas -->
-            <div class="system-card">
-                <div class="status-badge status-dev">Em Homologação</div>
-                <div class="system-icon"><i class="fas fa-hotel"></i></div>
-                <h3>Hotéis & Pousadas</h3>
-                <p>Monitoramento de performance e benchmarking para meios de hospedagem e hotelaria.</p>
-                <button class="btn-access btn-disabled">Sistema em Homologação</button>
-            </div>
+                <div>
+                    <div class="kpi-group-title">Gatilhos Táticos</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Social Buzz & Velocidade Viral</div>
+                        <div class="kpi-desc">Detecta aceleração explosiva de interesse gerada por redes sociais e influenciadores, antecipando picos de demanda.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Atratividade Máxima & Condição Ideal</div>
+                        <div class="kpi-desc">Define o momento de pico de interesse onde a conversão é facilitada por fatores externos.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Humor do Mercado & Sentimento</div>
+                        <div class="kpi-desc">Análise qualitativa que define se o interesse do público é positivo, neutro ou de retração.</div>
+                    </div>
+                </div>
 
-            <!-- Radar de Estados -->
-            <div class="system-card">
-                <div class="status-badge status-dev">Em Homologação</div>
-                <div class="system-icon"><i class="fas fa-globe-americas"></i></div>
-                <h3>Radar de Estados</h3>
-                <p>Visão macroeconômica e fluxo migratório de turistas por estados e regiões brasileiras.</p>
-                <button class="btn-access btn-disabled">Sistema em Homologação</button>
+                <div>
+                    <div class="kpi-group-title">Perfil & Clima</div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Elasticidade Climática (IEC)</div>
+                        <div class="kpi-desc">Algoritmo que prevê o impacto da variação meteorológica na conversão real de reservas.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Intenção de Estadia (Pernoite vs Day-Trip)</div>
+                        <div class="kpi-desc">Diferencia o perfil de público que pretende dormir no destino ou apenas visitá-lo.</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-name">Grau de Confiança Estatística</div>
+                        <div class="kpi-desc">Transparência sobre a precisão dos dados baseada no volume de massa crítica processada.</div>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <footer>
+            <div class="footer-line">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Sistema Blindado
+            </div>
+            <div class="footer-line">
+                @ Todos os direitos reservados a ABR Marketing Estratégico & Consultoria Hoteleira.
+            </div>
+        </footer>
+    </div>
+
+    <a href="https://wa.me/5511999999999" class="whatsapp-btn" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48 2.242 2.242 3.48 5.227 3.48 8.557-5.332 11.888-11.888 11.888-2.019 0-3.999-.512-5.752-1.483l-6.231 1.709zm6.103-4.494l.352.208c1.61.955 3.461 1.46 5.381 1.46 5.755 0 10.435-4.68 10.435-10.435 0-2.778-1.082-5.39-3.046-7.354s-4.576-3.046-7.354-3.046c-5.756 0-10.435 4.679-10.435 10.435 0 2.108.632 4.169 1.826 5.928l.23.339-.997 3.642 3.735-.981z"/></svg>
+    </a>
+
+    <div id="custom-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">SISTEMA RESTRITO</h3>
+            <p class="modal-subtitle">Insira a chave de acesso para o Demand Pulse.</p>
+            <div class="input-group">
+                <input type="password" id="modal-pass" class="modal-input" placeholder="CHAVE DE ACESSO" autofocus>
+                <svg class="toggle-password" id="toggle-pass" viewBox="0 0 24 24" onclick="togglePasswordVisibility(  )"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div id="error-message" class="error-message"></div>
+            <button class="modal-btn" onclick="validateModalPassword()">ACESSAR</button>
         </div>
     </div>
 
-    <footer>
-        ABR MARKETING ESTRATÉGICO & CONSULTORIA IMOBILIÁRIA &copy; 2026
-    </footer>
-
     <script>
-        // Matrix Background Effect
-        const matrixBg = document.getElementById('matrix-bg');
-        const characters = '01';
-        const fontSize = 10;
-        const columns = Math.floor(window.innerWidth / fontSize);
-        const drops = [];
-
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
+        const PASSWORDS = ["testecliente", "abrturbo"];
+        function showModal() { document.getElementById('custom-modal').style.display = 'flex'; document.getElementById('modal-pass').focus(); document.getElementById('error-message').innerHTML = ''; }
+        function validateModalPassword() {
+            const input = document.getElementById('modal-pass').value.toLowerCase().trim();
+            if (PASSWORDS.includes(input)) { window.location.href = 'radar.html'; } 
+            else { document.getElementById('error-message').innerHTML = 'ACESSO NEGADO. Chave incorreta.'; document.getElementById('modal-pass').value = ''; document.getElementById('modal-pass').focus(); }
         }
-
-        function drawMatrix() {
-            let content = '';
-            for (let i = 0; i < drops.length; i++) {
-                const text = characters.charAt(Math.floor(Math.random() * characters.length));
-                content += text + ' ';
-                if (drops[i] * fontSize > window.innerHeight && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-            // matrixBg.innerText = content; // Simplified for performance
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('modal-pass');
+            const toggleIcon = document.getElementById('toggle-pass');
+            if (passInput.type === 'password') { passInput.type = 'text'; toggleIcon.style.stroke = 'var(--accent)'; } 
+            else { passInput.type = 'password'; toggleIcon.style.stroke = 'var(--text-dim)'; }
         }
-        // setInterval(drawMatrix, 50);
+        document.getElementById('modal-pass').addEventListener('keypress', function(e) { if (e.key === 'Enter') validateModalPassword(); });
+
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        const cols = Math.floor(w / 20);
+        const ypos = Array(cols).fill(0);
+        function matrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'rgba(0, 198, 255, 0.7)'; ctx.font = '15pt monospace';
+            ypos.forEach((y, ind) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                const x = ind * 20; ctx.fillText(text, x, y);
+                if (y > 100 + Math.random() * 10000) ypos[ind] = 0; else ypos[ind] = y + 20;
+            });
+        }
+        setInterval(matrix, 90);
+
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+        }
     </script>
 </body>
 </html>
