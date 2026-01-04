@@ -105,7 +105,7 @@
       padding: 0 15px;
       cursor: pointer;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       user-select: none;
       text-transform: uppercase;
@@ -432,7 +432,7 @@
         <span class="toggle-pass" onclick="togglePassword()">VER</span>
       </div>
       <button onclick="checkLogin()">Entrar no Radar</button>
-      <button class="btn-back-hub" onclick="window.location.href='hub_index.html'">Voltar ao HUB</button>
+      <button class="btn-back-hub" onclick="window.location.href='./hub_index.html'">Voltar ao HUB</button>
       <p id="login-error" style="color: #ff3b30; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">Senha incorreta.</p>
     </div>
   </div>
@@ -446,7 +446,7 @@
 
     <header style="margin-top: 28px;">
       <img class="logo" src="logo.png" alt="ABR ALL IN ONE" />
-      <a href="hub_index.html" class="btn-exit" id="btnExit">← SAIR</a>
+      <a href="./hub_index.html" class="btn-exit" id="btnExit">← SAIR</a>
     </header>
 
     <section class="pitch">
@@ -539,8 +539,8 @@
 
     function checkLogin() {
       const input = document.getElementById('password-input').value.trim();
-      // COMPARAÇÃO LITERAL PARA ERRO ZERO
-      if (input === "abr2026" || input === "ABR2026") {
+      // SENHAS OFICIAIS: abrturbo e testecliente
+      if (input === "abrturbo" || input === "testecliente" || input === "ABRTURBO" || input === "TESTECLIENTE") {
         localStorage.setItem(AUTH_KEY, "true");
         document.getElementById('login-overlay').style.display = 'none';
         document.getElementById('main-content').style.display = 'flex';
