@@ -175,9 +175,25 @@
         const SUPABASE_URL = 'https://torogxfslkqwqzkclhay.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvcm9neGZzbGtxd3F6a2NsaGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NTA2NDAsImV4cCI6MjA4MzAyNjY0MH0.uzl18r5B8vZGA0X90E8mRo9ZgH0-4aZwDQc5mH3p94A';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY );
+        
         function logout() { if(confirm("Sair do sistema?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
         function copyBoletim( ) { const text = document.getElementById('boletim-texto').innerText; navigator.clipboard.writeText(text).then(() => { const btn = document.querySelector('.btn-copy'); const originalText = btn.innerText; btn.innerText = "Copiado!"; btn.style.background = "var(--accent-green)"; btn.style.color = "black"; setTimeout(() => { btn.innerText = originalText; btn.style.background = "rgba(0, 198, 255, 0.1)"; btn.style.color = "var(--accent)"; }, 2000); }); }
+        
         let pulseData = {}; let myChart = null; let dataSourceMode = 'supabase';
+        
+        // FUNÇÃO PARA GERAR DATAS DINÂMICAS (últimos 56 dias)
+        function generateDynamicDates() {
+            const dates = [];
+            const today = new Date();
+            for (let i = 7; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - (i * 7));
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                dates.push(`${day}/${month}`);
+            }
+            return dates;
+        }
         
         async function loadDataFromSupabase() { 
             try { 
@@ -227,8 +243,8 @@
         function updateDashboard() { 
             const container = document.getElementById('cards-container'); 
             container.innerHTML = ''; 
-            const manualDates = ['01/11', '08/11', '15/11', '22/11', '29/11', '06/12', '13/12', '20/12']; 
-            const chartData = { labels: manualDates, datasets: [] }; 
+            const dynamicDates = generateDynamicDates();
+            const chartData = { labels: dynamicDates, datasets: [] }; 
             const colors = ['#00c6ff', '#39ff14', '#ff3131', '#ffea00']; 
             let totalInterestNow = 0; let totalInterestPrev = 0; const selectedDests = []; 
             
@@ -274,7 +290,6 @@
                 container.innerHTML += `<div class="card"><div class="card-header-top"><span class="dest-name">${data.name}</span><div class="selos-stack"><div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}%</div><div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>${pressSelo} ${proxSelo} ${buzzSelo}</div></div><div><span class="status-badge ${status.c}">${status.l}</span></div><div class="metrics-row"><div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div><div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div></div><div class="origin-box">📍 Origem Dominante: ${topOrigin.location} (${topOrigin.percent}%)</div><div class="audience-box"><span class="audience-label">Perfil de Público</span><div class="audience-icons"><div class="audience-item">🔄 ${fidPerc}%</div><div class="audience-item">✨ ${descPerc}%</div></div></div><div class="stay-box"><div class="stay-header"><span class="stay-label">Intenção de Estadia</span></div><div class="stay-bar-bg"><div class="stay-bar-fill" style="width: ${stayPerc}%"></div></div><div class="stay-values"><span>Pernoite: ${stayPerc}%</span><span>Day-Trip: ${dayPerc}%</span></div></div><div class="elasticity-box"><div class="elasticity-header"><span class="elasticity-label">Impacto Climático (IEC)</span><span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span></div><div class="elasticity-bar-bg"><div class="elasticity-center"></div><div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div></div></div><div class="insight-box">💡 ${data.insight}</div><div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div></div>`;
                 chartData.datasets.push({ label: data.name, data: data.timeline, borderColor: colors[idx], backgroundColor: colors[idx] + '22', tension: 0.2, fill: true });
                 
-                // RESTAURAÇÃO DO TOP 3 ORIGENS NO BOLETIM
                 boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l}\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}%\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}%\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}%\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• ALERTA TÁTICO (CLIMA): ${elastLabel}\n• TOP 3 ORIGENS DE DEMANDA:\n`;
                 if(data.topOrigins && data.topOrigins.length > 0) {
                     data.topOrigins.forEach((o, i) => {
