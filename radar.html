@@ -186,7 +186,6 @@
                 const payload = data[0].payload; 
                 const transformed = transformSupabaseData(payload);
                 
-                // Trava de Estabilidade: Só aceita os dados se eles forem válidos
                 if (Object.keys(transformed).length > 0) {
                     pulseData = transformed;
                     dataSourceMode = 'supabase'; 
@@ -204,12 +203,11 @@
             const transformed = {}; 
             if (payload && payload.destinations) { 
                 payload.destinations.forEach(dest => { 
-                    // Normalização agressiva para garantir match
-                    let key = dest.id;
-                    if (!key) {
-                        key = dest.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_').replace(/[^\w]/g, '');
-                    }
-                    transformed[key] = { 
+                    // Normalização Dupla: Tenta ID técnico e Nome Amigável
+                    const idKey = dest.id ? dest.id.toLowerCase() : "";
+                    const nameKey = dest.name ? dest.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_').replace(/[^\w]/g, '') : "";
+                    
+                    const finalData = { 
                         name: dest.name, 
                         marketShare: dest.marketShare || 0.15, 
                         bookingPressure: dest.bookingPressure || 0.7, 
@@ -227,7 +225,15 @@
                         timeline: dest.timeline || [45, 48, 52, 55, 58, 62, 65, 68], 
                         insight: dest.insight || 'Demanda em trajetória de alta com suporte de redes sociais.', 
                         weather: dest.weather || { daily: [{max: 28, cond: 'Ensolarado'}, {max: 27, cond: 'Nublado'}, {max: 29, cond: 'Ensolarado'}, {max: 26, cond: 'Chuva'}, {max: 28, cond: 'Ensolarado'}] } 
-                    }; 
+                    };
+
+                    if (idKey) transformed[idKey] = finalData;
+                    if (nameKey) transformed[nameKey] = finalData;
+                    // Caso especial para nomes com (UF)
+                    if (nameKey.includes('_')) {
+                        const shortKey = nameKey.split('_')[0];
+                        transformed[shortKey] = finalData;
+                    }
                 }); 
             } 
             return transformed; 
@@ -238,7 +244,6 @@
                 const response = await fetch('pulse-data.json'); 
                 if (!response.ok) throw new Error('Arquivo JSON não encontrado'); 
                 const localData = await response.json(); 
-                // Só usa o JSON se o Supabase não tiver carregado
                 if (dataSourceMode !== 'supabase') {
                     pulseData = localData;
                     dataSourceMode = 'fallback'; 
@@ -264,7 +269,6 @@
 
         async function loadData() { 
             const supabaseSuccess = await loadDataFromSupabase(); 
-            // Se o Supabase falhou, carrega o JSON
             if (!supabaseSuccess) {
                 await loadDataFromJSON(); 
             }
@@ -281,12 +285,19 @@
             
             for(let i=1; i<=4; i++) { 
                 const id = document.getElementById(`dest-${i}`).value; 
-                if(pulseData[id]) { 
-                    const timeline = pulseData[id].timeline; 
+                // Busca inteligente: tenta o ID e variações
+                let data = pulseData[id];
+                if (!data) {
+                    const shortId = id.split('_')[0];
+                    data = pulseData[shortId];
+                }
+
+                if(data) { 
+                    const timeline = data.timeline; 
                     const valNow = timeline[timeline.length - 1]; 
                     const valPrev = timeline[timeline.length - 2]; 
                     totalInterestNow += valNow; totalInterestPrev += valPrev; 
-                    selectedDests.push({id, valNow, valPrev}); 
+                    selectedDests.push({id, data, valNow, valPrev}); 
                 } 
             }
             
@@ -295,36 +306,34 @@
                 const shareNow = ((d.valNow / totalInterestNow) * 100).toFixed(1); 
                 const sharePrev = ((d.valPrev / totalInterestPrev) * 100).toFixed(1); 
                 const trend = shareNow > sharePrev ? "▲" : (shareNow < sharePrev ? "▼" : "●"); 
-                boletim += `• ${pulseData[d.id].name}: ${shareNow}% ${trend}\n`; 
+                boletim += `• ${d.data.name}: ${shareNow}% ${trend}\n`; 
             }); 
             boletim += "----------------------------------\n\n";
             
-            for (let i = 1; i <= 4; i++) { 
-                const id = document.getElementById(`dest-${i}`).value; 
-                const data = pulseData[id]; 
-                if (data) { 
-                    const rc = (data.recentChange * 100).toFixed(1); 
-                    const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'}); 
-                    const sentVal = data.sentiment || 0.8; 
-                    const sentStatus = sentVal > 0.85 ? {l:'Positivo', i:'😊'} : (sentVal < 0.75 ? {l:'Alerta', i:'⚠️'} : {l:'Neutro', i:'😐'}); 
-                    const sentDesc = sentVal > 0.85 ? "Fase de alto desejo e planejamento ativo." : (sentVal < 0.75 ? "Sinais de retração ou barreira de interesse." : "Interesse estável sem grandes oscilações de humor."); 
-                    const avgTemp = data.weather.daily.reduce((acc, d) => acc + d.max, 0) / 5; 
-                    let atrScore = 50; let atrLabel = "Condição Normal"; let atrIcon = "☀️"; let atrClass = "selo-media"; 
-                    if (data.climateProfile === "cold") { 
-                        if (avgTemp < 18) { atrScore = 95; atrLabel = "Atratividade Máxima"; atrIcon = "❄️"; atrClass = "selo-alta"; } 
-                        else if (avgTemp < 22) { atrScore = 75; atrLabel = "Condição Ideal"; atrIcon = "☁️"; } 
-                    } else { 
-                        if (avgTemp > 24) { atrScore = 90; atrLabel = "Atratividade Máxima"; atrIcon = "🔥"; atrClass = "selo-alta"; } 
-                        else { atrScore = 70; atrLabel = "Condição Ideal"; atrIcon = "☀️"; } 
-                    }
-                    const pressVal = data.bookingPressure || 0.7; const pressLabel = pressVal > 0.9 ? "Pressão Crítica" : (pressVal > 0.8 ? "Pressão Alta" : "Pressão Normal"); const pressIcon = pressVal > 0.9 ? "🚨" : "📈"; const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : ""; const proxVal = data.proximityTrigger || 0.6; const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : ""; const buzzVal = data.socialBuzz || 0.5; const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : ""; const audVal = data.audienceProfile || 0.5; const fidPerc = (audVal * 100).toFixed(0); const descPerc = (100 - fidPerc); const stayVal = data.stayIntent || 0.7; const stayPerc = (stayVal * 100).toFixed(0); const dayPerc = (100 - stayPerc); const confVal = (data.confidence || 0.8) * 100; const elastVal = data.elasticityIndex || 0; const elastWidth = Math.abs(elastVal) * 50; const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg'; const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro"))); const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️"); const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100); const sharePrev = ((data.timeline[data.timeline.length-2] / totalInterestPrev) * 100); const shareTrend = shareNow > sharePrev ? {s:"▲", c:"#39ff14"} : (shareNow < sharePrev ? {s:"▼", c:"#ff3131"} : {s:"●", c:"#8b949e"}); const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0}; const causa = data.persistence > 0.8 ? "Forte base orgânica e fidelidade de busca." : "Demanda com alta sensibilidade sazonal e picos de interesse."; const projecao = data.recentChange > 0.2 ? "Tendência de aceleração máxima para os próximos 15 dias." : "Expectativa de estabilidade com viés de alta."; let recomendacaoClima = ""; if(elastVal > 0.6) recomendacaoClima = "Oportunidade de conversão imediata: Janela climática perfeita. Ativar campanhas de 'Última Hora'."; else if(elastVal < -0.3) recomendacaoClima = "Risco de descompressão: Clima desfavorável ao perfil do destino. Sugerido focar em atrativos indoor/gastronomia."; else recomendacaoClima = "Estabilidade climática: Manter estratégia de conversão orgânica.";
-                    container.innerHTML += `<div class="card"><div class="card-header-top"><span class="dest-name">${data.name}</span><div class="selos-stack"><div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}% <span style="color:${shareTrend.c}">${shareTrend.s}</span></div><div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>${pressSelo} ${proxSelo} ${buzzSelo}</div></div><div><span class="status-badge ${status.c}">${status.l}</span></div><div class="metrics-row"><div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div><div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div></div><div class="origin-box">📍 Origem Dominante: ${topOrigin.location} (${topOrigin.percent}%)</div><div class="audience-box"><span class="audience-label">Perfil de Público</span><div class="audience-icons"><div class="audience-item" title="Fidelidade: Turistas que já conhecem e retornam ao destino.">🔄 ${fidPerc}%</div><div class="audience-item" title="Descoberta: Novos turistas explorando o destino pela primeira vez.">✨ ${descPerc}%</div></div></div><div class="stay-box"><div class="stay-header"><span class="stay-label">Intenção de Estadia <span class="stay-info-icon" title="Métrica baseada em padrões de busca composta. Grau de confiança estatística: ${confVal.toFixed(0)}%.">ⓘ</span></span></div><div class="stay-bar-bg"><div class="stay-bar-fill" style="width: ${stayPerc}%"></div></div><div class="stay-values"><span>Pernoite: ${stayPerc}%</span><span>Day-Trip: ${dayPerc}%</span></div></div><div class="elasticity-box"><div class="elasticity-header"><span class="elasticity-label">Impacto Climático (IEC) <span class="stay-info-icon" title="Índice de Elasticidade Climática: Cruzamento de previsão meteorológica com sensibilidade histórica do destino. Confiança: 85%.">ⓘ</span></span><span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span></div><div class="elasticity-bar-bg"><div class="elasticity-center"></div><div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div></div></div><div class="insight-box">💡 ${data.insight}</div><div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div></div>`;
-                    chartData.datasets.push({ label: data.name, data: data.timeline, borderColor: colors[i-1], backgroundColor: colors[i-1] + '22', tension: 0.2, fill: true });
-                    boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l} (${sentDesc})\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}% (${pressLabel})\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}% (Turismo de 48h)\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}% (Engajamento Social)\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• Confiança Estatística: ${confVal.toFixed(0)}% (Baseada em volume de dados)\n• ALERTA TÁTICO (CLIMA): ${recomendacaoClima}\n• Atratividade Climática: ${atrScore}% (Gatilho de conversão ativado)\n• Top 3 Origens de Demanda:\n`;
-                    if(data.topOrigins) data.topOrigins.forEach((o, idx) => { boletim += `  ${idx+1}. ${o.location}: ${o.percent}%\n`; });
-                    boletim += `• Causa: ${causa}\n• Projeção: ${projecao}\n\n`;
+            selectedDests.forEach((d, idx) => {
+                const data = d.data;
+                const rc = (data.recentChange * 100).toFixed(1); 
+                const status = data.recentChange > 0.1 ? {l:'Aquecendo', c:'status-up'} : (data.recentChange < -0.1 ? {l:'Arrefecendo', c:'status-down'} : {l:'Estável', c:'status-stable'}); 
+                const sentVal = data.sentiment || 0.8; 
+                const sentStatus = sentVal > 0.85 ? {l:'Positivo', i:'😊'} : (sentVal < 0.75 ? {l:'Alerta', i:'⚠️'} : {l:'Neutro', i:'😐'}); 
+                const sentDesc = sentVal > 0.85 ? "Fase de alto desejo e planejamento ativo." : (sentVal < 0.75 ? "Sinais de retração ou barreira de interesse." : "Interesse estável sem grandes oscilações de humor."); 
+                const avgTemp = data.weather.daily.reduce((acc, d) => acc + d.max, 0) / 5; 
+                let atrScore = 50; let atrLabel = "Condição Normal"; let atrIcon = "☀️"; let atrClass = "selo-media"; 
+                if (data.climateProfile === "cold") { 
+                    if (avgTemp < 18) { atrScore = 95; atrLabel = "Atratividade Máxima"; atrIcon = "❄️"; atrClass = "selo-alta"; } 
+                    else if (avgTemp < 22) { atrScore = 75; atrLabel = "Condição Ideal"; atrIcon = "☁️"; } 
+                } else { 
+                    if (avgTemp > 24) { atrScore = 90; atrLabel = "Atratividade Máxima"; atrIcon = "🔥"; atrClass = "selo-alta"; } 
+                    else { atrScore = 70; atrLabel = "Condição Ideal"; atrIcon = "☀️"; } 
                 }
-            } 
+                const pressVal = data.bookingPressure || 0.7; const pressLabel = pressVal > 0.9 ? "Pressão Crítica" : (pressVal > 0.8 ? "Pressão Alta" : "Pressão Normal"); const pressIcon = pressVal > 0.9 ? "🚨" : "📈"; const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : ""; const proxVal = data.proximityTrigger || 0.6; const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : ""; const buzzVal = data.socialBuzz || 0.5; const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : ""; const audVal = data.audienceProfile || 0.5; const fidPerc = (audVal * 100).toFixed(0); const descPerc = (100 - fidPerc); const stayVal = data.stayIntent || 0.7; const stayPerc = (stayVal * 100).toFixed(0); const dayPerc = (100 - stayPerc); const confVal = (data.confidence || 0.8) * 100; const elastVal = data.elasticityIndex || 0; const elastWidth = Math.abs(elastVal) * 50; const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg'; const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro"))); const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️"); const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100); const sharePrev = ((data.timeline[data.timeline.length-2] / totalInterestPrev) * 100); const shareTrend = shareNow > sharePrev ? {s:"▲", c:"#39ff14"} : (shareNow < sharePrev ? {s:"▼", c:"#ff3131"} : {s:"●", c:"#8b949e"}); const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0}; const causa = data.persistence > 0.8 ? "Forte base orgânica e fidelidade de busca." : "Demanda com alta sensibilidade sazonal e picos de interesse."; const projecao = data.recentChange > 0.2 ? "Tendência de aceleração máxima para os próximos 15 dias." : "Expectativa de estabilidade com viés de alta."; let recomendacaoClima = ""; if(elastVal > 0.6) recomendacaoClima = "Oportunidade de conversão imediata: Janela climática perfeita. Ativar campanhas de 'Última Hora'."; else if(elastVal < -0.3) recomendacaoClima = "Risco de descompressão: Clima desfavorável ao perfil do destino. Sugerido focar em atrativos indoor/gastronomia."; else recomendacaoClima = "Estabilidade climática: Manter estratégia de conversão orgânica.";
+                
+                container.innerHTML += `<div class="card"><div class="card-header-top"><span class="dest-name">${data.name}</span><div class="selos-stack"><div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}% <span style="color:${shareTrend.c}">${shareTrend.s}</span></div><div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>${pressSelo} ${proxSelo} ${buzzSelo}</div></div><div><span class="status-badge ${status.c}">${status.l}</span></div><div class="metrics-row"><div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div><div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div></div><div class="origin-box">📍 Origem Dominante: ${topOrigin.location} (${topOrigin.percent}%)</div><div class="audience-box"><span class="audience-label">Perfil de Público</span><div class="audience-icons"><div class="audience-item" title="Fidelidade: Turistas que já conhecem e retornam ao destino.">🔄 ${fidPerc}%</div><div class="audience-item" title="Descoberta: Novos turistas explorando o destino pela primeira vez.">✨ ${descPerc}%</div></div></div><div class="stay-box"><div class="stay-header"><span class="stay-label">Intenção de Estadia <span class="stay-info-icon" title="Métrica baseada em padrões de busca composta. Grau de confiança estatística: ${confVal.toFixed(0)}%.">ⓘ</span></span></div><div class="stay-bar-bg"><div class="stay-bar-fill" style="width: ${stayPerc}%"></div></div><div class="stay-values"><span>Pernoite: ${stayPerc}%</span><span>Day-Trip: ${dayPerc}%</span></div></div><div class="elasticity-box"><div class="elasticity-header"><span class="elasticity-label">Impacto Climático (IEC) <span class="stay-info-icon" title="Índice de Elasticidade Climática: Cruzamento de previsão meteorológica com sensibilidade histórica do destino. Confiança: 85%.">ⓘ</span></span><span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span></div><div class="elasticity-bar-bg"><div class="elasticity-center"></div><div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div></div></div><div class="insight-box">💡 ${data.insight}</div><div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div></div>`;
+                chartData.datasets.push({ label: data.name, data: data.timeline, borderColor: colors[idx], backgroundColor: colors[idx] + '22', tension: 0.2, fill: true });
+                boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l} (${sentDesc})\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}% (${pressLabel})\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}% (Turismo de 48h)\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}% (Engajamento Social)\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• Confiança Estatística: ${confVal.toFixed(0)}% (Baseada em volume de dados)\n• ALERTA TÁTICO (CLIMA): ${recomendacaoClima}\n• Atratividade Climática: ${atrScore}% (Gatilho de conversão ativado)\n• Top 3 Origens de Demanda:\n`;
+                if(data.topOrigins) data.topOrigins.forEach((o, idx) => { boletim += `  ${idx+1}. ${o.location}: ${o.percent}%\n`; });
+                boletim += `• Causa: ${causa}\n• Projeção: ${projecao}\n\n`;
+            }); 
             document.getElementById('boletim-texto').innerText = boletim; 
             renderChart(chartData); 
         }
