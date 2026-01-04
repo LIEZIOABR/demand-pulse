@@ -32,11 +32,60 @@
                 radial-gradient(circle at 50% 50%, rgba(0, 192, 255, 0.05) 0%, transparent 70%);
         }
 
+        /* Efeito Matrix de Fundo */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.1;
+            font-size: 10px;
+            line-height: 10px;
+            white-space: pre;
+            pointer-events: none;
+        }
+
+        /* Estilos do Ticker (Letreiro Digital) */
+        .ticker-wrap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 28px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            overflow: hidden;
+            border-bottom: 1px solid var(--neon-cyan);
+            box-shadow: 0 2px 5px rgba(0, 192, 255, 0.2);
+            display: flex;
+            align-items: center;
+            padding-top: 4px;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: ticker-scroll 60s linear infinite;
+            font-size: 12px;
+            color: var(--neon-cyan);
+        }
+
+        @keyframes ticker-scroll {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
         .container {
             max-width: 1200px;
             width: 100%;
-            padding: 40px 20px;
+            padding: 60px 20px;
             text-align: center;
+            margin-top: 28px;
         }
 
         .logo-section {
@@ -205,10 +254,17 @@
     </style>
 </head>
 <body>
+    <div class="matrix-bg" id="matrix-bg"></div>
+
+    <div class="ticker-wrap">
+        <div class="ticker" id="ticker-content">
+            AGUARDANDO SINCRONIZAÇÃO... MV-SHARE: N/A | PRESSÃO-RESERVA: N/A | CLIMA-MV: N/A | STATUS-BD: N/A | ROAD-PRESSURE: AGUARDANDO API... | RATE-INDEX: AGUARDANDO API...
+        </div>
+    </div>
 
     <div class="container">
         <div class="logo-section">
-            <img src="https://liezioabr.github.io/demand-pulse/logo.png" alt="ABR Logo">
+            <img src="logo.png" alt="ABR Logo">
         </div>
 
         <div class="hero-text">
@@ -250,5 +306,31 @@
         ABR MARKETING ESTRATÉGICO & CONSULTORIA IMOBILIÁRIA &copy; 2026
     </footer>
 
+    <script>
+        // Matrix Background Effect
+        const matrixBg = document.getElementById('matrix-bg');
+        const characters = '01';
+        const fontSize = 10;
+        const columns = Math.floor(window.innerWidth / fontSize);
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrix() {
+            let content = '';
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                content += text + ' ';
+                if (drops[i] * fontSize > window.innerHeight && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+            // matrixBg.innerText = content; // Simplified for performance
+        }
+        // setInterval(drawMatrix, 50);
+    </script>
 </body>
 </html>
