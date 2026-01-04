@@ -82,10 +82,14 @@
       letter-spacing: 2px;
       text-transform: uppercase;
     }
+    .input-group {
+      position: relative;
+      margin: 20px 0;
+    }
     .login-box input {
       width: 100%;
       padding: 15px;
-      margin: 20px 0;
+      padding-right: 45px;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--line);
       color: white;
@@ -93,6 +97,16 @@
       text-align: center;
       font-size: 1.1rem;
       outline: none;
+    }
+    .toggle-pass {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 18px;
+      user-select: none;
     }
     .login-box button {
       width: 100%;
@@ -121,6 +135,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       transition: 0.3s;
+      cursor: pointer;
     }
     .btn-back-hub:hover { color: var(--accent); }
 
@@ -128,7 +143,7 @@
       position: relative;
       z-index: 1;
       min-height: 100vh;
-      display:none; /* Escondido até o login */
+      display:none;
       flex-direction:column;
     }
 
@@ -406,8 +421,10 @@
     <img src="logo.png" alt="ABR" style="max-width: 200px; margin-bottom: 30px; filter: drop-shadow(0 0 20px rgba(0,198,255,0.4));">
     <div class="login-box">
       <h2>ACESSO RESTRITO</h2>
-      <!-- INPUT TIPO TEXT PARA VISUALIZAÇÃO DA SENHA CONFORME ORIGINAL -->
-      <input type="text" id="password-input" placeholder="Digite sua senha">
+      <div class="input-group">
+        <input type="password" id="password-input" placeholder="Digite sua senha">
+        <span class="toggle-pass" onclick="togglePassword()">👁️</span>
+      </div>
       <button onclick="checkLogin()">Entrar no Radar</button>
       <a href="hub_index.html" class="btn-back-hub">Voltar ao HUB</a>
       <p id="login-error" style="color: #ff3b30; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">Senha incorreta.</p>
@@ -499,11 +516,24 @@
   </div>
 
   <script>
-    // LÓGICA DE LOGIN ORIGINAL RESTAURADA COM RIGOR (SEM CONVERSÃO PARA MINÚSCULAS)
+    // LÓGICA DE LOGIN DEFINITIVA E RIGOROSA
     const AUTH_KEY = "demand_pulse_auth";
+    
+    function togglePassword() {
+      const input = document.getElementById('password-input');
+      const icon = document.querySelector('.toggle-pass');
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🙈";
+      } else {
+        input.type = "password";
+        icon.textContent = "👁️";
+      }
+    }
+
     function checkLogin() {
       const input = document.getElementById('password-input').value.trim();
-      // SENHAS ORIGINAIS PRESERVADAS
+      // COMPARAÇÃO LITERAL PARA ERRO ZERO
       if (input === "abr2026" || input === "ABR2026") {
         localStorage.setItem(AUTH_KEY, "true");
         document.getElementById('login-overlay').style.display = 'none';
@@ -524,7 +554,6 @@
       return false;
     }
 
-    // LOGOFF AO SAIR
     document.getElementById('btnExit').addEventListener('click', () => {
       localStorage.removeItem(AUTH_KEY);
     });
