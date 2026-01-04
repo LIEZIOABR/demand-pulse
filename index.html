@@ -34,6 +34,10 @@
       background: var(--bg);
       color: var(--text);
       overflow-x:hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     #matrix{
@@ -58,7 +62,8 @@
       padding: 26px 16px 14px;
       display:flex;
       align-items:center;
-      justify-content:center;
+      justify-content:space-between; /* Ajustado para o botão de sair */
+      width: 100%;
     }
     .logo{
       width:230px;
@@ -67,6 +72,23 @@
       filter: drop-shadow(0 12px 25px rgba(0,198,255,0.15));
       user-select:none;
       -webkit-user-drag:none;
+    }
+    .btn-exit {
+      background: rgba(255, 59, 48, 0.15);
+      color: #ff3b30;
+      border: 1px solid #ff3b30;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .btn-exit:hover {
+      background: #ff3b30;
+      color: white;
     }
 
     .pitch{
@@ -304,7 +326,7 @@
   </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
   <div class="ticker-wrap">
     <div class="ticker" id="ticker">
       CARREGANDO PULSO DE MERCADO... 📡 SINCRONIZANDO COM SUPABASE... 🟢 STATUS: LIVE
@@ -316,11 +338,15 @@
   <div class="wrap">
     <header>
       <img class="logo" src="logo.png" alt="ABR ALL IN ONE" />
+      <a href="hub_index.html" class="btn-exit" id="btnExit">← SAIR</a>
     </header>
 
     <section class="pitch">
       <h1>DEMAND PULSE — Radar Direcional do Destino</h1>
       <p>
+        Inteligência de demanda em tempo real. Análise contínua de milhões de sinais digitais transformados em pulso de mercado.
+      </p>
+      <p style="margin-top: 10px;">
         Leitura direcional do pulso de demanda do destino (🔺 aquecendo, ➖ estável, 🔻 arrefecendo),
         baseada em variação e persistência — <strong>sem promessa de volume absoluto</strong>.
         Monte Verde é o destino âncora.
@@ -388,6 +414,27 @@
   </div>
 
   <script>
+    // REGIME DE SENHAS ORIGINAL RESTAURADO
+    const AUTH_KEY = "demand_pulse_auth";
+    function checkAuth() {
+      const auth = localStorage.getItem(AUTH_KEY);
+      if (!auth) {
+        const pass = prompt("Por favor, insira a senha de acesso:");
+        if (pass === "abr2026") {
+          localStorage.setItem(AUTH_KEY, "true");
+        } else {
+          alert("Senha incorreta.");
+          window.location.reload();
+        }
+      }
+    }
+    checkAuth();
+
+    // LOGOFF AO SAIR
+    document.getElementById('btnExit').addEventListener('click', () => {
+      localStorage.removeItem(AUTH_KEY);
+    });
+
     const DESTINATIONS = [
       { id: "monte_verde_mg", label: "Monte Verde (MG) — Âncora" },
       { id: "campos_do_jordao_sp", label: "Campos do Jordão (SP)" },
@@ -454,13 +501,18 @@
       const rc = safeNumber(rec?.recentChange, 0);
       const ps = safeNumber(rec?.persistence, 0);
       const note = (rec?.note && String(rec.note).trim()) ? String(rec.note) : "Sem observação.";
+      const isAnchor = d.id === 'monte_verde_mg';
 
       const wrap = document.createElement("div");
       wrap.className = "dest";
+      if (isAnchor) {
+        wrap.style.border = "1px solid var(--accent)";
+        wrap.style.background = "rgba(0,198,255,0.05)";
+      }
 
       wrap.innerHTML = `
         <div class="row">
-          <div class="name">${d.label}</div>
+          <div class="name">${d.label} ${isAnchor ? '⭐' : ''}</div>
           <div class="pill state ${pulse.cls}">${pulse.label}</div>
         </div>
         <div class="metric">
@@ -627,6 +679,11 @@
       }
       requestAnimationFrame(draw);
     })();
+
+    // Bloqueio de F12 e Inspeção (Padrão HUB)
+    document.onkeydown = function(e) {
+        if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
+    };
   </script>
 </body>
 </html>
