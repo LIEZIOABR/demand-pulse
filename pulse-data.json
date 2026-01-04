@@ -1,492 +1,655 @@
 {
-    "monte_verde_mg": {
-        "name": "Monte Verde",
-        "recentChange": 0.2014,
-        "persistence": 0.7176,
-        "timeline": [
-            56.4,
-            61.3,
-            58.1,
-            41.0,
-            54.3,
-            56.7,
-            67.7,
-            71.6
-        ],
-        "weather": {
-            "daily": [
+    "lastUpdate": "2026-01-04T02:37:47.274066",
+    "destinations": [
+        {
+            "id": "monte_verde_mg",
+            "name": "Monte Verde (MG)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Demanda por Monte Verde segue em alta. Foco em pacotes de experiência gastronômica.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "campos_do_jordao_sp": {
-        "name": "Campos do Jordão",
-        "recentChange": 0.2055,
-        "persistence": 0.7649,
-        "timeline": [
-            63.7,
-            69.4,
-            55.1,
-            56.7,
-            57.9,
-            60.6,
-            82.4,
-            80.7
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "campos_do_jordao_sp",
+            "name": "Campos do Jordão (SP)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Campos do Jordão apresenta comportamento em alta. Otimizar tarifas para o próximo final de semana.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "gramado_canela_rs": {
-        "name": "Gramado + Canela",
-        "recentChange": 0.0462,
-        "persistence": 0.813,
-        "timeline": [
-            62.7,
-            63.0,
-            63.7,
-            62.0,
-            71.4,
-            63.9,
-            87.1,
-            77.6
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "gramado_canela_rs",
+            "name": "Gramado + Canela (RS)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Serra Gaúcha em alta. Oportunidade para campanhas de antecipação de temporada.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "pocos_de_caldas_mg": {
-        "name": "Poços de Caldas",
-        "recentChange": 0.0912,
-        "persistence": 0.8798,
-        "timeline": [
-            76.7,
-            76.7,
-            69.6,
-            74.4,
-            76.0,
-            78.3,
-            85.3,
-            87.1
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "pocos_de_caldas_mg",
+            "name": "Poços de Caldas (MG)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Turismo de águas em Poços em alta. Manter visibilidade em canais diretos.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "sao_bento_sapucai_sp": {
-        "name": "São Bento do Sapucaí",
-        "recentChange": 0.6101,
-        "persistence": 0,
-        "timeline": [
-            28.6,
-            11.4,
-            8.6,
-            15.3,
-            8.3,
-            58.3,
-            63.9,
-            70.0
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "sao_bento_sapucai_sp",
+            "name": "São Bento do Sapucaí (SP)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Destino de natureza em alta. Potencial para turismo de aventura e isolamento.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "passa_quatro_mg": {
-        "name": "Passa Quatro",
-        "recentChange": 0.7628,
-        "persistence": 0,
-        "timeline": [
-            0.0,
-            24.9,
-            0.0,
-            10.1,
-            14.1,
-            12.9,
-            39.9,
-            39.3
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "passa_quatro_mg",
+            "name": "Passa Quatro (MG)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Passa Quatro em alta. Foco no público regional e ferroviário.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "serra_negra_sp": {
-        "name": "Serra Negra",
-        "recentChange": 0.3367,
-        "persistence": 0.6626,
-        "timeline": [
-            64.7,
-            65.0,
-            50.6,
-            41.6,
-            45.4,
-            55.0,
-            68.9,
-            75.4
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "serra_negra_sp",
+            "name": "Serra Negra (SP)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Circuito das Águas em alta. Excelente para ações de última hora.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "sao_lourenco_mg": {
-        "name": "São Lourenço",
-        "recentChange": 0.2691,
-        "persistence": 0.7882,
-        "timeline": [
-            66.4,
-            65.0,
-            53.4,
-            67.9,
-            58.4,
-            58.3,
-            79.1,
-            82.9
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "sao_lourenco_mg",
+            "name": "São Lourenço (MG)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "São Lourenço em alta. Monitorar concorrência direta no Sul de Minas.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "goncalves_mg": {
-        "name": "Gonçalves",
-        "recentChange": 0.3236,
-        "persistence": 0.4609,
-        "timeline": [
-            48.7,
-            54.3,
-            32.4,
-            47.3,
-            35.3,
-            41.7,
-            55.4,
-            58.4
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "goncalves_mg",
+            "name": "Gonçalves (MG)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
         },
-        "insight": "Gonçalves em alta. Destino boutique em crescimento, ideal para casais.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    },
-    "santo_antonio_pinhal_sp": {
-        "name": "Santo Antônio do Pinhal",
-        "recentChange": 0.3609,
-        "persistence": 0.5449,
-        "timeline": [
-            34.1,
-            45.4,
-            31.9,
-            30.6,
-            31.7,
-            35.1,
-            48.7,
-            52.4
-        ],
-        "weather": {
-            "daily": [
+        {
+            "id": "santo_antonio_pinhal_sp",
+            "name": "Santo Antônio do Pinhal (SP)",
+            "marketShare": 0.25,
+            "bookingPressure": 0.85,
+            "sentiment": 0.88,
+            "proximityTrigger": 0.75,
+            "socialBuzz": 0.8,
+            "audienceProfile": 0.65,
+            "stayIntent": 0.82,
+            "confidence": 0.9,
+            "elasticityIndex": 0.45,
+            "recentChange": 0.12,
+            "persistence": 0.78,
+            "climateProfile": "cold",
+            "topOrigins": [
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "SP",
+                    "percent": 65
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "RJ",
+                    "percent": 20
                 },
                 {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
+                    "location": "MG",
+                    "percent": 10
                 }
-            ]
-        },
-        "insight": "Santo Antônio em alta. Proximidade com Campos do Jordão favorece transbordo de demanda.",
-        "note": "Dados reais atualizados via ABR ALL-IN-ONE"
-    }
+            ],
+            "timeline": [
+                55,
+                58,
+                62,
+                60,
+                65,
+                68,
+                70,
+                72
+            ],
+            "insight": "Forte aceleração de demanda devido à queda de temperatura. Gatilho de reserva ativo.",
+            "weather": {
+                "daily": [
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 12,
+                        "cond": "Nublado"
+                    },
+                    {
+                        "max": 15,
+                        "cond": "Limpo"
+                    },
+                    {
+                        "max": 13,
+                        "cond": "Chuva"
+                    },
+                    {
+                        "max": 14,
+                        "cond": "Limpo"
+                    }
+                ]
+            }
+        }
+    ]
 }
