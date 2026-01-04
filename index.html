@@ -142,6 +142,7 @@
       background: none;
       border: none;
       width: 100%;
+      text-align: center;
     }
     .btn-back-hub:hover { color: var(--accent); }
 
@@ -432,7 +433,8 @@
         <span class="toggle-pass" onclick="togglePassword()">VER</span>
       </div>
       <button onclick="checkLogin()">Entrar no Radar</button>
-      <button class="btn-back-hub" onclick="window.location.href='./hub_index.html'">Voltar ao HUB</button>
+      <!-- BOTÃO HUB NA ÁREA DE LOGIN CORRIGIDO -->
+      <a href="hub_index.html" class="btn-back-hub">Voltar ao HUB</a>
       <p id="login-error" style="color: #ff3b30; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">Senha incorreta.</p>
     </div>
   </div>
@@ -446,7 +448,11 @@
 
     <header style="margin-top: 28px;">
       <img class="logo" src="logo.png" alt="ABR ALL IN ONE" />
-      <a href="./hub_index.html" class="btn-exit" id="btnExit">← SAIR</a>
+      <!-- BOTÃO HUB NA ÁREA DO RADAR CORRIGIDO -->
+      <div style="display: flex; gap: 10px;">
+        <a href="hub_index.html" class="btn-exit" style="background: rgba(0, 198, 255, 0.1); color: var(--accent); border-color: var(--accent);">← HUB</a>
+        <a href="#" class="btn-exit" id="btnExit">← SAIR</a>
+      </div>
     </header>
 
     <section class="pitch">
@@ -560,8 +566,10 @@
       return false;
     }
 
-    document.getElementById('btnExit').addEventListener('click', () => {
+    document.getElementById('btnExit').addEventListener('click', (e) => {
+      e.preventDefault();
       localStorage.removeItem(AUTH_KEY);
+      window.location.reload();
     });
 
     const DESTINATIONS = [
