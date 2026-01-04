@@ -1,803 +1,620 @@
-<!doctype html>
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DEMAND PULSE — ABR ALL IN ONE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMAND PULSE - ABR ALL IN ONE</title>
+    <style>
+        /* Estilos CSS para o Layout Matrix */
+        body {
+            background-color: #000;
+            color: #00c0ff; /* Ciano Neon Corrigido */
+            font-family: 'Fira Code', monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        /* Efeito Matrix de Fundo */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.1;
+            font-size: 10px;
+            line-height: 10px;
+            white-space: pre;
+            pointer-events: none;
+        }
 
-  <style>
-    :root{
-      --bg:#000000;
-      --panel: rgba(15, 18, 22, 0.62);
-      --panel-2: rgba(15, 18, 22, 0.48);
-      --line: rgba(255,255,255,0.10);
-      --text:#eaf3ff;
-      --muted: rgba(234,243,255,0.70);
-      --accent:#00c6ff;
-      --shadow: 0 18px 50px rgba(0,0,0,0.55);
-      --radius: 18px;
+        .matrix-bg span {
+            color: #00ff00; /* Verde Matrix */
+            animation: matrix-fall 5s linear infinite;
+            display: inline-block;
+        }
 
-      --ok: rgba(126,231,135,.95);
-      --flat: rgba(255,204,102,.95);
-      --bad: rgba(255,107,107,.95);
-    }
+        @keyframes matrix-fall {
+            0% { transform: translateY(-100%); opacity: 0.5; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x:hidden;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
+        /* Estilos do Ticker (Letreiro Digital) */
+        .ticker-wrap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 28px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            overflow: hidden;
+            border-bottom: 1px solid #00c0ff; /* Ciano Neon Corrigido */
+            box-shadow: 0 2px 5px rgba(0, 192, 255, 0.2); /* Ciano Neon Corrigido */
+            display: flex;
+            align-items: center;
+            padding-top: 4px;
+        }
 
-    #matrix{
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      display:block;
-      background: #000;
-    }
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: ticker-scroll 60s linear infinite;
+            font-size: 12px;
+            color: #00c0ff; /* Ciano Neon Corrigido */
+        }
 
-    /* TELA DE LOGIN ORIGINAL RESTAURADA COM RIGOR ABSOLUTO */
-    #login-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-    .login-box {
-      background: var(--panel);
-      padding: 40px;
-      border-radius: 24px;
-      border: 1px solid var(--accent);
-      text-align: center;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 0 40px rgba(0, 198, 255, 0.25);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-    }
-    .login-box h2 {
-      color: var(--accent);
-      font-size: 1.2rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .input-group {
-      position: relative;
-      margin: 20px 0;
-      display: flex;
-      align-items: center;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-    }
-    .login-box input {
-      flex: 1;
-      padding: 15px;
-      background: transparent;
-      border: none;
-      color: white;
-      text-align: center;
-      font-size: 1.1rem;
-      outline: none;
-    }
-    .toggle-pass {
-      padding: 0 15px;
-      cursor: pointer;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 600;
-      user-select: none;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .login-box button {
-      width: 100%;
-      padding: 15px;
-      background: var(--accent);
-      color: #001018;
-      border: none;
-      border-radius: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: 0.3s;
-      margin-bottom: 10px;
-    }
-    .login-box button:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
-    }
-    .btn-back-hub {
-      display: block;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 600;
-      margin-top: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: 0.3s;
-      cursor: pointer;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: center;
-    }
-    .btn-back-hub:hover { color: var(--accent); }
+        @keyframes ticker-scroll {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
 
-    .wrap{
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display:none;
-      flex-direction:column;
-    }
+        /* Estilos da Tela de Login */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-    header{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 26px 16px 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      width: 100%;
-    }
-    .logo{
-      width:230px;
-      height:auto;
-      display:block;
-      filter: drop-shadow(0 12px 25px rgba(0,198,255,0.15));
-      user-select:none;
-      -webkit-user-drag:none;
-    }
-    .btn-exit {
-      background: rgba(255, 59, 48, 0.15);
-      color: #ff3b30;
-      border: 1px solid #ff3b30;
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: 0.3s;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .btn-exit:hover {
-      background: #ff3b30;
-      color: white;
-    }
+        .login-box {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00c0ff; /* Ciano Neon Corrigido */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0, 192, 255, 0.5); /* Ciano Neon Corrigido */
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
 
-    .pitch{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 14px;
-      text-align:center;
-    }
-    .pitch h1{margin: 6px 0 6px; font-size: 20px; letter-spacing: 0.4px; font-weight: 800;}
-    .pitch p{margin: 0 auto; max-width: 860px; color: var(--muted); font-size: 13px; line-height: 1.35;}
+        .login-box h2 {
+            color: #00c0ff; /* Ciano Neon Corrigido */
+            margin-bottom: 30px;
+            font-size: 1.5em;
+        }
 
-    .tag{
-      display:inline-flex; gap:8px; align-items:center;
-      margin-top: 10px; padding: 8px 12px;
-      border-radius: 999px; border: 1px solid var(--line);
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      font-size: 12px; color: var(--muted); box-shadow: var(--shadow);
-    }
-    .tag .dot{
-      width:10px;height:10px;border-radius:50%;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(0,198,255,0.55);
-    }
+        .login-input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-    .statusbar{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 10px;
-      width: 100%;
-    }
-    .status{
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(0,0,0,0.28);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 10px 12px;
-      color: var(--muted);
-      font-size: 12px;
-      box-shadow: var(--shadow);
-      text-align:center;
-    }
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            background: #111;
+            border: 1px solid #00c0ff; /* Ciano Neon Corrigido */
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1em;
+            box-sizing: border-box;
+            text-align: center;
+        }
 
-    .input-box{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 18px;
-    }
-    .input-card{
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      padding: 14px;
-    }
-    .controls{
-      display:flex; gap:10px; flex-wrap:wrap;
-      align-items:center; justify-content:center;
-    }
-    select, button{
-      font-family: inherit;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      padding: 12px 14px;
-      font-size: 13px;
-      outline: none;
-      background: rgba(0,0,0,0.35);
-      color: var(--text);
-      min-height: 44px;
-    }
-    select{min-width: 230px;}
-    button{
-      border: none; cursor: pointer; font-weight: 800;
-      color: #001018;
-      background: linear-gradient(135deg, rgba(0,198,255,.98), rgba(0,198,255,.55));
-      box-shadow: 0 10px 25px rgba(0,198,255,0.16);
-      min-width: 210px;
-    }
-    button:active{transform: translateY(1px);}
-    .mini-btn{
-      min-width: 180px; font-weight: 700;
-      color: var(--muted);
-      background: rgba(0,0,0,0.25);
-      border: 1px solid var(--line);
-      box-shadow: none;
-    }
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: #00c0ff; /* Ciano Neon Corrigido */
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
 
-    main{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 20px;
-      width: 100%;
-      flex: 1;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 14px;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: 1fr;}
-      select{min-width: 100%;}
-      button{min-width: 100%;}
-    }
+        .login-button:hover {
+            background: #00aaff; /* Ciano Neon Corrigido (tom mais escuro para hover) */
+            box-shadow: 0 0 10px #00c0ff; /* Ciano Neon Corrigido */
+        }
 
-    .card{
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      overflow:hidden;
-    }
-    .card .head{
-      padding: 14px 14px 12px;
-      border-bottom: 1px solid var(--line);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .card h2{margin:0; font-size: 14px; font-weight: 800; letter-spacing: .25px;}
-    .sub{margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.35; max-width: 760px;}
-    .card .body{padding: 14px;}
+        .login-error {
+            color: #ff0000;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
 
-    .dest-list{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-    }
-    @media (max-width: 640px){
-      .dest-list{grid-template-columns: 1fr;}
-    }
+        .login-logo {
+            margin-bottom: 30px;
+            width: 150px;
+            height: auto;
+            opacity: 0.8;
+        }
 
-    .dest{
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--panel-2);
-      padding: 12px;
-    }
-    .row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
-    }
-    .name{font-weight: 800; font-size: 13px; letter-spacing: .2px;}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,0.28);
-      color: var(--muted);
-      white-space:nowrap;
-    }
-    .state{border:none; color:#001018; font-weight: 900; letter-spacing: .3px;}
-    .up{background: var(--ok);}
-    .flat{background: var(--flat);}
-    .down{background: var(--bad);}
+        .login-link {
+            color: #00c0ff; /* Ciano Neon Corrigido */
+            text-decoration: none;
+            margin-top: 20px;
+            display: block;
+            font-size: 0.9em;
+            transition: color 0.3s;
+        }
 
-    .metric{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .kpi{
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(0,0,0,0.22);
-      padding: 10px;
-    }
-    .kpi .label{color: var(--muted); font-size: 11px; margin-bottom: 4px;}
-    .kpi .value{font-size: 16px; font-weight: 900;}
-    .kpi .hint{margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.25;}
+        .login-link:hover {
+            color: #fff;
+        }
 
-    .divider{height:1px;background: var(--line); margin: 10px 0;}
-    .note{color: var(--muted); font-size: 12px; line-height: 1.45;}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+        /* Estilos do Dashboard */
+        .dashboard-container {
+            display: none; /* Escondido por padrão */
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            margin-top: 28px; /* Espaço para o ticker */
+        }
 
-    footer{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 24px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-      text-align:center;
-    }
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
 
-    /* TICKER CSS */
-    .ticker-wrap {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      overflow: hidden;
-      height: 28px;
-      background-color: rgba(0, 0, 0, 0.85);
-      border-bottom: 1px solid var(--line);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    .ticker {
-      display: inline-block;
-      white-space: nowrap;
-      padding-right: 100%;
-      animation: ticker 40s linear infinite;
-      font-family: ui-monospace, monospace;
-      font-size: 11px;
-      color: var(--accent);
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-    .ticker span { margin-right: 40px; display: inline-block; }
-    .ticker b { color: var(--ok); }
-    @keyframes ticker {
-      0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-100%, 0, 0); }
-    }
-  </style>
+        .header-logo {
+            width: 100px;
+            height: auto;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-button {
+            padding: 10px 20px;
+            background: #ff0000;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .control-button:hover {
+            background: #cc0000;
+        }
+
+        .main-title {
+            color: #00c0ff; /* Ciano Neon Corrigido */
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 1em;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .destination-selectors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .selector-group {
+            flex: 1 1 200px;
+            min-width: 200px;
+        }
+
+        .destination-select {
+            width: 100%;
+            padding: 15px;
+            background: #111;
+            border: 2px solid #00c0ff; /* Ciano Neon Corrigido */
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1em;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .destination-select:disabled {
+            background: #003333;
+            border-color: #00c0ff; /* Ciano Neon Corrigido */
+            color: #fff;
+            opacity: 1;
+        }
+
+        .update-button {
+            width: 100%;
+            padding: 15px;
+            background: #00c0ff; /* Ciano Neon Corrigido */
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .update-button:hover {
+            background: #00aaff; /* Ciano Neon Corrigido (tom mais escuro para hover) */
+            box-shadow: 0 0 10px #00c0ff; /* Ciano Neon Corrigido */
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00c0ff; /* Ciano Neon Corrigido */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 192, 255, 0.3); /* Ciano Neon Corrigido */
+        }
+
+        .card-title {
+            color: #00c0ff; /* Ciano Neon Corrigido */
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #00c0ff; /* Ciano Neon Corrigido */
+            padding-bottom: 5px;
+        }
+
+        .card-content {
+            color: #fff;
+        }
+
+        /* Estilos do Boletim */
+        .bulletin-card {
+            grid-column: 1 / -1;
+        }
+
+        .bulletin-content {
+            white-space: pre-wrap;
+            text-align: left;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        /* Estilos para o Card Âncora (Monte Verde) */
+        .anchor-card {
+            border: 2px solid #00c0ff; /* Ciano Neon Corrigido */
+            box-shadow: 0 0 15px rgba(0, 192, 255, 0.8); /* Ciano Neon Corrigido */
+        }
+
+        .anchor-title {
+            color: #00c0ff; /* Ciano Neon Corrigido */
+            font-weight: bold;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .destination-selectors {
+                flex-direction: column;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .header-controls {
+                width: 100%;
+                justify-content: center;
+            }
+            .main-title {
+                font-size: 2em;
+            }
+            .subtitle {
+                font-size: 0.9em;
+            }
+            .ticker {
+                font-size: 10px;
+            }
+        }
+    </style>
 </head>
+<body>
+    <!-- Efeito Matrix de Fundo -->
+    <div class="matrix-bg" id="matrix-bg"></div>
 
-<body oncontextmenu="return false;">
-  <canvas id="matrix"></canvas>
-
-  <!-- TELA DE LOGIN ORIGINAL RESTAURADA COM RIGOR ABSOLUTO -->
-  <div id="login-overlay">
-    <img src="logo.png" alt="ABR" style="max-width: 200px; margin-bottom: 30px; filter: drop-shadow(0 0 20px rgba(0,198,255,0.4));">
-    <div class="login-box">
-      <h2>ACESSO RESTRITO</h2>
-      <div class="input-group">
-        <input type="password" id="password-input" placeholder="Digite sua senha">
-        <span class="toggle-pass" onclick="togglePassword()">VER</span>
-      </div>
-      <button onclick="checkLogin()">Entrar no Radar</button>
-      <!-- BOTÃO HUB NA ÁREA DE LOGIN CORRIGIDO -->
-      <a href="hub_index.html" class="btn-back-hub">Voltar ao HUB</a>
-      <p id="login-error" style="color: #ff3b30; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">Senha incorreta.</p>
-    </div>
-  </div>
-
-  <div class="wrap" id="main-content">
+    <!-- Ticker (Letreiro Digital) -->
     <div class="ticker-wrap">
-      <div class="ticker" id="ticker">
-        CARREGANDO PULSO DE MERCADO... 📡 SINCRONIZANDO COM SUPABASE... 🟢 STATUS: LIVE
-      </div>
+        <div class="ticker" id="ticker-content">
+            AGUARDANDO SINCRONIZAÇÃO... MV-SHARE: N/A | PRESSÃO-RESERVA: N/A | CLIMA-MV: N/A | STATUS-BD: N/A | ROAD-PRESSURE: AGUARDANDO API... | RATE-INDEX: AGUARDANDO API...
+        </div>
     </div>
 
-    <header style="margin-top: 28px;">
-      <img class="logo" src="logo.png" alt="ABR ALL IN ONE" />
-      <!-- BOTÃO HUB NA ÁREA DO RADAR CORRIGIDO -->
-      <div style="display: flex; gap: 10px;">
-        <a href="hub_index.html" class="btn-exit" style="background: rgba(0, 198, 255, 0.1); color: var(--accent); border-color: var(--accent);">← HUB</a>
-        <a href="#" class="btn-exit" id="btnExit">← SAIR</a>
-      </div>
-    </header>
-
-    <section class="pitch">
-      <h1>DEMAND PULSE — Radar Direcional do Destino</h1>
-      <p>
-        Inteligência de demanda em tempo real. Análise contínua de milhões de sinais digitais transformados em pulso de mercado.
-      </p>
-      <p style="margin-top: 10px;">
-        Leitura direcional do pulso de demanda do destino (🔺 aquecendo, ➖ estável, 🔻 arrefecendo),
-        baseada em variação e persistência — <strong>sem promessa de volume absoluto</strong>.
-        Monte Verde é o destino âncora.
-      </p>
-      <div class="tag"><span class="dot"></span></div>
-    </section>
-
-    <div class="statusbar">
-      <div class="status" id="status"></div>
+    <!-- Tela de Login -->
+    <div class="login-container" id="login-screen">
+        <div class="login-box">
+            <img src="logo.png" alt="ABR Logo" class="login-logo">
+            <h2>ACESSO RESTRITO</h2>
+            <div class="login-input-group">
+                <input type="password" id="password-input" class="login-input" placeholder="Senha de Acesso">
+                <span id="toggle-password" style="position: absolute; right: 10px; top: 15px; color: #00c0ff; cursor: pointer; font-size: 0.8em;">VER</span>
+            </div>
+            <button class="login-button" onclick="checkPassword()">ENTRAR NO RADAR</button>
+            <p class="login-error" id="login-error">Senha incorreta.</p>
+            <a href="hub_index.html" class="login-link">VOLTAR AO HUB</a>
+        </div>
     </div>
 
-    <section class="input-box">
-      <div class="input-card">
-        <div class="controls">
-          <select id="d1" disabled style="background:rgba(0,198,255,0.1); border-color:var(--accent); color:var(--accent); font-weight:800;"></select>
-          <select id="d2"></select>
-          <select id="d3"></select>
-          <select id="d4"></select>
-          <button id="btnRun">Atualizar Pulso</button>
-        </div>
-        <div style="margin-top:10px" class="note">
-          Este HTML lê os dados de <span class="mono">pulse-data.json</span> na mesma pasta (Netlify/UOL Host funciona).
-        </div>
-      </div>
-    </section>
-
-    <main>
-      <div class="grid">
-        <section class="card">
-          <div class="head">
-            <div>
-              <h2>Comparativo (até 4 destinos)</h2>
-              <div class="sub">
-                Estados 🔺➖🔻 calculados pelos campos: <span class="mono">recentChange</span> e <span class="mono">persistence</span>.
-              </div>
+    <!-- Dashboard Principal -->
+    <div class="dashboard-container" id="dashboard-content">
+        <div class="header">
+            <div class="header-controls">
+                <a href="hub_index.html" class="control-button" style="background: #00c0ff; color: #000; text-decoration: none;">HUB</a>
+                <button class="control-button" onclick="logout()">SAIR</button>
             </div>
-          </div>
-          <div class="body">
-            <div class="dest-list" id="destList"></div>
-            <div class="divider"></div>
-            <div class="note">Você pode atualizar o <span class="mono">pulse-data.json</span> e clicar em “Atualizar Pulso”.</div>
-          </div>
-        </section>
+            <img src="logo.png" alt="ABR Logo" class="header-logo">
+        </div>
 
-        <aside class="card">
-          <div class="head">
-            <div>
-              <h2>Boletim institucional (1 página)</h2>
-              <div class="sub">Texto objetivo para entidade/associação.</div>
+        <h1 class="main-title">DEMAND PULSE - Radar Direcional do Destino</h1>
+        <p class="subtitle">Inteligência de demanda em tempo real. Análise contínua de milhões de sinais digitais transformados em pulso de mercado.</p>
+
+        <div class="destination-selectors">
+            <div class="selector-group">
+                <select id="dest-select-1" class="destination-select" disabled>
+                    <option value="Monte Verde (MG)">Monte Verde (MG) - Âncora</option>
+                </select>
             </div>
-            <button class="mini-btn" id="btnCopy">Copiar boletim</button>
-          </div>
-          <div class="body">
-            <div id="bulletin"></div>
-            <div class="divider"></div>
-            <div class="note">Observação: este MVP não prevê reservas. Entrega contexto direcional.</div>
-          </div>
-        </aside>
-      </div>
-    </main>
-
-    <footer>
-      © 2026 ABR — Demand Pulse Radar. Todos os direitos reservados.
-    </footer>
-  </div>
-
-  <script>
-    // LÓGICA DE LOGIN DEFINITIVA E RIGOROSA
-    const AUTH_KEY = "demand_pulse_auth";
-    
-    function togglePassword() {
-      const input = document.getElementById('password-input');
-      const btn = document.querySelector('.toggle-pass');
-      if (input.type === "password") {
-        input.type = "text";
-        btn.textContent = "OCULTAR";
-      } else {
-        input.type = "password";
-        btn.textContent = "VER";
-      }
-    }
-
-    function checkLogin() {
-      const input = document.getElementById('password-input').value.trim();
-      // SENHAS OFICIAIS: abrturbo e testecliente
-      if (input === "abrturbo" || input === "testecliente" || input === "ABRTURBO" || input === "TESTECLIENTE") {
-        localStorage.setItem(AUTH_KEY, "true");
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('main-content').style.display = 'flex';
-        boot();
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-      }
-    }
-
-    function checkAuth() {
-      const auth = localStorage.getItem(AUTH_KEY);
-      if (auth === "true") {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('main-content').style.display = 'flex';
-        return true;
-      }
-      return false;
-    }
-
-    document.getElementById('btnExit').addEventListener('click', (e) => {
-      e.preventDefault();
-      localStorage.removeItem(AUTH_KEY);
-      window.location.reload();
-    });
-
-    const DESTINATIONS = [
-      { id: "monte_verde_mg", label: "Monte Verde (MG) — Âncora" },
-      { id: "campos_do_jordao_sp", label: "Campos do Jordão (SP)" },
-      { id: "gramado_canela_rs", label: "Gramado + Canela (RS)" },
-      { id: "goncalves_mg", label: "Gonçalves (MG)" },
-      { id: "santo_antonio_do_pinhal_sp", label: "S. A. do Pinhal (SP)" },
-      { id: "serra_negra_sp", label: "Serra Negra (SP)" },
-      { id: "pocos_de_caldas_mg", label: "Poços de Caldas (MG)" },
-      { id: "sao_lourenco_mg", label: "São Lourenço (MG)" }
-    ];
-
-    const els = {
-      d1: document.getElementById("d1"),
-      d2: document.getElementById("d2"),
-      d3: document.getElementById("d3"),
-      d4: document.getElementById("d4"),
-      btnRun: document.getElementById("btnRun"),
-      destList: document.getElementById("destList"),
-      bulletin: document.getElementById("bulletin"),
-      btnCopy: document.getElementById("btnCopy"),
-      status: document.getElementById("status"),
-      ticker: document.getElementById("ticker")
-    };
-
-    let PULSE_DATA = null;
-
-    function setStatus(msg){ els.status.textContent = msg; }
-
-    function fillSelect(selectEl, defaultId) {
-      selectEl.innerHTML = "";
-      for (const d of DESTINATIONS) {
-        const opt = document.createElement("option");
-        opt.value = d.id;
-        opt.textContent = d.label;
-        selectEl.appendChild(opt);
-      }
-      selectEl.value = defaultId || DESTINATIONS[0].id;
-    }
-
-    function safeNumber(x, fallback=0){
-      const n = Number(x);
-      return Number.isFinite(n) ? n : fallback;
-    }
-
-    function fmtPct(x) {
-      const num = Number(x);
-      if (!Number.isFinite(num)) return "0,0%";
-      const v = Math.round(num * 1000) / 10;
-      return (v > 0 ? "+" : "") + v.toFixed(1).replace(".", ",") + "%";
-    }
-
-    function classifyFromData(rec){
-      const rc = safeNumber(rec?.recentChange, 0);
-      const ps = safeNumber(rec?.persistence, 0);
-      if (ps < 0.55) return { label: "➖ Estável", cls: "flat" };
-      if (rc >= 0.12) return { label: "🔺 Aquecendo", cls: "up" };
-      if (rc <= -0.10) return { label: "🔻 Arrefecendo", cls: "down" };
-      return { label: "➖ Estável", cls: "flat" };
-    }
-
-    function renderDestCard(d, rec) {
-      const pulse = classifyFromData(rec);
-      const rc = safeNumber(rec?.recentChange, 0);
-      const ps = safeNumber(rec?.persistence, 0);
-      const note = (rec?.note && String(rec.note).trim()) ? String(rec.note) : "Sem observação.";
-      const isAnchor = d.id === 'monte_verde_mg';
-
-      const wrap = document.createElement("div");
-      wrap.className = "dest";
-      if (isAnchor) {
-        wrap.style.border = "1px solid var(--accent)";
-        wrap.style.background = "rgba(0,198,255,0.05)";
-      }
-
-      wrap.innerHTML = `
-        <div class="row">
-          <div class="name">${d.label} ${isAnchor ? '⭐' : ''}</div>
-          <div class="pill state ${pulse.cls}">${pulse.label}</div>
+            <div class="selector-group">
+                <select id="dest-select-2" class="destination-select">
+                    <option value="Campos do Jordão (SP)">Campos do Jordão (SP)</option>
+                    <option value="Serra Negra (SP)">Serra Negra (SP)</option>
+                    <option value="Poços de Caldas (MG)">Poços de Caldas (MG)</option>
+                </select>
+            </div>
+            <div class="selector-group">
+                <select id="dest-select-3" class="destination-select">
+                    <option value="Gramado + Canela (RS)">Gramado + Canela (RS)</option>
+                    <option value="Petrópolis (RJ)">Petrópolis (RJ)</option>
+                    <option value="Teresópolis (RJ)">Teresópolis (RJ)</option>
+                </select>
+            </div>
+            <div class="selector-group">
+                <select id="dest-select-4" class="destination-select">
+                    <option value="Gonçalves (MG)">Gonçalves (MG)</option>
+                    <option value="São Bento do Sapucaí (SP)">São Bento do Sapucaí (SP)</option>
+                    <option value="Visconde de Mauá (RJ)">Visconde de Mauá (RJ)</option>
+                </select>
+            </div>
+            <button class="update-button" onclick="updateDashboard()">ATUALIZAR ANÁLISE DE BI</button>
         </div>
-        <div class="metric">
-          <div class="kpi">
-            <div class="label">Variação recente (vs padrão)</div>
-            <div class="value">${fmtPct(rc)}</div>
-            <div class="hint">Campo do JSON: <span class="mono">recentChange</span></div>
-          </div>
-          <div class="kpi">
-            <div class="label">Persistência do movimento</div>
-            <div class="value">${Math.round(ps * 100)}%</div>
-            <div class="hint">${note}</div>
-          </div>
+
+        <div class="content-grid">
+            <!-- Cards de Destino (Serão preenchidos via JS) -->
+            <div class="card anchor-card" id="card-1">
+                <h3 class="card-title anchor-title">Monte Verde (MG) - Âncora</h3>
+                <div class="card-content">Carregando dados...</div>
+            </div>
+            <div class="card" id="card-2">
+                <h3 class="card-title">Campos do Jordão (SP)</h3>
+                <div class="card-content">Carregando dados...</div>
+            </div>
+            <div class="card" id="card-3">
+                <h3 class="card-title">Gramado + Canela (RS)</h3>
+                <div class="card-content">Carregando dados...</div>
+            </div>
+            <div class="card" id="card-4">
+                <h3 class="card-title">Gonçalves (MG)</h3>
+                <div class="card-content">Carregando dados...</div>
+            </div>
+
+            <!-- Boletim Estratégico -->
+            <div class="card bulletin-card">
+                <h3 class="card-title">BOLETIM ESTRATÉGICO (Inteligência Comparativa)</h3>
+                <div class="bulletin-content" id="bulletin-content">
+                    Aguardando dados para gerar a análise...
+                </div>
+            </div>
         </div>
-      `;
-      return wrap;
-    }
+    </div>
 
-    function buildBulletin(results) {
-      const now = new Date();
-      const dt = now.toLocaleDateString("pt-BR", { year:"numeric", month:"long", day:"2-digit" });
-      const mv = results.find(r => r.id === 'monte_verde_mg');
+    <script>
+        // Variáveis Globais
+        const CORRECT_PASSWORDS = ['abrturbo', 'testecliente'];
+        const LOGIN_SCREEN = document.getElementById('login-screen');
+        const DASHBOARD_CONTENT = document.getElementById('dashboard-content');
+        const PASSWORD_INPUT = document.getElementById('password-input');
+        const LOGIN_ERROR = document.getElementById('login-error');
+        const TOGGLE_PASSWORD = document.getElementById('toggle-password');
+        const TICKET_CONTENT = document.getElementById('ticker-content');
 
-      const lines = results.map(r => {
-        let insight = "";
-        if (mv && r.id !== 'monte_verde_mg') {
-          const diff = (mv.recentChange - r.recentChange) * 100;
-          insight = ` | Performance vs MV: ${diff > 0 ? '+' : ''}${diff.toFixed(1)}%`;
-        }
-        return `• ${r.label}: ${r.pulseLabel} (variação ${fmtPct(r.recentChange)} | persistência ${Math.round(r.persistence*100)}%${insight}).`;
-      }).join("<br/>");
-
-      return `
-        <div style="font-weight:900;font-size:14px;margin-bottom:8px;">
-          Boletim DEMAND PULSE — Destinos monitorados (${dt})
-        </div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.45;">
-          Leitura direcional do pulso de demanda do destino, baseada em variação vs. padrão histórico e persistência do movimento.
-          Monte Verde é o destino âncora do radar.
-        </div>
-        <div class="divider"></div>
-        <div style="font-size:13px;line-height:1.55;">${lines}</div>
-        <div class="divider"></div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.45;">
-          Interpretação: “🔺 aquecendo” sugere maior pressão relativa; “🔻 arrefecendo” sugere redução; “➖ estável” indica manutenção.
-        </div>
-      `;
-    }
-
-    function updateTicker(data) {
-      if (!data || !data.monte_verde_mg) return;
-      const mv = data.monte_verde_mg;
-      const rc = fmtPct(mv.recentChange);
-      const ps = Math.round(mv.persistence * 100);
-      const content = `
-        <span>MONTE VERDE ÂNCORA: <b>VARIAÇÃO ${rc}</b></span>
-        <span>PERSISTÊNCIA: <b>${ps}%</b></span>
-        <span>STATUS: <b>LIVE 🟢</b></span>
-        <span>ROAD PRESSURE: <b>AGUARDANDO API...</b></span>
-        <span>RATE INDEX: <b>AGUARDANDO SHOPPING...</b></span>
-      `;
-      els.ticker.innerHTML = content + content + content;
-    }
-
-    async function loadPulseData(){
-      try{
-        const url = "pulse-data.json?_=" + Date.now();
-        const res = await fetch(url, { cache: "no-store" });
-        if(!res.ok) throw new Error("HTTP " + res.status);
-        const json = await res.json();
-        PULSE_DATA = json;
-        setStatus("");
-        updateTicker(json);
-        return true;
-      }catch(err){
-        PULSE_DATA = null;
-        setStatus("Erro ao ler dados: " + err.message);
-        return false;
-      }
-    }
-
-    function run(){
-      els.destList.innerHTML = "";
-      const selectedIds = [els.d1.value, els.d2.value, els.d3.value, els.d4.value].filter(Boolean);
-      const results = [];
-      for(const id of selectedIds){
-        const d = DESTINATIONS.find(dest => dest.id === id);
-        if(!d) continue;
-        const rec = (PULSE_DATA && PULSE_DATA[d.id]) ? PULSE_DATA[d.id] : { recentChange: 0, persistence: 0, note: "chave ausente no JSON" };
-        const pulse = classifyFromData(rec);
-        els.destList.appendChild(renderDestCard(d, rec));
-        results.push({
-          id: d.id,
-          label: d.label,
-          pulseLabel: pulse.label,
-          recentChange: safeNumber(rec.recentChange, 0),
-          persistence: safeNumber(rec.persistence, 0)
+        // Função para alternar a visibilidade da senha
+        TOGGLE_PASSWORD.addEventListener('click', () => {
+            if (PASSWORD_INPUT.type === 'password') {
+                PASSWORD_INPUT.type = 'text';
+                TOGGLE_PASSWORD.textContent = 'OCULTAR';
+            } else {
+                PASSWORD_INPUT.type = 'password';
+                TOGGLE_PASSWORD.textContent = 'VER';
+            }
         });
-      }
-      els.bulletin.innerHTML = buildBulletin(results);
-    }
 
-    async function boot(){
-      fillSelect(els.d1, "monte_verde_mg");
-      fillSelect(els.d2, "serra_negra_sp");
-      fillSelect(els.d3, "gramado_canela_rs");
-      fillSelect(els.d4, "pocos_de_caldas_mg");
-      await loadPulseData();
-      run();
-    }
+        // Função de Autenticação
+        function checkPassword() {
+            const enteredPassword = PASSWORD_INPUT.value.toLowerCase(); // Case-insensitive
+            const isCorrect = CORRECT_PASSWORDS.includes(enteredPassword);
 
-    els.btnRun.addEventListener("click", async () => { await loadPulseData(); run(); });
-    els.btnCopy.addEventListener("click", () => {
-      navigator.clipboard.writeText(els.bulletin.innerText.trim()).then(() => {
-        els.btnCopy.textContent = "Copiado!";
-        setTimeout(() => (els.btnCopy.textContent = "Copiar boletim"), 1200);
-      });
-    });
-
-    if (checkAuth()) boot();
-
-    (function matrix(){
-      const canvas = document.getElementById("matrix");
-      const ctx = canvas.getContext("2d");
-      function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-      window.addEventListener("resize", resize);
-      resize();
-      const chars = "01ABRALLINONE";
-      const fontSize = 16;
-      let columns = Math.floor(canvas.width / fontSize);
-      let drops = Array(columns).fill(1);
-      function draw(){
-        ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = fontSize + "px monospace";
-        ctx.fillStyle = "rgba(0, 198, 255, 0.35)";
-        for (let i = 0; i < drops.length; i++){
-          const text = chars[Math.floor(Math.random() * chars.length)];
-          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
+            if (isCorrect) {
+                localStorage.setItem('demand_pulse_auth', 'true');
+                LOGIN_SCREEN.style.display = 'none';
+                DASHBOARD_CONTENT.style.display = 'block';
+                updateDashboard(); // Carrega o dashboard após o login
+            } else {
+                LOGIN_ERROR.style.display = 'block';
+                PASSWORD_INPUT.value = '';
+            }
         }
-      }
-      setInterval(draw, 100);
-    })();
 
-    document.onkeydown = function(e) {
-      if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
-    };
-  </script>
+        // Função de Logout
+        function logout() {
+            localStorage.removeItem('demand_pulse_auth');
+            window.location.reload();
+        }
+
+        // Função de Verificação de Sessão
+        function checkAuth() {
+            if (localStorage.getItem('demand_pulse_auth') === 'true') {
+                LOGIN_SCREEN.style.display = 'none';
+                DASHBOARD_CONTENT.style.display = 'block';
+                updateDashboard();
+            } else {
+                LOGIN_SCREEN.style.display = 'flex';
+                DASHBOARD_CONTENT.style.display = 'none';
+            }
+        }
+
+        // Função para carregar dados e atualizar o dashboard
+        async function updateDashboard() {
+            // Lógica de carregamento de dados do pulse-data.json
+            try {
+                const response = await fetch('pulse-data.json');
+                const data = await response.json();
+
+                // Simulação de atualização do Ticker
+                const mvData = data.destinos.find(d => d.nome === 'Monte Verde (MG)');
+                if (mvData) {
+                    TICKET_CONTENT.innerHTML = `
+                        🟢 BD ATIVO | MV-SHARE: ${mvData.market_share}% | PRESSÃO-RESERVA: ${mvData.booking_pressure}% | CLIMA-MV: ${mvData.temperatura}°C | ROAD-PRESSURE: AGUARDANDO API... | RATE-INDEX: AGUARDANDO API...
+                    `;
+                }
+
+                // Simulação de preenchimento dos cards e boletim
+                const destinations = [
+                    document.getElementById('dest-select-1').value,
+                    document.getElementById('dest-select-2').value,
+                    document.getElementById('dest-select-3').value,
+                    document.getElementById('dest-select-4').value
+                ];
+
+                let bulletinText = '🎯 FOCO: MONTE VERDE (ÂNCORA)\n\n';
+                const mvPressure = mvData ? mvData.booking_pressure : 0;
+
+                destinations.forEach((destName, index) => {
+                    const destData = data.destinos.find(d => d.nome === destName);
+                    const cardElement = document.getElementById(`card-${index + 1}`);
+                    const cardTitle = cardElement.querySelector('.card-title');
+                    const cardContent = cardElement.querySelector('.card-content');
+
+                    if (destData) {
+                        cardTitle.textContent = destName;
+                        cardContent.innerHTML = `
+                            <p>Market Share: ${destData.market_share}%</p>
+                            <p>Pressão de Reserva: ${destData.booking_pressure}%</p>
+                            <p>Sentimento: ${destData.sentimento}</p>
+                            <p>Variação Recente: ${destData.variacao_recente}%</p>
+                        `;
+
+                        // Lógica de Inteligência Comparativa para o Boletim
+                        const pressureDiff = destData.booking_pressure - mvPressure;
+                        let comparison = '';
+                        if (index > 0) {
+                            if (pressureDiff > 5) {
+                                comparison = `(+${pressureDiff}%) superior a Monte Verde, indicando pressão competitiva imediata.`;
+                            } else if (pressureDiff < -5) {
+                                comparison = `(${pressureDiff}%) inferior a Monte Verde, indicando oportunidade de preço.`;
+                            } else {
+                                comparison = `(±${Math.abs(pressureDiff)}%) alinhada com Monte Verde.`;
+                            }
+                            bulletinText += `* ${destName}: Pressão de Reserva ${comparison}\n`;
+                        }
+                    } else {
+                        cardTitle.textContent = destName;
+                        cardContent.innerHTML = 'Dados não disponíveis.';
+                    }
+                });
+
+                document.getElementById('bulletin-content').textContent = bulletinText;
+
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                TICKET_CONTENT.innerHTML = `
+                    🔴 ERRO | STATUS-BD: FALHA DE CONEXÃO. USANDO DADOS DE CONTINGÊNCIA.
+                `;
+                document.getElementById('bulletin-content').textContent = 'Erro ao carregar dados. Verifique a conexão com o servidor.';
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            // Inicia o efeito Matrix
+            const matrixBg = document.getElementById('matrix-bg');
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const streamCount = 50;
+            const streamLength = 20;
+
+            for (let i = 0; i < streamCount; i++) {
+                const stream = document.createElement('div');
+                stream.style.position = 'absolute';
+                stream.style.left = `${Math.random() * 100}%`;
+                stream.style.top = `${Math.random() * -100}vh`;
+                stream.style.animationDelay = `${Math.random() * 5}s`;
+                stream.style.animationDuration = `${Math.random() * 5 + 5}s`;
+
+                for (let j = 0; j < streamLength; j++) {
+                    const char = document.createElement('span');
+                    char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                    stream.appendChild(char);
+                }
+                matrixBg.appendChild(stream);
+            }
+        });
+
+        // Event Listeners para os seletores
+        document.getElementById('dest-select-2').addEventListener('change', updateDashboard);
+        document.getElementById('dest-select-3').addEventListener('change', updateDashboard);
+        document.getElementById('dest-select-4').addEventListener('change', updateDashboard);
+
+    </script>
 </body>
 </html>
