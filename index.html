@@ -48,11 +48,74 @@
       background: #000;
     }
 
+    /* TELA DE LOGIN ESTILIZADA ORIGINAL */
+    #login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .login-box {
+      background: var(--panel);
+      padding: 40px;
+      border-radius: 24px;
+      border: 1px solid var(--accent);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 40px rgba(0, 198, 255, 0.25);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+    .login-box h2 {
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 15px;
+      margin: 20px 0;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--line);
+      color: white;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.1rem;
+      outline: none;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 15px;
+      background: var(--accent);
+      color: #001018;
+      border: none;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: 0.3s;
+    }
+    .login-box button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 20px rgba(0, 198, 255, 0.4);
+    }
+
     .wrap{
       position: relative;
       z-index: 1;
       min-height: 100vh;
-      display:flex;
+      display:none; /* Escondido até o login */
       flex-direction:column;
     }
 
@@ -62,7 +125,7 @@
       padding: 26px 16px 14px;
       display:flex;
       align-items:center;
-      justify-content:space-between; /* Ajustado para o botão de sair */
+      justify-content:space-between;
       width: 100%;
     }
     .logo{
@@ -286,7 +349,7 @@
       text-align:center;
     }
 
-    /* TICKER CSS - INTEGRADO NO LAYOUT ORIGINAL */
+    /* TICKER CSS */
     .ticker-wrap {
       position: fixed;
       top: 0;
@@ -319,24 +382,31 @@
       0% { transform: translate3d(0, 0, 0); }
       100% { transform: translate3d(-100%, 0, 0); }
     }
-    @media (max-width: 768px) {
-      .ticker { animation-duration: 25s; }
-      .wrap { padding-top: 28px; }
-    }
   </style>
 </head>
 
 <body oncontextmenu="return false;">
-  <div class="ticker-wrap">
-    <div class="ticker" id="ticker">
-      CARREGANDO PULSO DE MERCADO... 📡 SINCRONIZANDO COM SUPABASE... 🟢 STATUS: LIVE
+  <canvas id="matrix"></canvas>
+
+  <!-- TELA DE LOGIN ORIGINAL RESTAURADA -->
+  <div id="login-overlay">
+    <img src="logo.png" alt="ABR" style="max-width: 200px; margin-bottom: 30px; filter: drop-shadow(0 0 20px rgba(0,198,255,0.4));">
+    <div class="login-box">
+      <h2>ACESSO RESTRITO</h2>
+      <input type="password" id="password-input" placeholder="Digite sua senha">
+      <button onclick="checkLogin()">Entrar no Radar</button>
+      <p id="login-error" style="color: #ff3b30; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">Senha incorreta.</p>
     </div>
   </div>
 
-  <canvas id="matrix"></canvas>
+  <div class="wrap" id="main-content">
+    <div class="ticker-wrap">
+      <div class="ticker" id="ticker">
+        CARREGANDO PULSO DE MERCADO... 📡 SINCRONIZANDO COM SUPABASE... 🟢 STATUS: LIVE
+      </div>
+    </div>
 
-  <div class="wrap">
-    <header>
+    <header style="margin-top: 28px;">
       <img class="logo" src="logo.png" alt="ABR ALL IN ONE" />
       <a href="hub_index.html" class="btn-exit" id="btnExit">← SAIR</a>
     </header>
@@ -414,21 +484,29 @@
   </div>
 
   <script>
-    // REGIME DE SENHAS ORIGINAL RESTAURADO
+    // LÓGICA DE LOGIN ORIGINAL RESTAURADA
     const AUTH_KEY = "demand_pulse_auth";
-    function checkAuth() {
-      const auth = localStorage.getItem(AUTH_KEY);
-      if (!auth) {
-        const pass = prompt("Por favor, insira a senha de acesso:");
-        if (pass === "abr2026") {
-          localStorage.setItem(AUTH_KEY, "true");
-        } else {
-          alert("Senha incorreta.");
-          window.location.reload();
-        }
+    function checkLogin() {
+      const input = document.getElementById('password-input').value.toLowerCase().trim();
+      if (input === "abr2026") {
+        localStorage.setItem(AUTH_KEY, "true");
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'flex';
+        boot();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
       }
     }
-    checkAuth();
+
+    function checkAuth() {
+      const auth = localStorage.getItem(AUTH_KEY);
+      if (auth === "true") {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'flex';
+        return true;
+      }
+      return false;
+    }
 
     // LOGOFF AO SAIR
     document.getElementById('btnExit').addEventListener('click', () => {
@@ -489,7 +567,6 @@
     function classifyFromData(rec){
       const rc = safeNumber(rec?.recentChange, 0);
       const ps = safeNumber(rec?.persistence, 0);
-
       if (ps < 0.55) return { label: "➖ Estável", cls: "flat" };
       if (rc >= 0.12) return { label: "🔺 Aquecendo", cls: "up" };
       if (rc <= -0.10) return { label: "🔻 Arrefecendo", cls: "down" };
@@ -573,29 +650,8 @@
         <span>STATUS: <b>LIVE 🟢</b></span>
         <span>ROAD PRESSURE: <b>AGUARDANDO API...</b></span>
         <span>RATE INDEX: <b>AGUARDANDO SHOPPING...</b></span>
-        <span>MONTE VERDE ÂNCORA: <b>VARIAÇÃO ${rc}</b></span>
-        <span>PERSISTÊNCIA: <b>${ps}%</b></span>
-        <span>STATUS: <b>LIVE 🟢</b></span>
       `;
-      els.ticker.innerHTML = content + content;
-    }
-
-    function copyBulletinText() {
-      const text = els.bulletin.innerText.trim();
-      navigator.clipboard.writeText(text).then(() => {
-        els.btnCopy.textContent = "Copiado!";
-        setTimeout(() => (els.btnCopy.textContent = "Copiar boletim"), 1200);
-      });
-    }
-
-    function getSelectedDestinations() {
-      const ids = [els.d1.value, els.d2.value, els.d3.value, els.d4.value].filter(Boolean);
-      const seen = new Set();
-      const uniq = [];
-      for (const id of ids) {
-        if (!seen.has(id)) { seen.add(id); uniq.push(id); }
-      }
-      return uniq.slice(0, 4);
+      els.ticker.innerHTML = content + content + content;
     }
 
     async function loadPulseData(){
@@ -617,10 +673,11 @@
 
     function run(){
       els.destList.innerHTML = "";
-      const selectedIds = getSelectedDestinations();
-      const selected = selectedIds.map(id => DESTINATIONS.find(d => d.id === id)).filter(Boolean);
+      const selectedIds = [els.d1.value, els.d2.value, els.d3.value, els.d4.value].filter(Boolean);
       const results = [];
-      for(const d of selected){
+      for(const id of selectedIds){
+        const d = DESTINATIONS.find(dest => dest.id === id);
+        if(!d) continue;
         const rec = (PULSE_DATA && PULSE_DATA[d.id]) ? PULSE_DATA[d.id] : { recentChange: 0, persistence: 0, note: "chave ausente no JSON" };
         const pulse = classifyFromData(rec);
         els.destList.appendChild(renderDestCard(d, rec));
@@ -635,54 +692,52 @@
       els.bulletin.innerHTML = buildBulletin(results);
     }
 
-    fillSelect(els.d1, "monte_verde_mg");
-    fillSelect(els.d2, "serra_negra_sp");
-    fillSelect(els.d3, "gramado_canela_rs");
-    fillSelect(els.d4, "pocos_de_caldas_mg");
+    async function boot(){
+      fillSelect(els.d1, "monte_verde_mg");
+      fillSelect(els.d2, "serra_negra_sp");
+      fillSelect(els.d3, "gramado_canela_rs");
+      fillSelect(els.d4, "pocos_de_caldas_mg");
+      await loadPulseData();
+      run();
+    }
 
     els.btnRun.addEventListener("click", async () => { await loadPulseData(); run(); });
-    els.btnCopy.addEventListener("click", copyBulletinText);
+    els.btnCopy.addEventListener("click", () => {
+      navigator.clipboard.writeText(els.bulletin.innerText.trim()).then(() => {
+        els.btnCopy.textContent = "Copiado!";
+        setTimeout(() => (els.btnCopy.textContent = "Copiar boletim"), 1200);
+      });
+    });
 
-    (async function boot(){ await loadPulseData(); run(); })();
+    if (checkAuth()) boot();
 
     (function matrix(){
       const canvas = document.getElementById("matrix");
       const ctx = canvas.getContext("2d");
-      function resize(){
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
+      function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
       window.addEventListener("resize", resize);
       resize();
-      const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미무메모야유요라リルレロワ0123456789ABRALLINONE";
+      const chars = "01ABRALLINONE";
       const fontSize = 16;
       let columns = Math.floor(canvas.width / fontSize);
       let drops = Array(columns).fill(1);
-      const FRAME_MS = 150; 
-      let last = 0;
-      function draw(t){
-        if (t - last < FRAME_MS) { requestAnimationFrame(draw); return; }
-        last = t;
+      function draw(){
         ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = fontSize + "px Poppins";
+        ctx.font = fontSize + "px monospace";
         ctx.fillStyle = "rgba(0, 198, 255, 0.35)";
-        columns = Math.floor(canvas.width / fontSize);
-        if (drops.length !== columns) drops = Array(columns).fill(1);
         for (let i = 0; i < drops.length; i++){
           const text = chars[Math.floor(Math.random() * chars.length)];
           ctx.fillText(text, i * fontSize, drops[i] * fontSize);
           if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
           drops[i]++;
         }
-        requestAnimationFrame(draw);
       }
-      requestAnimationFrame(draw);
+      setInterval(draw, 100);
     })();
 
-    // Bloqueio de F12 e Inspeção (Padrão HUB)
     document.onkeydown = function(e) {
-        if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
+      if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
     };
   </script>
 </body>
