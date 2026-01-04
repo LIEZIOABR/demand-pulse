@@ -263,10 +263,54 @@
       line-height: 1.45;
       text-align:center;
     }
+
+    /* TICKER CSS - INTEGRADO NO LAYOUT ORIGINAL */
+    .ticker-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      height: 28px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border-bottom: 1px solid var(--line);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .ticker {
+      display: inline-block;
+      white-space: nowrap;
+      padding-right: 100%;
+      animation: ticker 40s linear infinite;
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .ticker span { margin-right: 40px; display: inline-block; }
+    .ticker b { color: var(--ok); }
+    @keyframes ticker {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+    @media (max-width: 768px) {
+      .ticker { animation-duration: 25s; }
+      .wrap { padding-top: 28px; }
+    }
   </style>
 </head>
 
 <body>
+  <div class="ticker-wrap">
+    <div class="ticker" id="ticker">
+      CARREGANDO PULSO DE MERCADO... 📡 SINCRONIZANDO COM SUPABASE... 🟢 STATUS: LIVE
+    </div>
+  </div>
+
   <canvas id="matrix"></canvas>
 
   <div class="wrap">
@@ -291,7 +335,7 @@
     <section class="input-box">
       <div class="input-card">
         <div class="controls">
-          <select id="d1"></select>
+          <select id="d1" disabled style="background:rgba(0,198,255,0.1); border-color:var(--accent); color:var(--accent); font-weight:800;"></select>
           <select id="d2"></select>
           <select id="d3"></select>
           <select id="d4"></select>
@@ -339,16 +383,18 @@
     </main>
 
     <footer>
-      <div><strong>DEMAND PULSE</strong> — MVP • Visual Matrix preservado • Fonte: <span class="mono">pulse-data.json</span>.</div>
+      © 2026 ABR — Demand Pulse Radar. Todos os direitos reservados.
     </footer>
   </div>
 
   <script>
     const DESTINATIONS = [
       { id: "monte_verde_mg", label: "Monte Verde (MG) — Âncora" },
-      { id: "serra_negra_sp", label: "Serra Negra (SP)" },
-      { id: "gramado_canela_rs", label: "Gramado + Canela (RS)" },
       { id: "campos_do_jordao_sp", label: "Campos do Jordão (SP)" },
+      { id: "gramado_canela_rs", label: "Gramado + Canela (RS)" },
+      { id: "goncalves_mg", label: "Gonçalves (MG)" },
+      { id: "santo_antonio_do_pinhal_sp", label: "S. A. do Pinhal (SP)" },
+      { id: "serra_negra_sp", label: "Serra Negra (SP)" },
       { id: "pocos_de_caldas_mg", label: "Poços de Caldas (MG)" },
       { id: "sao_lourenco_mg", label: "São Lourenço (MG)" }
     ];
@@ -362,7 +408,8 @@
       destList: document.getElementById("destList"),
       bulletin: document.getElementById("bulletin"),
       btnCopy: document.getElementById("btnCopy"),
-      status: document.getElementById("status")
+      status: document.getElementById("status"),
+      ticker: document.getElementById("ticker")
     };
 
     let PULSE_DATA = null;
@@ -435,10 +482,16 @@
     function buildBulletin(results) {
       const now = new Date();
       const dt = now.toLocaleDateString("pt-BR", { year:"numeric", month:"long", day:"2-digit" });
+      const mv = results.find(r => r.id === 'monte_verde_mg');
 
-      const lines = results.map(r =>
-        `• ${r.label}: ${r.pulseLabel} (variação ${fmtPct(r.recentChange)} | persistência ${Math.round(r.persistence*100)}%).`
-      ).join("<br/>");
+      const lines = results.map(r => {
+        let insight = "";
+        if (mv && r.id !== 'monte_verde_mg') {
+          const diff = (mv.recentChange - r.recentChange) * 100;
+          insight = ` | Performance vs MV: ${diff > 0 ? '+' : ''}${diff.toFixed(1)}%`;
+        }
+        return `• ${r.label}: ${r.pulseLabel} (variação ${fmtPct(r.recentChange)} | persistência ${Math.round(r.persistence*100)}%${insight}).`;
+      }).join("<br/>");
 
       return `
         <div style="font-weight:900;font-size:14px;margin-bottom:8px;">
@@ -446,16 +499,33 @@
         </div>
         <div style="color:var(--muted);font-size:12px;line-height:1.45;">
           Leitura direcional do pulso de demanda do destino, baseada em variação vs. padrão histórico e persistência do movimento.
-          Não representa volume absoluto nem previsão de reservas. Monte Verde é o destino âncora do radar.
+          Monte Verde é o destino âncora do radar.
         </div>
         <div class="divider"></div>
         <div style="font-size:13px;line-height:1.55;">${lines}</div>
         <div class="divider"></div>
         <div style="color:var(--muted);font-size:12px;line-height:1.45;">
           Interpretação: “🔺 aquecendo” sugere maior pressão relativa; “🔻 arrefecendo” sugere redução; “➖ estável” indica manutenção.
-          Hotéis devem cruzar com PNF, ocupação e metas internas antes de qualquer ação.
         </div>
       `;
+    }
+
+    function updateTicker(data) {
+      if (!data || !data.monte_verde_mg) return;
+      const mv = data.monte_verde_mg;
+      const rc = fmtPct(mv.recentChange);
+      const ps = Math.round(mv.persistence * 100);
+      const content = `
+        <span>MONTE VERDE ÂNCORA: <b>VARIAÇÃO ${rc}</b></span>
+        <span>PERSISTÊNCIA: <b>${ps}%</b></span>
+        <span>STATUS: <b>LIVE 🟢</b></span>
+        <span>ROAD PRESSURE: <b>AGUARDANDO API...</b></span>
+        <span>RATE INDEX: <b>AGUARDANDO SHOPPING...</b></span>
+        <span>MONTE VERDE ÂNCORA: <b>VARIAÇÃO ${rc}</b></span>
+        <span>PERSISTÊNCIA: <b>${ps}%</b></span>
+        <span>STATUS: <b>LIVE 🟢</b></span>
+      `;
+      els.ticker.innerHTML = content + content;
     }
 
     function copyBulletinText() {
@@ -484,6 +554,7 @@
         const json = await res.json();
         PULSE_DATA = json;
         setStatus("");
+        updateTicker(json);
         return true;
       }catch(err){
         PULSE_DATA = null;
@@ -502,6 +573,7 @@
         const pulse = classifyFromData(rec);
         els.destList.appendChild(renderDestCard(d, rec));
         results.push({
+          id: d.id,
           label: d.label,
           pulseLabel: pulse.label,
           recentChange: safeNumber(rec.recentChange, 0),
