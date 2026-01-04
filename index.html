@@ -48,7 +48,7 @@
       background: #000;
     }
 
-    /* TELA DE LOGIN ORIGINAL RESTAURADA COM RIGOR */
+    /* TELA DE LOGIN ORIGINAL RESTAURADA COM RIGOR ABSOLUTO */
     #login-overlay {
       position: fixed;
       top: 0;
@@ -85,28 +85,31 @@
     .input-group {
       position: relative;
       margin: 20px 0;
-    }
-    .login-box input {
-      width: 100%;
-      padding: 15px;
-      padding-right: 45px;
+      display: flex;
+      align-items: center;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--line);
-      color: white;
       border-radius: 12px;
+    }
+    .login-box input {
+      flex: 1;
+      padding: 15px;
+      background: transparent;
+      border: none;
+      color: white;
       text-align: center;
       font-size: 1.1rem;
       outline: none;
     }
     .toggle-pass {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
+      padding: 0 15px;
       cursor: pointer;
       color: var(--muted);
-      font-size: 18px;
+      font-size: 14px;
+      font-weight: 600;
       user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .login-box button {
       width: 100%;
@@ -136,6 +139,9 @@
       letter-spacing: 1px;
       transition: 0.3s;
       cursor: pointer;
+      background: none;
+      border: none;
+      width: 100%;
     }
     .btn-back-hub:hover { color: var(--accent); }
 
@@ -423,10 +429,10 @@
       <h2>ACESSO RESTRITO</h2>
       <div class="input-group">
         <input type="password" id="password-input" placeholder="Digite sua senha">
-        <span class="toggle-pass" onclick="togglePassword()">👁️</span>
+        <span class="toggle-pass" onclick="togglePassword()">VER</span>
       </div>
       <button onclick="checkLogin()">Entrar no Radar</button>
-      <a href="hub_index.html" class="btn-back-hub">Voltar ao HUB</a>
+      <button class="btn-back-hub" onclick="window.location.href='hub_index.html'">Voltar ao HUB</button>
       <p id="login-error" style="color: #ff3b30; font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">Senha incorreta.</p>
     </div>
   </div>
@@ -521,13 +527,13 @@
     
     function togglePassword() {
       const input = document.getElementById('password-input');
-      const icon = document.querySelector('.toggle-pass');
+      const btn = document.querySelector('.toggle-pass');
       if (input.type === "password") {
         input.type = "text";
-        icon.textContent = "🙈";
+        btn.textContent = "OCULTAR";
       } else {
         input.type = "password";
-        icon.textContent = "👁️";
+        btn.textContent = "VER";
       }
     }
 
