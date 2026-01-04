@@ -180,9 +180,16 @@
         
         async function loadDataFromSupabase() { 
             try { 
-                const { data, error } = await supabase.rpc('api_demand_pulse_latest', {}); 
+                // MUDANÇA CRÍTICA: Lendo a tabela diretamente em vez de usar RPC
+                const { data, error } = await supabase
+                    .from('demand_pulse_snapshots')
+                    .select('payload')
+                    .order('captured_at', { ascending: false })
+                    .limit(1);
+
                 if (error) throw error; 
                 if (!data || data.length === 0) throw new Error('Dados vazios'); 
+                
                 const payload = data[0].payload; 
                 const transformed = transformSupabaseData(payload);
                 
@@ -203,7 +210,6 @@
             const transformed = {}; 
             if (payload && payload.destinations) { 
                 payload.destinations.forEach(dest => { 
-                    // Normalização Dupla: Tenta ID técnico e Nome Amigável
                     const idKey = dest.id ? dest.id.toLowerCase() : "";
                     const nameKey = dest.name ? dest.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_').replace(/[^\w]/g, '') : "";
                     
@@ -229,7 +235,6 @@
 
                     if (idKey) transformed[idKey] = finalData;
                     if (nameKey) transformed[nameKey] = finalData;
-                    // Caso especial para nomes com (UF)
                     if (nameKey.includes('_')) {
                         const shortKey = nameKey.split('_')[0];
                         transformed[shortKey] = finalData;
@@ -285,7 +290,6 @@
             
             for(let i=1; i<=4; i++) { 
                 const id = document.getElementById(`dest-${i}`).value; 
-                // Busca inteligente: tenta o ID e variações
                 let data = pulseData[id];
                 if (!data) {
                     const shortId = id.split('_')[0];
