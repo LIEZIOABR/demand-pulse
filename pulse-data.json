@@ -1,17 +1,17 @@
 {
     "monte_verde_mg": {
         "name": "Monte Verde",
-        "recentChange": 0.3467,
-        "persistence": 0.7007,
+        "recentChange": -0.0176,
+        "persistence": 0.6984,
         "timeline": [
-            53.1,
-            62.7,
-            38.9,
-            42.6,
-            47.1,
-            49.6,
-            65.4,
-            66.5
+            56.4,
+            61.3,
+            58.1,
+            41.0,
+            54.3,
+            56.6,
+            68.0,
+            58.6
         ],
         "weather": {
             "daily": [
@@ -45,22 +45,22 @@
                 }
             ]
         },
-        "insight": "Demanda por Monte Verde segue em alta. Foco em pacotes de experiência gastronômica.",
+        "insight": "Demanda por Monte Verde segue estável. Foco em pacotes de experiência gastronômica.",
         "note": "Dados reais atualizados via ABR ALL-IN-ONE"
     },
     "campos_do_jordao_sp": {
         "name": "Campos do Jordão",
-        "recentChange": 0.2873,
-        "persistence": 0.7592,
+        "recentChange": 0.2753,
+        "persistence": 0.7588,
         "timeline": [
             61.4,
-            67.1,
-            53.4,
-            55.0,
-            55.4,
+            67.4,
+            53.6,
+            55.3,
+            56.1,
             58.3,
-            81.0,
-            80.2
+            80.1,
+            82.7
         ],
         "weather": {
             "daily": [
@@ -99,17 +99,17 @@
     },
     "gramado_canela_rs": {
         "name": "Gramado + Canela",
-        "recentChange": 0.0776,
-        "persistence": 0.826,
+        "recentChange": -0.1062,
+        "persistence": 0.786,
         "timeline": [
-            60.9,
-            64.3,
-            64.3,
-            62.6,
-            71.7,
-            64.1,
-            87.9,
-            76.0
+            62.3,
+            62.4,
+            63.4,
+            61.6,
+            71.0,
+            62.9,
+            86.7,
+            65.7
         ],
         "weather": {
             "daily": [
@@ -143,22 +143,22 @@
                 }
             ]
         },
-        "insight": "Serra Gaúcha em alta. Oportunidade para campanhas de antecipação de temporada.",
+        "insight": "Serra Gaúcha estável. Oportunidade para campanhas de antecipação de temporada.",
         "note": "Dados reais atualizados via ABR ALL-IN-ONE"
     },
     "pocos_de_caldas_mg": {
         "name": "Poços de Caldas",
-        "recentChange": 0.1322,
-        "persistence": 0.8758,
+        "recentChange": 0.1165,
+        "persistence": 0.8791,
         "timeline": [
-            74.6,
-            75.1,
+            75.6,
+            75.3,
             68.3,
-            72.1,
-            73.9,
-            76.0,
-            83.4,
-            86.8
+            72.9,
+            74.7,
+            76.3,
+            83.1,
+            87.1
         ],
         "weather": {
             "daily": [
@@ -197,17 +197,17 @@
     },
     "sao_bento_sapucai_sp": {
         "name": "São Bento do Sapucaí",
-        "recentChange": 1.9104,
+        "recentChange": 0.6015,
         "persistence": 0,
         "timeline": [
-            40.7,
-            33.4,
-            19.3,
-            9.4,
-            8.1,
-            25.9,
-            68.4,
-            89.3
+            28.6,
+            11.4,
+            8.6,
+            15.3,
+            8.3,
+            58.3,
+            64.3,
+            69.9
         ],
         "weather": {
             "daily": [
@@ -246,17 +246,17 @@
     },
     "passa_quatro_mg": {
         "name": "Passa Quatro",
-        "recentChange": 1.9928,
+        "recentChange": 0.7628,
         "persistence": 0,
         "timeline": [
             0.0,
-            12.7,
+            24.9,
             0.0,
-            12.1,
-            0.0,
-            13.7,
-            57.0,
-            57.0
+            10.1,
+            14.1,
+            13.1,
+            39.6,
+            39.3
         ],
         "weather": {
             "daily": [
@@ -295,17 +295,17 @@
     },
     "serra_negra_sp": {
         "name": "Serra Negra",
-        "recentChange": 0.4653,
-        "persistence": 0.6196,
+        "recentChange": 0.1593,
+        "persistence": 0.6427,
         "timeline": [
-            73.1,
-            65.9,
-            53.1,
-            50.7,
-            42.0,
-            56.1,
-            77.0,
-            84.0
+            64.7,
+            65.0,
+            50.6,
+            41.6,
+            45.4,
+            55.0,
+            68.1,
+            65.1
         ],
         "weather": {
             "daily": [
@@ -344,17 +344,17 @@
     },
     "sao_lourenco_mg": {
         "name": "São Lourenço",
-        "recentChange": 0.3138,
-        "persistence": 0.8029,
+        "recentChange": 0.1321,
+        "persistence": 0.759,
         "timeline": [
-            68.1,
-            73.4,
-            67.7,
-            69.7,
-            60.4,
-            68.6,
-            83.3,
-            92.0
+            66.4,
+            65.0,
+            53.4,
+            67.9,
+            58.4,
+            57.9,
+            79.4,
+            73.9
         ],
         "weather": {
             "daily": [
@@ -393,17 +393,17 @@
     },
     "goncalves_mg": {
         "name": "Gonçalves",
-        "recentChange": 0.6495,
-        "persistence": 0.4081,
+        "recentChange": 0.125,
+        "persistence": 0.4425,
         "timeline": [
-            44.0,
-            50.4,
-            36.9,
-            55.6,
-            40.3,
-            33.4,
-            62.6,
-            66.5
+            48.7,
+            54.3,
+            32.4,
+            47.3,
+            35.3,
+            41.6,
+            54.6,
+            49.3
         ],
         "weather": {
             "daily": [
@@ -442,17 +442,17 @@
     },
     "santo_antonio_pinhal_sp": {
         "name": "Santo Antônio do Pinhal",
-        "recentChange": 0.5149,
-        "persistence": 0.5039,
+        "recentChange": 0.1712,
+        "persistence": 0.5268,
         "timeline": [
-            29.7,
-            39.3,
-            32.7,
-            19.7,
-            23.1,
-            32.1,
-            48.0,
-            49.3
+            34.1,
+            45.4,
+            31.9,
+            30.6,
+            31.7,
+            35.3,
+            49.0,
+            45.3
         ],
         "weather": {
             "daily": [
