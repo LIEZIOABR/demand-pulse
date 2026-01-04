@@ -177,8 +177,50 @@
         function logout() { if(confirm("Sair do sistema?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; }
         function copyBoletim( ) { const text = document.getElementById('boletim-texto').innerText; navigator.clipboard.writeText(text).then(() => { const btn = document.querySelector('.btn-copy'); const originalText = btn.innerText; btn.innerText = "Copiado!"; btn.style.background = "var(--accent-green)"; btn.style.color = "black"; setTimeout(() => { btn.innerText = originalText; btn.style.background = "rgba(0, 198, 255, 0.1)"; btn.style.color = "var(--accent)"; }, 2000); }); }
         let pulseData = {}; let myChart = null; let dataSourceMode = 'supabase';
-        async function loadDataFromSupabase() { try { const { data, error } = await supabase.rpc('api_demand_pulse_latest', {}); if (error) throw error; if (!data || data.length === 0) throw new Error('Dados vazios'); const payload = data[0].payload; pulseData = transformSupabaseData(payload); dataSourceMode = 'supabase'; updateDataSourceIndicator(true); return true; } catch (error) { console.error('Falha ao carregar do Supabase:', error); return false; } }
-        function transformSupabaseData(payload) { const transformed = {}; if (payload && payload.destinations) { payload.destinations.forEach(dest => { const key = dest.id || dest.name.toLowerCase().replace(/\s+/g, '_'); transformed[key] = { name: dest.name, marketShare: dest.marketShare || 0.15, bookingPressure: dest.bookingPressure || 0.7, sentiment: dest.sentiment || 0.8, proximityTrigger: dest.proximityTrigger || 0.6, socialBuzz: dest.socialBuzz || 0.5, audienceProfile: dest.audienceProfile || 0.5, stayIntent: dest.stayIntent || 0.7, confidence: dest.confidence || 0.8, elasticityIndex: dest.elasticityIndex || 0.3, recentChange: dest.recentChange || 0.05, persistence: dest.persistence || 0.75, climateProfile: dest.climateProfile || 'warm', topOrigins: dest.topOrigins || [{location: 'SP', percent: 35}, {location: 'RJ', percent: 25}], timeline: dest.timeline || [45, 48, 52, 55, 58, 62, 65, 68], insight: dest.insight || 'Demanda em trajetória de alta com suporte de redes sociais.', weather: dest.weather || { daily: [{max: 28, cond: 'Ensolarado'}, {max: 27, cond: 'Nublado'}, {max: 29, cond: 'Ensolarado'}, {max: 26, cond: 'Chuva'}, {max: 28, cond: 'Ensolarado'}] } }; }); } return transformed; }
+        async function loadDataFromSupabase() { 
+            try { 
+                const { data, error } = await supabase.rpc('api_demand_pulse_latest', {}); 
+                if (error) throw error; 
+                if (!data || data.length === 0) throw new Error('Dados vazios'); 
+                const payload = data[0].payload; 
+                pulseData = transformSupabaseData(payload); 
+                dataSourceMode = 'supabase'; 
+                updateDataSourceIndicator(true); 
+                return true; 
+            } catch (error) { 
+                console.error('Falha ao carregar do Supabase:', error); 
+                return false; 
+            } 
+        }
+        function transformSupabaseData(payload) { 
+            const transformed = {}; 
+            if (payload && payload.destinations) { 
+                payload.destinations.forEach(dest => { 
+                    // Normalização de ID para garantir match com o código
+                    const key = dest.id || dest.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_').replace(/[^\w]/g, '');
+                    transformed[key] = { 
+                        name: dest.name, 
+                        marketShare: dest.marketShare || 0.15, 
+                        bookingPressure: dest.bookingPressure || 0.7, 
+                        sentiment: dest.sentiment || 0.8, 
+                        proximityTrigger: dest.proximityTrigger || 0.6, 
+                        socialBuzz: dest.socialBuzz || 0.5, 
+                        audienceProfile: dest.audienceProfile || 0.5, 
+                        stayIntent: dest.stayIntent || 0.7, 
+                        confidence: dest.confidence || 0.8, 
+                        elasticityIndex: dest.elasticityIndex || 0.3, 
+                        recentChange: dest.recentChange || 0.05, 
+                        persistence: dest.persistence || 0.75, 
+                        climateProfile: dest.climateProfile || 'warm', 
+                        topOrigins: dest.topOrigins || [{location: 'SP', percent: 35}, {location: 'RJ', percent: 25}], 
+                        timeline: dest.timeline || [45, 48, 52, 55, 58, 62, 65, 68], 
+                        insight: dest.insight || 'Demanda em trajetória de alta com suporte de redes sociais.', 
+                        weather: dest.weather || { daily: [{max: 28, cond: 'Ensolarado'}, {max: 27, cond: 'Nublado'}, {max: 29, cond: 'Ensolarado'}, {max: 26, cond: 'Chuva'}, {max: 28, cond: 'Ensolarado'}] } 
+                    }; 
+                }); 
+            } 
+            return transformed; 
+        }
         async function loadDataFromJSON() { try { const response = await fetch('pulse-data.json'); if (!response.ok) throw new Error('Arquivo JSON não encontrado'); pulseData = await response.json(); dataSourceMode = 'fallback'; updateDataSourceIndicator(false); return true; } catch (error) { console.error('Erro ao carregar JSON:', error); return false; } }
         function updateDataSourceIndicator(isSupabase) { const indicator = document.getElementById('data-source-indicator'); if (isSupabase) { indicator.className = 'status-indicator status-live'; indicator.textContent = '🟢 BD ATIVO'; } else { indicator.className = 'status-indicator status-fallback'; indicator.textContent = '🟡 MODO FALLBACK'; } }
         async function loadData() { const supabaseSuccess = await loadDataFromSupabase(); if (!supabaseSuccess) await loadDataFromJSON(); updateDashboard(); }
