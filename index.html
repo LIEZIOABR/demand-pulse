@@ -8,7 +8,7 @@
         /* Estilos CSS para o Layout Matrix */
         body {
             background-color: #000;
-            color: #00c0ff; /* Ciano Neon Corrigido */
+            color: #00c0ff;
             font-family: 'Fira Code', monospace;
             margin: 0;
             padding: 0;
@@ -37,7 +37,7 @@
         }
 
         .matrix-bg span {
-            color: #00ff00; /* Verde Matrix */
+            color: #00ff00;
             animation: matrix-fall 5s linear infinite;
             display: inline-block;
         }
@@ -58,8 +58,8 @@
             backdrop-filter: blur(5px);
             z-index: 1000;
             overflow: hidden;
-            border-bottom: 1px solid #00c0ff; /* Ciano Neon Corrigido */
-            box-shadow: 0 2px 5px rgba(0, 192, 255, 0.2); /* Ciano Neon Corrigido */
+            border-bottom: 1px solid #00c0ff;
+            box-shadow: 0 2px 5px rgba(0, 192, 255, 0.2);
             display: flex;
             align-items: center;
             padding-top: 4px;
@@ -71,7 +71,7 @@
             padding-left: 100%;
             animation: ticker-scroll 60s linear infinite;
             font-size: 12px;
-            color: #00c0ff; /* Ciano Neon Corrigido */
+            color: #00c0ff;
         }
 
         @keyframes ticker-scroll {
@@ -93,46 +93,46 @@
 
         .login-box {
             background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #00c0ff; /* Ciano Neon Corrigido */
+            border: 2px solid #00c0ff;
             border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 0 20px rgba(0, 192, 255, 0.5); /* Ciano Neon Corrigido */
+            padding: 30px; /* Reduzido de 40px para 30px */
+            box-shadow: 0 0 20px rgba(0, 192, 255, 0.5);
             text-align: center;
-            max-width: 400px;
+            max-width: 380px; /* Reduzido de 400px para 380px */
             width: 100%;
         }
 
         .login-box h2 {
-            color: #00c0ff; /* Ciano Neon Corrigido */
-            margin-bottom: 30px;
-            font-size: 1.5em;
+            color: #00c0ff;
+            margin-bottom: 25px;
+            font-size: 1.3em; /* Reduzido de 1.5em para 1.3em */
         }
 
         .login-input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .login-input {
             width: 100%;
-            padding: 15px;
+            padding: 10px; /* Reduzido de 15px para 10px - CORREÇÃO CIRÚRGICA */
             background: #111;
-            border: 1px solid #00c0ff; /* Ciano Neon Corrigido */
+            border: 1px solid #00c0ff;
             border-radius: 8px;
             color: #fff;
-            font-size: 1.1em;
+            font-size: 1em; /* Reduzido de 1.1em para 1em - CORREÇÃO CIRÚRGICA */
             box-sizing: border-box;
             text-align: center;
         }
 
         .login-button {
             width: 100%;
-            padding: 15px;
-            background: #00c0ff; /* Ciano Neon Corrigido */
+            padding: 12px; /* Reduzido de 15px para 12px */
+            background: #00c0ff;
             border: none;
             border-radius: 8px;
             color: #000;
-            font-size: 1.2em;
+            font-size: 1.1em; /* Reduzido de 1.2em para 1.1em */
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s, box-shadow 0.3s;
@@ -140,8 +140,8 @@
         }
 
         .login-button:hover {
-            background: #00aaff; /* Ciano Neon Corrigido (tom mais escuro para hover) */
-            box-shadow: 0 0 10px #00c0ff; /* Ciano Neon Corrigido */
+            background: #00aaff;
+            box-shadow: 0 0 10px #00c0ff;
         }
 
         .login-error {
@@ -149,21 +149,22 @@
             margin-top: 10px;
             font-weight: bold;
             display: none;
+            font-size: 0.9em;
         }
 
         .login-logo {
-            margin-bottom: 30px;
-            width: 150px;
+            margin-bottom: 20px;
+            width: 130px; /* Reduzido de 150px para 130px */
             height: auto;
             opacity: 0.8;
         }
 
         .login-link {
-            color: #00c0ff; /* Ciano Neon Corrigido */
+            color: #00c0ff;
             text-decoration: none;
-            margin-top: 20px;
+            margin-top: 15px;
             display: block;
-            font-size: 0.9em;
+            font-size: 0.85em; /* Reduzido de 0.9em para 0.85em */
             transition: color 0.3s;
         }
 
@@ -173,12 +174,12 @@
 
         /* Estilos do Dashboard */
         .dashboard-container {
-            display: none; /* Escondido por padrão */
+            display: none;
             width: 100%;
             max-width: 1200px;
             padding: 40px 20px;
             box-sizing: border-box;
-            margin-top: 28px; /* Espaço para o ticker */
+            margin-top: 28px;
         }
 
         .header {
@@ -216,7 +217,7 @@
         }
 
         .main-title {
-            color: #00c0ff; /* Ciano Neon Corrigido */
+            color: #00c0ff;
             font-size: 2.5em;
             margin-bottom: 10px;
             text-align: center;
@@ -246,7 +247,7 @@
             width: 100%;
             padding: 15px;
             background: #111;
-            border: 2px solid #00c0ff; /* Ciano Neon Corrigido */
+            border: 2px solid #00c0ff;
             border-radius: 8px;
             color: #fff;
             font-size: 1.1em;
@@ -260,7 +261,7 @@
 
         .destination-select:disabled {
             background: #003333;
-            border-color: #00c0ff; /* Ciano Neon Corrigido */
+            border-color: #00c0ff;
             color: #fff;
             opacity: 1;
         }
@@ -268,7 +269,7 @@
         .update-button {
             width: 100%;
             padding: 15px;
-            background: #00c0ff; /* Ciano Neon Corrigido */
+            background: #00c0ff;
             border: none;
             border-radius: 8px;
             color: #000;
@@ -279,8 +280,8 @@
         }
 
         .update-button:hover {
-            background: #00aaff; /* Ciano Neon Corrigido (tom mais escuro para hover) */
-            box-shadow: 0 0 10px #00c0ff; /* Ciano Neon Corrigido */
+            background: #00aaff;
+            box-shadow: 0 0 10px #00c0ff;
         }
 
         .content-grid {
@@ -291,17 +292,17 @@
 
         .card {
             background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #00c0ff; /* Ciano Neon Corrigido */
+            border: 1px solid #00c0ff;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 192, 255, 0.3); /* Ciano Neon Corrigido */
+            box-shadow: 0 0 10px rgba(0, 192, 255, 0.3);
         }
 
         .card-title {
-            color: #00c0ff; /* Ciano Neon Corrigido */
+            color: #00c0ff;
             font-size: 1.2em;
             margin-bottom: 15px;
-            border-bottom: 1px solid #00c0ff; /* Ciano Neon Corrigido */
+            border-bottom: 1px solid #00c0ff;
             padding-bottom: 5px;
         }
 
@@ -309,7 +310,6 @@
             color: #fff;
         }
 
-        /* Estilos do Boletim */
         .bulletin-card {
             grid-column: 1 / -1;
         }
@@ -321,18 +321,16 @@
             line-height: 1.6;
         }
 
-        /* Estilos para o Card Âncora (Monte Verde) */
         .anchor-card {
-            border: 2px solid #00c0ff; /* Ciano Neon Corrigido */
-            box-shadow: 0 0 15px rgba(0, 192, 255, 0.8); /* Ciano Neon Corrigido */
+            border: 2px solid #00c0ff;
+            box-shadow: 0 0 15px rgba(0, 192, 255, 0.8);
         }
 
         .anchor-title {
-            color: #00c0ff; /* Ciano Neon Corrigido */
+            color: #00c0ff;
             font-weight: bold;
         }
 
-        /* Responsividade */
         @media (max-width: 768px) {
             .destination-selectors {
                 flex-direction: column;
@@ -361,32 +359,29 @@
     </style>
 </head>
 <body>
-    <!-- Efeito Matrix de Fundo -->
     <div class="matrix-bg" id="matrix-bg"></div>
 
-    <!-- Ticker (Letreiro Digital) -->
     <div class="ticker-wrap">
         <div class="ticker" id="ticker-content">
             AGUARDANDO SINCRONIZAÇÃO... MV-SHARE: N/A | PRESSÃO-RESERVA: N/A | CLIMA-MV: N/A | STATUS-BD: N/A | ROAD-PRESSURE: AGUARDANDO API... | RATE-INDEX: AGUARDANDO API...
         </div>
     </div>
 
-    <!-- Tela de Login -->
     <div class="login-container" id="login-screen">
         <div class="login-box">
             <img src="logo.png" alt="ABR Logo" class="login-logo">
             <h2>ACESSO RESTRITO</h2>
             <div class="login-input-group">
                 <input type="password" id="password-input" class="login-input" placeholder="Senha de Acesso">
-                <span id="toggle-password" style="position: absolute; right: 10px; top: 15px; color: #00c0ff; cursor: pointer; font-size: 0.8em;">VER</span>
+                <span id="toggle-password" style="position: absolute; right: 10px; top: 10px; color: #00c0ff; cursor: pointer; font-size: 0.75em;">VER</span>
             </div>
             <button class="login-button" onclick="checkPassword()">ENTRAR NO RADAR</button>
             <p class="login-error" id="login-error">Senha incorreta.</p>
-            <a href="hub_index.html" class="login-link">VOLTAR AO HUB</a>
+            <!-- CORREÇÃO CIRÚRGICA: Link absoluto para garantir retorno ao HUB -->
+            <a href="hub_index.html" class="login-link" onclick="window.location.href='hub_index.html'; return false;">VOLTAR AO HUB</a>
         </div>
     </div>
 
-    <!-- Dashboard Principal -->
     <div class="dashboard-container" id="dashboard-content">
         <div class="header">
             <div class="header-controls">
@@ -430,7 +425,6 @@
         </div>
 
         <div class="content-grid">
-            <!-- Cards de Destino (Serão preenchidos via JS) -->
             <div class="card anchor-card" id="card-1">
                 <h3 class="card-title anchor-title">Monte Verde (MG) - Âncora</h3>
                 <div class="card-content">Carregando dados...</div>
@@ -448,7 +442,6 @@
                 <div class="card-content">Carregando dados...</div>
             </div>
 
-            <!-- Boletim Estratégico -->
             <div class="card bulletin-card">
                 <h3 class="card-title">BOLETIM ESTRATÉGICO (Inteligência Comparativa)</h3>
                 <div class="bulletin-content" id="bulletin-content">
@@ -459,7 +452,6 @@
     </div>
 
     <script>
-        // Variáveis Globais
         const CORRECT_PASSWORDS = ['abrturbo', 'testecliente'];
         const LOGIN_SCREEN = document.getElementById('login-screen');
         const DASHBOARD_CONTENT = document.getElementById('dashboard-content');
@@ -468,7 +460,6 @@
         const TOGGLE_PASSWORD = document.getElementById('toggle-password');
         const TICKET_CONTENT = document.getElementById('ticker-content');
 
-        // Função para alternar a visibilidade da senha
         TOGGLE_PASSWORD.addEventListener('click', () => {
             if (PASSWORD_INPUT.type === 'password') {
                 PASSWORD_INPUT.type = 'text';
@@ -479,29 +470,26 @@
             }
         });
 
-        // Função de Autenticação
         function checkPassword() {
-            const enteredPassword = PASSWORD_INPUT.value.toLowerCase(); // Case-insensitive
+            const enteredPassword = PASSWORD_INPUT.value.toLowerCase();
             const isCorrect = CORRECT_PASSWORDS.includes(enteredPassword);
 
             if (isCorrect) {
                 localStorage.setItem('demand_pulse_auth', 'true');
                 LOGIN_SCREEN.style.display = 'none';
                 DASHBOARD_CONTENT.style.display = 'block';
-                updateDashboard(); // Carrega o dashboard após o login
+                updateDashboard();
             } else {
                 LOGIN_ERROR.style.display = 'block';
                 PASSWORD_INPUT.value = '';
             }
         }
 
-        // Função de Logout
         function logout() {
             localStorage.removeItem('demand_pulse_auth');
             window.location.reload();
         }
 
-        // Função de Verificação de Sessão
         function checkAuth() {
             if (localStorage.getItem('demand_pulse_auth') === 'true') {
                 LOGIN_SCREEN.style.display = 'none';
@@ -513,14 +501,11 @@
             }
         }
 
-        // Função para carregar dados e atualizar o dashboard
         async function updateDashboard() {
-            // Lógica de carregamento de dados do pulse-data.json
             try {
                 const response = await fetch('pulse-data.json');
                 const data = await response.json();
 
-                // Simulação de atualização do Ticker
                 const mvData = data.destinos.find(d => d.nome === 'Monte Verde (MG)');
                 if (mvData) {
                     TICKET_CONTENT.innerHTML = `
@@ -528,7 +513,6 @@
                     `;
                 }
 
-                // Simulação de preenchimento dos cards e boletim
                 const destinations = [
                     document.getElementById('dest-select-1').value,
                     document.getElementById('dest-select-2').value,
@@ -554,7 +538,6 @@
                             <p>Variação Recente: ${destData.variacao_recente}%</p>
                         `;
 
-                        // Lógica de Inteligência Comparativa para o Boletim
                         const pressureDiff = destData.booking_pressure - mvPressure;
                         let comparison = '';
                         if (index > 0) {
@@ -584,10 +567,8 @@
             }
         }
 
-        // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
             checkAuth();
-            // Inicia o efeito Matrix
             const matrixBg = document.getElementById('matrix-bg');
             const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             const streamCount = 50;
@@ -610,11 +591,9 @@
             }
         });
 
-        // Event Listeners para os seletores
         document.getElementById('dest-select-2').addEventListener('change', updateDashboard);
         document.getElementById('dest-select-3').addEventListener('change', updateDashboard);
         document.getElementById('dest-select-4').addEventListener('change', updateDashboard);
-
     </script>
 </body>
 </html>
