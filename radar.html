@@ -33,13 +33,10 @@
         .bi-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
         .bi-legend { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; display: block; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px; }
         .chart-container { height: 300px; width: 100%; }
-        
-        /* AJUSTE DE LAYOUT LATERAL */
         .dashboard-grid { display: flex; align-items: flex-start; gap: 30px; }
         .comparison-section { flex: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .sidebar { flex: 1; position: sticky; top: 20px; }
         .sidebar-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; backdrop-filter: blur(18px); box-shadow: var(--shadow); height: 100%; min-height: 740px; display: flex; flex-direction: column; }
-        
         .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; min-height: 740px; position: relative; backdrop-filter: blur(18px); box-shadow: var(--shadow); }
         .card:hover { border-color: rgba(0,198,255,0.4); }
         .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; min-height: 100px; }
@@ -86,13 +83,11 @@
         .forecast-day { text-align: center; flex: 1; }
         .forecast-temp { font-size: 0.8rem; font-weight: 700; display: block; color: var(--text-main); }
         .forecast-cond { font-size: 0.6rem; color: var(--text-dim); display: block; margin-top: 2px; }
-        
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px; }
         .sidebar-title { font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
         .btn-copy { background: rgba(0, 198, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-copy:hover { background: rgba(0, 198, 255, 0.2); }
         #boletim-texto { font-size: 0.75rem; color: var(--text-dim); line-height: 1.6; font-family: 'Fira Code', monospace; white-space: pre-wrap; word-wrap: break-word; }
-        
         footer { margin-top: 40px; padding: 20px 0; text-align: center; opacity: 0.6; font-size: 0.75rem; border-top: 1px solid var(--panel-border); }
         @media (max-width: 1024px) { .dashboard-grid { flex-direction: column; } .comparison-section { width: 100%; } .sidebar { width: 100%; position: static; } }
     </style>
@@ -274,11 +269,22 @@
                     if (avgTemp > 24) { atrScore = 90; atrLabel = "Atratividade Máxima"; atrIcon = "🔥"; atrClass = "selo-alta"; } 
                     else { atrScore = 70; atrLabel = "Condição Ideal"; atrIcon = "☀️"; } 
                 }
-                const pressVal = data.bookingPressure || 0.7; const pressIcon = pressVal > 0.9 ? "🚨" : "📈"; const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : ""; const proxVal = data.proximityTrigger || 0.6; const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : ""; const buzzVal = data.socialBuzz || 0.5; const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : ""; const audVal = data.audienceProfile || 0.5; const fidPerc = (audVal * 100).toFixed(0); const descPerc = (100 - fidPerc); const stayVal = data.stayIntent || 0.7; const stayPerc = (stayVal * 100).toFixed(0); const dayPerc = (100 - stayPerc); const confVal = (data.confidence || 0.8) * 100; const elastVal = data.elasticityIndex || 0; const elastWidth = Math.abs(elastVal) * 50; const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg'; const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro"))); const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️"); const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100); const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0};
+                const pressVal = data.bookingPressure || 0.7; const pressIcon = pressVal > 0.9 ? "🚨" : "📈"; const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : ""; const proxVal = data.proximityTrigger || 0.6; const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : ""; const buzzVal = data.socialBuzz || 0.5; const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : ""; const audVal = data.audienceProfile || 0.5; const fidPerc = (audVal * 100).toFixed(0); const descPerc = (100 - fidPerc); const stayVal = data.stayIntent || 0.7; const stayPerc = (stayVal * 100).toFixed(0); const dayPerc = (100 - stayPerc); const elastVal = data.elasticityIndex || 0; const elastWidth = Math.abs(elastVal) * 50; const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg'; const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro"))); const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️"); const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100); const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0};
                 
                 container.innerHTML += `<div class="card"><div class="card-header-top"><span class="dest-name">${data.name}</span><div class="selos-stack"><div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}%</div><div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>${pressSelo} ${proxSelo} ${buzzSelo}</div></div><div><span class="status-badge ${status.c}">${status.l}</span></div><div class="metrics-row"><div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div><div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div></div><div class="origin-box">📍 Origem Dominante: ${topOrigin.location} (${topOrigin.percent}%)</div><div class="audience-box"><span class="audience-label">Perfil de Público</span><div class="audience-icons"><div class="audience-item">🔄 ${fidPerc}%</div><div class="audience-item">✨ ${descPerc}%</div></div></div><div class="stay-box"><div class="stay-header"><span class="stay-label">Intenção de Estadia</span></div><div class="stay-bar-bg"><div class="stay-bar-fill" style="width: ${stayPerc}%"></div></div><div class="stay-values"><span>Pernoite: ${stayPerc}%</span><span>Day-Trip: ${dayPerc}%</span></div></div><div class="elasticity-box"><div class="elasticity-header"><span class="elasticity-label">Impacto Climático (IEC)</span><span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span></div><div class="elasticity-bar-bg"><div class="elasticity-center"></div><div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div></div></div><div class="insight-box">💡 ${data.insight}</div><div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div></div>`;
                 chartData.datasets.push({ label: data.name, data: data.timeline, borderColor: colors[idx], backgroundColor: colors[idx] + '22', tension: 0.2, fill: true });
-                boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l}\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}%\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}%\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}%\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• ALERTA TÁTICO (CLIMA): ${elastLabel}\n• Top Origem: ${topOrigin.location} (${topOrigin.percent}%)\n\n`;
+                
+                // RESTAURAÇÃO DO TOP 3 ORIGENS NO BOLETIM
+                boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l}\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}%\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}%\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}%\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• ALERTA TÁTICO (CLIMA): ${elastLabel}\n• TOP 3 ORIGENS DE DEMANDA:\n`;
+                if(data.topOrigins && data.topOrigins.length > 0) {
+                    data.topOrigins.forEach((o, i) => {
+                        const label = i === 0 ? "Primário" : (i === 1 ? "Secundário" : "Terciário");
+                        boletim += `  - ${label}: ${o.location} (${o.percent}%)\n`;
+                    });
+                } else {
+                    boletim += `  - Primário: ${topOrigin.location} (${topOrigin.percent}%)\n`;
+                }
+                boletim += `\n`;
             }); 
             document.getElementById('boletim-texto').innerText = boletim; 
             renderChart(chartData); 
