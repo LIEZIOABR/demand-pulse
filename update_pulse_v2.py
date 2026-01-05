@@ -8,8 +8,8 @@ import os
 from datetime import datetime
 
 # =================================================================
-# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.2 (INTEGRADOR)
-# FOCO: UPLOAD DIRETO PARA SUPABASE E DESTRAVAR RADAR
+# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.3 (PRECISÃO TOTAL)
+# FOCO: 10 DESTINOS, NORMALIZAÇÃO E UPLOAD SUPABASE (FIX TABLE)
 # =================================================================
 
 def get_weather(lat, lon):
@@ -29,12 +29,12 @@ def get_weather(lat, lon):
         return {"daily": [{"max": 20, "cond": "Estável"}] * 7}
 
 def upload_to_supabase(payload):
-    """Envia os dados coletados para o histórico do Supabase."""
+    """Envia os dados coletados para a tabela correta no Supabase."""
     url = os.environ.get('SUPABASE_URL')
     key = os.environ.get('SUPABASE_KEY')
     
     if not url or not key:
-        print("Erro: Chaves do Supabase não encontradas no ambiente.")
+        print("Erro: Chaves do Supabase não encontradas.")
         return False
     
     try:
@@ -45,83 +45,109 @@ def upload_to_supabase(payload):
             "Prefer": "return=minimal"
         }
         
-        # Estrutura de Snapshot para o histórico do BI
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
             "payload": {"destinations": payload}
         }
         
-        endpoint = f"{url}/rest/v1/demand_snapshots"
+        # NOME DA TABELA CORRIGIDO CONFORME LOG DO GITHUB
+        endpoint = f"{url}/rest/v1/demand_pulse_snapshots"
         response = requests.post(endpoint, headers=headers, json=data_to_send, timeout=15)
         
         if response.status_code in [200, 201]:
-            print("Sucesso: Dados enviados para o histórico do Supabase!")
+            print("Sucesso: Dados reais entregues ao Supabase!")
             return True
         else:
-            print(f"Erro no upload Supabase: {response.status_code} - {response.text}")
+            print(f"Erro no upload: {response.status_code} - {response.text}")
             return False
     except Exception as e:
         print(f"Erro crítico no upload: {e}")
         return False
 
-def get_trends_data_v3_2(destinos_dict):
-    """Coleta comparativa normalizada."""
+def get_trends_data_v3_3(destinos_dict):
+    """Coleta 10 destinos com normalização comparativa inicial."""
     pytrends = TrendReq(hl='pt-BR', tz=180)
-    principais_nomes = ["Monte Verde", "Campos do Jordão", "Gramado + Canela", "São Lourenço", "Poços de Caldas"]
-    keywords = [destinos_dict[n]['keyword'] for n in principais_nomes if n in destinos_dict]
     
-    results_list = []
+    # 1. NORMALIZAÇÃO (Os 5 principais na mesma régua)
+    principais = ["Monte Verde", "Campos do Jordão", "Gramado + Canela", "São Lourenço", "Poços de Caldas"]
+    keywords_main = [destinos_dict[n]['keyword'] for n in principais]
+    
+    results_map = {}
     
     try:
-        print(f"Iniciando Coleta Comparativa...")
-        pytrends.build_payload(keywords, geo='BR', timeframe='today 3-m')
-        df = pytrends.interest_over_time()
+        print(f"Fase 1: Normalizando Share para {principais}...")
+        pytrends.build_payload(keywords_main, geo='BR', timeframe='today 3-m')
+        df_main = pytrends.interest_over_time()
         
-        if not df.empty:
-            for nome in principais_nomes:
-                if nome not in destinos_dict: continue
+        if not df_main.empty:
+            for nome in principais:
                 info = destinos_dict[nome]
                 kw = info['keyword']
-                
-                if kw in df.columns:
-                    recent = df[kw].iloc[-7:].mean()
-                    previous = df[kw].iloc[-28:-7].mean()
+                if kw in df_main.columns:
+                    recent = df_main[kw].iloc[-7:].mean()
+                    previous = df_main[kw].iloc[-28:-7].mean()
                     change = (recent - previous) / previous if previous > 0 else 0
-                    timeline_data = df[kw].resample('W').mean().tail(8).tolist()
+                    timeline = [round(max(0.1, x), 1) for x in df_main[kw].resample('W').mean().tail(8).tolist()]
                     
-                    results_list.append({
-                        "id": info['id'],
-                        "name": nome,
-                        "recentChange": round(change, 4),
-                        "timeline": [round(max(0.1, x), 1) for x in timeline_data],
-                        "weather": get_weather(info['lat'], info['lon']),
+                    results_map[info['id']] = {
+                        "id": info['id'], "name": nome, "recentChange": round(change, 4),
+                        "timeline": timeline, "weather": get_weather(info['lat'], info['lon']),
                         "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável")
-                    })
-            print("Sucesso: Dados comparativos coletados.")
+                    }
     except Exception as e:
-        print(f"Erro na coleta: {e}")
+        print(f"Erro na Fase 1: {e}")
 
-    return results_list
+    # 2. COMPLEMENTO (Os outros 5 destinos)
+    secundarios = [n for n in destinos_dict.keys() if n not in principais]
+    for nome in secundarios:
+        try:
+            print(f"Fase 2: Coletando {nome}...")
+            info = destinos_dict[nome]
+            time.sleep(random.uniform(5, 8))
+            pytrends.build_payload([info['keyword']], geo='BR', timeframe='today 3-m')
+            df_sec = pytrends.interest_over_time()
+            
+            if not df_sec.empty:
+                kw = info['keyword']
+                recent = df_sec[kw].iloc[-7:].mean()
+                previous = df_sec[kw].iloc[-28:-7].mean()
+                change = (recent - previous) / previous if previous > 0 else 0
+                timeline = [round(max(0.1, x), 1) for x in df_sec[kw].resample('W').mean().tail(8).tolist()]
+                
+                results_map[info['id']] = {
+                    "id": info['id'], "name": nome, "recentChange": round(change, 4),
+                    "timeline": timeline, "weather": get_weather(info['lat'], info['lon']),
+                    "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável")
+                }
+        except Exception as e:
+            print(f"Erro em {nome}: {e}")
+
+    return list(results_map.values())
 
 destinos_config = {
     "Monte Verde": {"id": "monte_verde_mg", "keyword": "Monte Verde MG", "lat": -22.8627, "lon": -46.0377, "insight_base": "Demanda por Monte Verde segue {status}."},
     "Campos do Jordão": {"id": "campos_do_jordao_sp", "keyword": "Campos do Jordão", "lat": -22.7394, "lon": -45.5914, "insight_base": "Campos do Jordão apresenta comportamento {status}."},
     "Gramado + Canela": {"id": "gramado_canela_rs", "keyword": "Gramado RS", "lat": -29.3746, "lon": -50.8764, "insight_base": "Serra Gaúcha {status}."},
     "São Lourenço": {"id": "sao_lourenco_mg", "keyword": "São Lourenço MG", "lat": -22.1158, "lon": -45.0547, "insight_base": "São Lourenço {status}."},
-    "Poços de Caldas": {"id": "pocos_de_caldas_mg", "keyword": "Poços de Caldas", "lat": -21.7867, "lon": -46.5619, "insight_base": "Poços {status}."}
+    "Poços de Caldas": {"id": "pocos_de_caldas_mg", "keyword": "Poços de Caldas", "lat": -21.7867, "lon": -46.5619, "insight_base": "Poços {status}."},
+    "São Bento do Sapucaí": {"id": "sao_bento_sapucai_sp", "keyword": "São Bento do Sapucaí", "lat": -22.6886, "lon": -45.7325, "insight_base": "São Bento {status}."},
+    "Passa Quatro": {"id": "passa_quatro_mg", "keyword": "Passa Quatro MG", "lat": -22.3883, "lon": -44.9681, "insight_base": "Passa Quatro {status}."},
+    "Serra Negra": {"id": "serra_negra_sp", "keyword": "Serra Negra SP", "lat": -22.6122, "lon": -46.7002, "insight_base": "Serra Negra {status}."},
+    "Gonçalves": {"id": "goncalves_mg", "keyword": "Gonçalves MG", "lat": -22.6561, "lon": -45.8508, "insight_base": "Gonçalves {status}."},
+    "Santo Antônio do Pinhal": {"id": "santo_antonio_pinhal_sp", "keyword": "Santo Antônio do Pinhal", "lat": -22.8247, "lon": -45.6671, "insight_base": "Santo Antônio {status}."}
 }
 
 if __name__ == "__main__":
-    print("--- INICIANDO MOTOR ABR V3.2 (INTEGRADOR) ---")
-    data_list = get_trends_data_v3_2(destinos_config)
+    print("--- INICIANDO MOTOR ABR V3.3 (PRECISÃO TOTAL) ---")
+    final_data = get_trends_data_v3_3(destinos_config)
     
-    if data_list:
-        # Salva localmente para backup
+    if final_data:
+        # Salva localmente para backup no GitHub
         with open('pulse-data.json', 'w', encoding='utf-8') as f:
-            json.dump({d['id']: d for d in data_list}, f, ensure_ascii=False, indent=4)
+            json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
         
-        # Realiza o upload para o Supabase para atualizar o Radar
-        upload_to_supabase(data_list)
-        print(f"--- PROCESSO CONCLUÍDO: {len(data_list)} DESTINOS ---")
+        # Upload final para o Supabase
+        upload_to_supabase(final_data)
+        print(f"--- PROCESSO CONCLUÍDO: {len(final_data)} DESTINOS ATUALIZADOS ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
