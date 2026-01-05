@@ -7,8 +7,8 @@ import requests
 from datetime import datetime
 
 # =================================================================
-# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.0 (RIGOR TÉCNICO)
-# FOCO: DESTRAVAR MARKET SHARE E NORMALIZAÇÃO DE DADOS
+# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.1 (COMPATIBILIDADE)
+# FOCO: CORREÇÃO DE CONFLITO DE BIBLIOTECA E DESTRAVAR DADOS
 # =================================================================
 
 def get_weather(lat, lon):
@@ -25,27 +25,25 @@ def get_weather(lat, lon):
         }
         
         forecast = []
-        for i in range(min(7, len(data['daily']['temperature_2m_max']))):
-            code = data['daily']['weathercode'][i]
-            forecast.append({
-                "max": data['daily']['temperature_2m_max'][i],
-                "cond": weather_map.get(code, "Estável")
-            })
-        return {"daily": forecast}
+        if 'daily' in data:
+            for i in range(min(7, len(data['daily']['temperature_2m_max']))):
+                code = data['daily']['weathercode'][i]
+                forecast.append({
+                    "max": data['daily']['temperature_2m_max'][i],
+                    "cond": weather_map.get(code, "Estável")
+                })
+        return {"daily": forecast if forecast else [{"max": 20, "cond": "Estável"}] * 7}
     except Exception as e:
         print(f"Erro clima ({lat},{lon}): {e}")
         return {"daily": [{"max": 20, "cond": "Estável"}] * 7}
 
-def get_trends_data_v3(destinos_dict):
+def get_trends_data_v3_1(destinos_dict):
     """
-    COLETA COMPARATIVA V3: Busca todos os destinos em uma única chamada.
-    Isso garante que o Google coloque todos na mesma régua de Market Share.
+    COLETA COMPARATIVA V3.1: Versão com compatibilidade máxima para GitHub Actions.
     """
-    # Configuração de conexão com rotação de User-Agent simulada pela biblioteca
-    pytrends = TrendReq(hl='pt-BR', tz=180, retries=3, backoff_factor=0.5)
+    # Removido parâmetros de retries complexos para evitar conflito de versão da biblioteca
+    pytrends = TrendReq(hl='pt-BR', tz=180)
     
-    # Separar os 5 principais destinos para a consulta comparativa (Limite do Google é 5)
-    # Prioridade: Monte Verde + 4 principais concorrentes
     principais_nomes = ["Monte Verde", "Campos do Jordão", "Gramado + Canela", "São Lourenço", "Poços de Caldas"]
     keywords = [destinos_dict[n]['keyword'] for n in principais_nomes if n in destinos_dict]
     
@@ -53,6 +51,8 @@ def get_trends_data_v3(destinos_dict):
     
     try:
         print(f"Iniciando Consulta Comparativa para: {principais_nomes}")
+        # Adicionado pequeno delay antes da consulta principal
+        time.sleep(2)
         pytrends.build_payload(keywords, geo='BR', timeframe='today 3-m')
         df = pytrends.interest_over_time()
         
@@ -62,39 +62,35 @@ def get_trends_data_v3(destinos_dict):
                 info = destinos_dict[nome]
                 kw = info['keyword']
                 
-                # Cálculo de Variação Recente (Últimos 7 dias vs 21 anteriores)
-                recent = df[kw].iloc[-7:].mean()
-                previous = df[kw].iloc[-28:-7].mean()
-                change = (recent - previous) / previous if previous > 0 else 0
-                
-                # Dados para a Timeline (Últimas 8 semanas)
-                timeline_data = df[kw].resample('W').mean().tail(8).tolist()
-                
-                # Normalização: Se o dado for 0, atribuímos um valor mínimo de pulso (0.1) 
-                # para evitar divisões por zero no radar.html
-                timeline_final = [round(max(0.1, x), 1) for x in timeline_data]
-                
-                results[info['id']] = {
-                    "name": nome,
-                    "recentChange": round(change, 4),
-                    "timeline": timeline_final,
-                    "weather": get_weather(info['lat'], info['lon']),
-                    "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável"),
-                    "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                }
+                if kw in df.columns:
+                    recent = df[kw].iloc[-7:].mean()
+                    previous = df[kw].iloc[-28:-7].mean()
+                    change = (recent - previous) / previous if previous > 0 else 0
+                    timeline_data = df[kw].resample('W').mean().tail(8).tolist()
+                    timeline_final = [round(max(0.1, x), 1) for x in timeline_data]
+                    
+                    results[info['id']] = {
+                        "name": nome,
+                        "recentChange": round(change, 4),
+                        "timeline": timeline_final,
+                        "weather": get_weather(info['lat'], info['lon']),
+                        "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável"),
+                        "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
             print("Sucesso: Dados comparativos normalizados.")
         else:
-            print("Aviso: Google retornou DataFrame vazio. Mantendo dados anteriores.")
+            print("Aviso: Google retornou DataFrame vazio.")
             
     except Exception as e:
-        print(f"Erro crítico na coleta comparativa: {e}")
+        print(f"Erro na coleta comparativa: {e}")
         
-    # Coleta individual para os destinos secundários (para não exceder o limite de 5 do Google)
+    # Coleta individual para os destinos secundários
     secundarios = [n for n in destinos_dict.keys() if n not in principais_nomes]
     for nome in secundarios:
         try:
             print(f"Coletando destino secundário: {nome}...")
             info = destinos_dict[nome]
+            time.sleep(random.uniform(5, 10)) # Delay maior para evitar bloqueio
             pytrends.build_payload([info['keyword']], geo='BR', timeframe='today 3-m')
             df_sec = pytrends.interest_over_time()
             
@@ -113,13 +109,12 @@ def get_trends_data_v3(destinos_dict):
                     "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável"),
                     "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }
-            time.sleep(random.uniform(3, 6)) # Delay de segurança
         except Exception as e:
             print(f"Erro no destino secundário {nome}: {e}")
 
     return results
 
-# Configuração dos Destinos (Mantendo sua estrutura original)
+# Configuração dos Destinos
 destinos_config = {
     "Monte Verde": {
         "id": "monte_verde_mg", "keyword": "Monte Verde MG", 
@@ -174,12 +169,12 @@ destinos_config = {
 }
 
 if __name__ == "__main__":
-    print("--- INICIANDO MOTOR ABR V3.0 ---")
-    data = get_trends_data_v3(destinos_config)
+    print("--- INICIANDO MOTOR ABR V3.1 (FIX) ---")
+    data = get_trends_data_v3_1(destinos_config)
     
     if data:
         with open('pulse-data.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
         print(f"--- SUCESSO: {len(data)} DESTINOS ATUALIZADOS ---")
     else:
-        print("--- ERRO: NENHUM DADO COLETADO. ARQUIVO NÃO ALTERADO ---")
+        print("--- ERRO: NENHUM DADO COLETADO. VERIFIQUE OS LOGS ---")
