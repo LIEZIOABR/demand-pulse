@@ -140,6 +140,42 @@
         .modal-btn:hover { background: #00e0ff; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* BOTÃO VOLTAR – adição isolada */
+.modal-back-btn{
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    background: rgba(15, 18, 22, 0.75);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 198, 255, 0.35);
+    color: var(--text-main);
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+.modal-back-btn:hover{
+    border-color: var(--accent);
+    box-shadow: 0 12px 30px rgba(0, 198, 255, 0.18);
+    transform: translateY(-1px);
+}
+.modal-back-btn svg{
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
     </style>
 </head>
 <body oncontextmenu="return false;" ondragstart="return false;">
@@ -250,6 +286,14 @@ transformamos consultas dispersas em pulso real de mercado, com histórico, cont
     </a>
 
     <div id="custom-modal">
+<button class="modal-back-btn" id="modal-back-btn" type="button" onclick="closeModal()">
+    <svg viewBox="0 0 24 24">
+        <path d="M15 18l-6-6 6-6"/>
+        <path d="M9 12h12"/>
+    </svg>
+    Voltar
+</button>
+
         <div class="modal-content">
             <h3 class="modal-title">SISTEMA RESTRITO</h3>
             <p class="modal-subtitle">Insira a chave de acesso para o Demand Pulse.</p>
@@ -298,6 +342,23 @@ transformamos consultas dispersas em pulso real de mercado, com histórico, cont
         document.onkeydown = function(e) {
             if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
         }
+// BOTÃO VOLTAR – adição isolada
+function closeModal() {
+    document.getElementById('custom-modal').style.display = 'none';
+    const btn = document.getElementById('modal-back-btn');
+    if (btn) btn.style.display = 'none';
+    document.getElementById('error-message').innerHTML = '';
+    document.getElementById('modal-pass').value = '';
+}
+
+// MOSTRAR botão Voltar quando abrir o modal
+const _showModalOriginal = showModal;
+showModal = function () {
+    _showModalOriginal();
+    const btn = document.getElementById('modal-back-btn');
+    if (btn) btn.style.display = 'inline-flex';
+};
+
     </script>
 </body>
 </html>
