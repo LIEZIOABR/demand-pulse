@@ -43,6 +43,37 @@ def calculate_origem_dominante(results_list):
         })
     
     return top_3
+    
+def calculate_perfil_publico(data_atual):
+    """
+    Calcula o perfil de público baseado na sazonalidade para destinos de serra.
+    
+    Retorna:
+    - "Família Verão" (dez-fev): férias de verão
+    - "Família Inverno" (jun-ago): férias de inverno  
+    - "Casal Feriados" (fins de semana): casais em feriados
+    - "Turista Geral" (resto): turistas em geral
+    """
+    mes = data_atual.month
+    dia_semana = data_atual.weekday()
+    
+    # Férias de verão (dezembro, janeiro, fevereiro)
+    if mes in [12, 1, 2]:
+        return "Família Verão"
+    
+    # Férias de inverno (junho, julho, agosto)
+    elif mes in [6, 7, 8]:
+        return "Família Inverno"
+    
+    # Fins de semana (sexta, sábado, domingo)
+    elif dia_semana >= 4:  # 4=sexta, 5=sábado, 6=domingo
+        return "Casal Feriados"
+    
+    # Resto do ano
+    else:
+        return "Turista Geral"
+
+
 
 def upload_to_supabase(payload, top_3_ranking):
     """Envia os dados coletados para a tabela correta no Supabase."""
@@ -66,6 +97,8 @@ def upload_to_supabase(payload, top_3_ranking):
             # Encontra a posição deste destino no ranking
             ranking_pos = next((idx+1 for idx, r in enumerate(top_3_ranking) if r['destino'] == item['name']), None)
             item['origem_dominante'] = ranking_pos if ranking_pos else None
+                        item['perfil_publico'] = perfil_publico
+
         
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
@@ -166,6 +199,9 @@ if __name__ == "__main__":
     final_data = get_trends_data_v3_4(destinos_config)
     
     if final_data:
+                # Calcula perfil de público
+        perfil_publico = calculate_perfil_publico(datetime.now())
+
         # Calcula ranking (top 3)
         top_3_ranking = calculate_origem_dominante(final_data)
         
@@ -179,3 +215,6 @@ if __name__ == "__main__":
         print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
+
+
+
