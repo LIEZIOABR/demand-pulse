@@ -52,13 +52,13 @@
         "name": "Campos do Jordão",
         "recentChange": 0.042,
         "timeline": [
-            69.6,
-            55.0,
+            69.4,
+            54.9,
             57.1,
-            57.7,
+            57.6,
             60.3,
-            81.6,
-            80.6,
+            81.9,
+            80.4,
             62.7
         ],
         "weather": {
@@ -98,14 +98,14 @@
     "gramado_canela_rs": {
         "id": "gramado_canela_rs",
         "name": "Gramado + Canela",
-        "recentChange": -0.064,
+        "recentChange": -0.0677,
         "timeline": [
             10.6,
             10.0,
             9.7,
             10.9,
             10.9,
-            13.4,
+            13.6,
             11.7,
             10.3
         ],
@@ -194,16 +194,16 @@
     "pocos_de_caldas_mg": {
         "id": "pocos_de_caldas_mg",
         "name": "Poços de Caldas",
-        "recentChange": 0.0943,
+        "recentChange": 0.098,
         "timeline": [
-            64.6,
-            57.6,
+            64.4,
+            57.4,
             62.1,
-            63.4,
+            63.3,
             64.6,
-            72.1,
-            73.1,
-            80.3
+            72.3,
+            72.7,
+            81.0
         ],
         "weather": {
             "daily": [
@@ -242,16 +242,16 @@
     "sao_bento_sapucai_sp": {
         "id": "sao_bento_sapucai_sp",
         "name": "São Bento do Sapucaí",
-        "recentChange": 0.5124,
+        "recentChange": 0.5186,
         "timeline": [
             10.9,
             16.9,
             16.4,
             7.9,
             28.3,
-            72.1,
+            72.4,
             82.4,
-            56.7
+            57.7
         ],
         "weather": {
             "daily": [
@@ -290,16 +290,16 @@
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 0.8994,
+        "recentChange": 0.9071,
         "timeline": [
             14.3,
             0.1,
             24.3,
             0.1,
             18.9,
-            33.9,
+            34.0,
             53.3,
-            45.0
+            45.7
         ],
         "weather": {
             "daily": [
@@ -338,16 +338,16 @@
     "serra_negra_sp": {
         "id": "serra_negra_sp",
         "name": "Serra Negra",
-        "recentChange": 0.2691,
+        "recentChange": 0.2652,
         "timeline": [
             63.0,
             43.7,
             54.7,
             45.3,
             60.4,
-            77.4,
+            77.7,
             81.4,
-            85.0
+            84.7
         ],
         "weather": {
             "daily": [
@@ -386,14 +386,14 @@
     "goncalves_mg": {
         "id": "goncalves_mg",
         "name": "Gonçalves",
-        "recentChange": 0.3352,
+        "recentChange": 0.3327,
         "timeline": [
             58.0,
             38.7,
             58.3,
             51.9,
             29.3,
-            68.7,
+            69.0,
             69.6,
             67.0
         ],
@@ -434,14 +434,14 @@
     "santo_antonio_pinhal_sp": {
         "id": "santo_antonio_pinhal_sp",
         "name": "Santo Antônio do Pinhal",
-        "recentChange": 0.1613,
+        "recentChange": 0.1599,
         "timeline": [
             43.0,
             23.4,
             27.4,
             31.3,
             27.9,
-            51.0,
+            51.1,
             48.6,
             40.7
         ],
