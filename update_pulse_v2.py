@@ -75,7 +75,7 @@ def calculate_perfil_publico(data_atual):
 
 
 
-def upload_to_supabase(payload, top_3_ranking):
+def upload_to_supabase(payload, top_3_ranking, perfil_publico):
     """Envia os dados coletados para a tabela correta no Supabase."""
     url = os.environ.get('SUPABASE_URL')
     key = os.environ.get('SUPABASE_KEY')
@@ -197,26 +197,19 @@ if __name__ == "__main__":
     final_data = get_trends_data_v3_4(destinos_config)
     
     if final_data:
-            # Calcula perfil de público
-            perfil_publico = calculate_perfil_publico(datetime.now())
+        # Calcula perfil de público
+        perfil_publico = calculate_perfil_publico(datetime.now())
 
         # Calcula ranking (top 3)
         top_3_ranking = calculate_origem_dominante(final_data)
         
         # Salva localmente para backup no GitHub
-          with open('pulse-data.json', 'w', encoding='utf-8') as f:
-              json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
+        with open('pulse-data.json', 'w', encoding='utf-8') as f:
+            json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
         
         # Upload final para o Supabase (com ranking)
-        upload_to_supabase(final_data, top_3_ranking)
+        upload_to_supabase(final_data, top_3_ranking, perfil_publico)
         print(f"--- PROCESSO CONCLUÍDO: {len(final_data)} DESTINOS ATUALIZADOS ---")
         print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
-
-
-
-
-
-
-
