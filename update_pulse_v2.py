@@ -204,8 +204,8 @@ if __name__ == "__main__":
         top_3_ranking = calculate_origem_dominante(final_data)
         
         # Salva localmente para backup no GitHub
-        with open('pulse-data.json', 'w', encoding='utf-8') as f:
-            json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
+          with open('pulse-data.json', 'w', encoding='utf-8') as f:
+              json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
         
         # Upload final para o Supabase (com ranking)
         upload_to_supabase(final_data, top_3_ranking)
@@ -213,6 +213,7 @@ if __name__ == "__main__":
         print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
+
 
 
 
