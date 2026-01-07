@@ -2,16 +2,16 @@
     "monte_verde_mg": {
         "id": "monte_verde_mg",
         "name": "Monte Verde",
-        "recentChange": 0.1591,
+        "recentChange": 0.0737,
         "timeline": [
-            4.4,
+            4.7,
+            3.4,
+            3.6,
             4.0,
-            3.6,
-            3.7,
-            3.6,
-            5.1,
+            4.0,
+            5.3,
             5.0,
-            4.5
+            4.3
         ],
         "weather": {
             "daily": [
@@ -50,16 +50,16 @@
     "campos_do_jordao_sp": {
         "id": "campos_do_jordao_sp",
         "name": "Campos do Jordão",
-        "recentChange": 0.1308,
+        "recentChange": 0.0425,
         "timeline": [
-            68.1,
-            54.6,
-            56.0,
-            56.7,
-            60.0,
-            81.1,
-            80.4,
-            65.5
+            70.0,
+            56.1,
+            57.0,
+            58.6,
+            62.4,
+            83.0,
+            81.9,
+            63.0
         ],
         "weather": {
             "daily": [
@@ -98,16 +98,16 @@
     "gramado_canela_rs": {
         "id": "gramado_canela_rs",
         "name": "Gramado + Canela",
-        "recentChange": -0.0723,
+        "recentChange": -0.0588,
         "timeline": [
             10.0,
-            10.1,
-            9.1,
-            11.1,
-            10.4,
-            13.4,
+            10.0,
+            9.4,
             11.6,
-            10.5
+            10.4,
+            13.9,
+            12.1,
+            10.7
         ],
         "weather": {
             "daily": [
@@ -146,16 +146,16 @@
     "sao_lourenco_mg": {
         "id": "sao_lourenco_mg",
         "name": "São Lourenço",
-        "recentChange": 0.1942,
+        "recentChange": 0.1316,
         "timeline": [
-            5.0,
+            5.1,
+            4.1,
+            5.1,
             4.4,
-            4.3,
-            3.9,
-            4.6,
+            5.3,
             5.7,
             6.1,
-            5.0
+            6.0
         ],
         "weather": {
             "daily": [
@@ -194,16 +194,16 @@
     "pocos_de_caldas_mg": {
         "id": "pocos_de_caldas_mg",
         "name": "Poços de Caldas",
-        "recentChange": 0.0321,
+        "recentChange": 0.0289,
         "timeline": [
-            63.0,
-            57.6,
-            61.6,
-            62.6,
-            63.7,
-            70.4,
-            72.1,
-            66.5
+            65.6,
+            59.1,
+            63.3,
+            64.6,
+            65.6,
+            72.4,
+            75.4,
+            70.3
         ],
         "weather": {
             "daily": [
@@ -242,16 +242,16 @@
     "sao_bento_sapucai_sp": {
         "id": "sao_bento_sapucai_sp",
         "name": "São Bento do Sapucaí",
-        "recentChange": 0.8138,
+        "recentChange": 0.9031,
         "timeline": [
-            32.0,
-            18.0,
-            7.3,
-            6.9,
-            25.9,
-            51.0,
-            73.0,
-            46.0
+            29.3,
+            6.4,
+            19.6,
+            0.1,
+            14.4,
+            36.6,
+            60.6,
+            37.7
         ],
         "weather": {
             "daily": [
@@ -290,16 +290,16 @@
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 1.1302,
+        "recentChange": 0.3079,
         "timeline": [
-            22.4,
+            15.1,
             0.1,
             0.1,
-            9.9,
-            0.1,
-            44.7,
-            56.4,
-            45.0
+            14.1,
+            12.3,
+            33.7,
+            32.3,
+            29.7
         ],
         "weather": {
             "daily": [
@@ -338,16 +338,16 @@
     "serra_negra_sp": {
         "id": "serra_negra_sp",
         "name": "Serra Negra",
-        "recentChange": 0.4243,
+        "recentChange": 0.2286,
         "timeline": [
-            69.3,
-            46.3,
-            56.3,
-            41.1,
-            47.0,
-            75.7,
-            83.4,
-            85.5
+            65.3,
+            53.1,
+            51.1,
+            48.3,
+            56.1,
+            75.3,
+            76.7,
+            77.3
         ],
         "weather": {
             "daily": [
@@ -386,16 +386,16 @@
     "goncalves_mg": {
         "id": "goncalves_mg",
         "name": "Gonçalves",
-        "recentChange": 0.248,
+        "recentChange": 0.2984,
         "timeline": [
-            55.4,
-            38.9,
-            49.4,
-            38.9,
-            48.9,
-            65.7,
-            66.9,
-            65.5
+            60.7,
+            40.6,
+            58.1,
+            37.7,
+            31.9,
+            59.6,
+            59.6,
+            54.3
         ],
         "weather": {
             "daily": [
@@ -430,5 +430,53 @@
             ]
         },
         "insight": "Gonçalves em alta."
+    },
+    "santo_antonio_pinhal_sp": {
+        "id": "santo_antonio_pinhal_sp",
+        "name": "Santo Antônio do Pinhal",
+        "recentChange": 0.1823,
+        "timeline": [
+            38.4,
+            24.0,
+            26.1,
+            30.9,
+            30.9,
+            47.1,
+            48.3,
+            40.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "Santo Antônio em alta."
     }
 }
