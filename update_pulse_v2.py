@@ -97,6 +97,8 @@ def upload_to_supabase(payload, top_3_ranking):
             # Encontra a posição deste destino no ranking
             ranking_pos = next((idx+1 for idx, r in enumerate(top_3_ranking) if r['destino'] == item['name']), None)
             item['origem_dominante'] = ranking_pos if ranking_pos else None
+                        item['perfil_publico'] = perfil_publico
+
         
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
@@ -213,5 +215,6 @@ if __name__ == "__main__":
         print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
+
 
 
