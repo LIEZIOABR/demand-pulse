@@ -8,15 +8,15 @@ import os
 from datetime import datetime
 
 # =================================================================
-# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.3 (PRECISÃO TOTAL)
-# FOCO: 10 DESTINOS, NORMALIZAÇÃO E UPLOAD SUPABASE (FIX TABLE)
+# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.4 (COM ORIGEM DOMINANTE)
+# FOCO: 10 DESTINOS, RANKING, ORIGEM DOMINANTE E UPLOAD SUPABASE
 # =================================================================
 
 def get_weather(lat, lon):
     """Coleta previsão de 7 dias usando Open-Meteo."""
     try:
         url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=temperature_2m_max,weathercode&timezone=America%20Sao_Paulo"
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=10 )
         data = response.json()
         weather_map = {0: "Ensolarado", 1: "Limpo", 2: "Parc. Nublado", 3: "Nublado", 45: "Nevoeiro", 48: "Nevoeiro", 51: "Garoa", 61: "Chuva Leve", 63: "Chuva", 71: "Neve", 80: "Pancadas Chuva", 95: "Trovoada"}
         forecast = []
@@ -28,7 +28,23 @@ def get_weather(lat, lon):
     except:
         return {"daily": [{"max": 20, "cond": "Estável"}] * 7}
 
-def upload_to_supabase(payload):
+def calculate_origem_dominante(results_list):
+    """Calcula ranking de destinos por demanda (Google Trends)."""
+    # Ordena por recentChange (mudança recente) em ordem decrescente
+    ranked = sorted(results_list, key=lambda x: x.get('recentChange', 0), reverse=True)
+    
+    # Retorna top 3 com posição
+    top_3 = []
+    for idx, item in enumerate(ranked[:3], 1):
+        top_3.append({
+            "posicao": idx,
+            "destino": item['name'],
+            "demanda": round(item.get('recentChange', 0), 4)
+        })
+    
+    return top_3
+
+def upload_to_supabase(payload, top_3_ranking):
     """Envia os dados coletados para a tabela correta no Supabase."""
     url = os.environ.get('SUPABASE_URL')
     key = os.environ.get('SUPABASE_KEY')
@@ -45,17 +61,25 @@ def upload_to_supabase(payload):
             "Prefer": "return=minimal"
         }
         
+        # Adiciona ranking ao payload de cada destino
+        for item in payload:
+            # Encontra a posição deste destino no ranking
+            ranking_pos = next((idx+1 for idx, r in enumerate(top_3_ranking) if r['destino'] == item['name']), None)
+            item['origem_dominante'] = ranking_pos if ranking_pos else None
+        
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
-            "payload": {"destinations": payload}
+            "payload": {"destinations": payload},
+            "top_3_ranking": top_3_ranking
         }
         
-        # NOME DA TABELA CORRIGIDO CONFORME LOG DO GITHUB
+        # NOME DA TABELA CONFORME SUPABASE
         endpoint = f"{url}/rest/v1/demand_pulse_snapshots"
         response = requests.post(endpoint, headers=headers, json=data_to_send, timeout=15)
         
         if response.status_code in [200, 201]:
-            print("Sucesso: Dados reais entregues ao Supabase!")
+            print("Sucesso: Dados com Origem Dominante entregues ao Supabase!")
+            print(f"Top 3 Ranking: {top_3_ranking}")
             return True
         else:
             print(f"Erro no upload: {response.status_code} - {response.text}")
@@ -64,8 +88,8 @@ def upload_to_supabase(payload):
         print(f"Erro crítico no upload: {e}")
         return False
 
-def get_trends_data_v3_3(destinos_dict):
-    """Coleta 10 destinos com normalização comparativa inicial."""
+def get_trends_data_v3_4(destinos_dict):
+    """Coleta 10 destinos com normalização comparativa e ranking."""
     pytrends = TrendReq(hl='pt-BR', tz=180)
     
     # 1. NORMALIZAÇÃO (Os 5 principais na mesma régua)
@@ -138,16 +162,20 @@ destinos_config = {
 }
 
 if __name__ == "__main__":
-    print("--- INICIANDO MOTOR ABR V3.3 (PRECISÃO TOTAL) ---")
-    final_data = get_trends_data_v3_3(destinos_config)
+    print("--- INICIANDO MOTOR ABR V3.4 (COM ORIGEM DOMINANTE) ---")
+    final_data = get_trends_data_v3_4(destinos_config)
     
     if final_data:
+        # Calcula ranking (top 3)
+        top_3_ranking = calculate_origem_dominante(final_data)
+        
         # Salva localmente para backup no GitHub
         with open('pulse-data.json', 'w', encoding='utf-8') as f:
             json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
         
-        # Upload final para o Supabase
-        upload_to_supabase(final_data)
+        # Upload final para o Supabase (com ranking)
+        upload_to_supabase(final_data, top_3_ranking)
         print(f"--- PROCESSO CONCLUÍDO: {len(final_data)} DESTINOS ATUALIZADOS ---")
+        print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
