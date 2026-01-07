@@ -197,6 +197,9 @@ if __name__ == "__main__":
     final_data = get_trends_data_v3_4(destinos_config)
     
     if final_data:
+                # Calcula perfil de público
+        perfil_publico = calculate_perfil_publico(datetime.now())
+
         # Calcula ranking (top 3)
         top_3_ranking = calculate_origem_dominante(final_data)
         
@@ -210,4 +213,5 @@ if __name__ == "__main__":
         print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
+
 
