@@ -132,6 +132,7 @@ def get_trends_data_v3_4(destinos_dict):
     
     try:
         print(f"Fase 1: Normalizando Share para {principais}...")
+        time.sleep(random.uniform(10, 15))
         pytrends.build_payload(keywords_main, geo='BR', timeframe='today 3-m')
         df_main = pytrends.interest_over_time()
         
@@ -159,7 +160,7 @@ def get_trends_data_v3_4(destinos_dict):
         try:
             print(f"Fase 2: Coletando {nome}...")
             info = destinos_dict[nome]
-            time.sleep(random.uniform(5, 8))
+            time.sleep(random.uniform(15, 20))
             pytrends.build_payload([info['keyword']], geo='BR', timeframe='today 3-m')
             df_sec = pytrends.interest_over_time()
             
@@ -177,6 +178,7 @@ def get_trends_data_v3_4(destinos_dict):
                 }
         except Exception as e:
             print(f"Erro em {nome}: {e}")
+            time.sleep(10)
 
     return list(results_map.values())
 
