@@ -50,16 +50,16 @@
     "campos_do_jordao_sp": {
         "id": "campos_do_jordao_sp",
         "name": "Campos do Jordão",
-        "recentChange": -0.002,
+        "recentChange": -0.0054,
         "timeline": [
             68.0,
-            53.6,
-            55.0,
-            56.3,
-            59.3,
-            79.0,
-            80.0,
-            60.5
+            54.0,
+            55.4,
+            56.4,
+            59.4,
+            79.1,
+            80.4,
+            60.2
         ],
         "weather": {
             "daily": [
@@ -98,15 +98,15 @@
     "gramado_canela_rs": {
         "id": "gramado_canela_rs",
         "name": "Gramado + Canela",
-        "recentChange": -0.0843,
+        "recentChange": -0.0797,
         "timeline": [
             10.0,
             9.9,
             9.1,
             11.3,
-            10.4,
+            10.7,
             13.7,
-            11.4,
+            11.6,
             10.2
         ],
         "weather": {
@@ -148,9 +148,9 @@
         "name": "São Lourenço",
         "recentChange": 0.0909,
         "timeline": [
-            5.6,
+            5.7,
             4.1,
-            5.0,
+            5.1,
             4.3,
             4.7,
             5.9,
@@ -194,16 +194,16 @@
     "pocos_de_caldas_mg": {
         "id": "pocos_de_caldas_mg",
         "name": "Poços de Caldas",
-        "recentChange": 0.1202,
+        "recentChange": 0.1181,
         "timeline": [
-            62.4,
+            62.9,
             56.7,
-            60.6,
-            61.9,
-            63.4,
-            69.6,
-            73.0,
-            76.0
+            60.9,
+            62.1,
+            63.9,
+            69.7,
+            73.6,
+            76.2
         ],
         "weather": {
             "daily": [
@@ -242,16 +242,16 @@
     "sao_bento_sapucai_sp": {
         "id": "sao_bento_sapucai_sp",
         "name": "São Bento do Sapucaí",
-        "recentChange": 0.684,
+        "recentChange": 0.6636,
         "timeline": [
             19.7,
             18.3,
             19.9,
             0.1,
             23.7,
-            39.4,
+            39.6,
             74.4,
-            52.0
+            51.2
         ],
         "weather": {
             "daily": [
@@ -290,16 +290,16 @@
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 1.3111,
+        "recentChange": 1.2842,
         "timeline": [
             11.4,
             26.6,
             11.4,
             9.9,
             0.1,
-            33.7,
-            58.9,
-            50.0
+            33.9,
+            59.0,
+            49.8
         ],
         "weather": {
             "daily": [
@@ -338,16 +338,16 @@
     "serra_negra_sp": {
         "id": "serra_negra_sp",
         "name": "Serra Negra",
-        "recentChange": 0.3583,
+        "recentChange": 0.3494,
         "timeline": [
-            60.3,
-            57.4,
-            56.3,
-            32.3,
-            59.4,
-            82.0,
-            84.7,
-            87.5
+            60.4,
+            57.6,
+            56.4,
+            32.4,
+            59.9,
+            82.3,
+            85.0,
+            87.2
         ],
         "weather": {
             "daily": [
@@ -386,7 +386,7 @@
     "goncalves_mg": {
         "id": "goncalves_mg",
         "name": "Gonçalves",
-        "recentChange": 0.3435,
+        "recentChange": 0.3484,
         "timeline": [
             57.7,
             33.1,
@@ -394,8 +394,8 @@
             49.7,
             38.1,
             48.9,
-            61.6,
-            60.0
+            61.9,
+            60.2
         ],
         "weather": {
             "daily": [
@@ -434,7 +434,7 @@
     "santo_antonio_pinhal_sp": {
         "id": "santo_antonio_pinhal_sp",
         "name": "Santo Antônio do Pinhal",
-        "recentChange": 0.2042,
+        "recentChange": 0.2083,
         "timeline": [
             34.1,
             30.3,
@@ -443,7 +443,7 @@
             27.4,
             42.7,
             45.1,
-            36.8
+            37.0
         ],
         "weather": {
             "daily": [
