@@ -160,7 +160,7 @@ def get_trends_data_v3_4(destinos_dict):
         try:
             print(f"Fase 2: Coletando {nome}...")
             info = destinos_dict[nome]
-            time.sleep(random.uniform(15, 20))
+            time.sleep(random.uniform(20, 30))
             pytrends.build_payload([info['keyword']], geo='BR', timeframe='today 3-m')
             df_sec = pytrends.interest_over_time()
             
