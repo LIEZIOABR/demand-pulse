@@ -1,257 +1,17 @@
 {
-    "monte_verde_mg": {
-        "id": "monte_verde_mg",
-        "name": "Monte Verde",
-        "recentChange": -0.0645,
-        "timeline": [
-            4.3,
-            3.7,
-            3.3,
-            4.0,
-            3.9,
-            5.1,
-            4.9,
-            3.2
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Demanda por Monte Verde segue estável."
-    },
-    "campos_do_jordao_sp": {
-        "id": "campos_do_jordao_sp",
-        "name": "Campos do Jordão",
-        "recentChange": 0.03,
-        "timeline": [
-            69.3,
-            54.4,
-            56.7,
-            57.4,
-            60.1,
-            80.9,
-            80.7,
-            66.8
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Campos do Jordão apresenta comportamento em alta."
-    },
-    "gramado_canela_rs": {
-        "id": "gramado_canela_rs",
-        "name": "Gramado + Canela",
-        "recentChange": -0.1992,
-        "timeline": [
-            10.6,
-            9.9,
-            9.7,
-            10.9,
-            10.7,
-            13.7,
-            11.7,
-            7.8
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Serra Gaúcha estável."
-    },
-    "sao_lourenco_mg": {
-        "id": "sao_lourenco_mg",
-        "name": "São Lourenço",
-        "recentChange": -0.0727,
-        "timeline": [
-            5.6,
-            4.3,
-            4.9,
-            4.3,
-            4.6,
-            5.9,
-            5.9,
-            4.2
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "São Lourenço estável."
-    },
-    "pocos_de_caldas_mg": {
-        "id": "pocos_de_caldas_mg",
-        "name": "Poços de Caldas",
-        "recentChange": 0.1429,
-        "timeline": [
-            64.4,
-            57.4,
-            61.9,
-            63.3,
-            64.1,
-            69.9,
-            73.0,
-            79.2
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Poços em alta."
-    },
     "sao_bento_sapucai_sp": {
         "id": "sao_bento_sapucai_sp",
         "name": "São Bento do Sapucaí",
-        "recentChange": 0.2222,
+        "recentChange": 0.3784,
         "timeline": [
             10.9,
             16.9,
             16.4,
             7.9,
             28.1,
-            65.9,
-            82.3,
-            43.0
+            65.7,
+            82.6,
+            55.8
         ],
         "weather": {
             "daily": [
@@ -290,16 +50,16 @@
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 0.5641,
+        "recentChange": 0.7925,
         "timeline": [
             14.3,
             0.1,
             24.3,
             0.1,
             18.7,
-            30.1,
-            53.6,
-            34.5
+            30.0,
+            53.3,
+            44.8
         ],
         "weather": {
             "daily": [
@@ -338,16 +98,16 @@
     "serra_negra_sp": {
         "id": "serra_negra_sp",
         "name": "Serra Negra",
-        "recentChange": 0.0778,
+        "recentChange": 0.2341,
         "timeline": [
             63.0,
             43.7,
             54.6,
             45.3,
             60.3,
-            80.0,
+            83.3,
             81.6,
-            63.2
+            84.0
         ],
         "weather": {
             "daily": [
@@ -386,16 +146,16 @@
     "goncalves_mg": {
         "id": "goncalves_mg",
         "name": "Gonçalves",
-        "recentChange": 0.213,
+        "recentChange": 0.2458,
         "timeline": [
-            58.0,
-            38.7,
-            58.0,
-            52.0,
-            29.1,
-            61.7,
-            68.9,
-            50.0
+            54.9,
+            36.4,
+            54.9,
+            49.1,
+            27.6,
+            73.0,
+            65.1,
+            60.5
         ],
         "weather": {
             "daily": [
@@ -434,16 +194,16 @@
     "santo_antonio_pinhal_sp": {
         "id": "santo_antonio_pinhal_sp",
         "name": "Santo Antônio do Pinhal",
-        "recentChange": -0.0189,
+        "recentChange": 0.1506,
         "timeline": [
             43.0,
             23.4,
             27.3,
             31.1,
             27.7,
-            50.1,
+            50.7,
             49.0,
-            30.5
+            42.5
         ],
         "weather": {
             "daily": [
@@ -477,6 +237,6 @@
                 }
             ]
         },
-        "insight": "Santo Antônio estável."
+        "insight": "Santo Antônio em alta."
     }
 }
