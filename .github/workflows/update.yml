@@ -20,7 +20,7 @@ jobs:
 
       - name: Instalar dependências
         run: |
-           pip install "urllib3<2.0" pytrends pandas supabase
+          pip install "urllib3<2.0" pytrends pandas supabase
 
       - name: Executar script de atualização
         run: python update_pulse_v2.py
