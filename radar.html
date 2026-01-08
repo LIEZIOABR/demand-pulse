@@ -234,18 +234,27 @@
         }
 
         function transformSupabaseData(payload) { 
-            const transformed = {}; 
-            if (payload && payload.destinations) { 
-                payload.destinations.forEach(dest => { 
-                    const idKey = dest.id ? dest.id.toLowerCase() : "";
-                    const nameKey = dest.name ? dest.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_').replace(/[^\w]/g, '') : "";
-                    const finalData = { ...dest, timeline: dest.timeline || [45, 48, 52, 55, 58, 62, 65, 68] };
-                    if (idKey) transformed[idKey] = finalData;
-                    if (nameKey) transformed[nameKey] = finalData;
-                }); 
-            } 
-            return transformed; 
-        }
+    const transformed = {}; 
+    if (payload && payload.destinations) { 
+        payload.destinations.forEach(dest => { 
+            const idKey = dest.id ? dest.id.toLowerCase() : "";
+            const nameKey = dest.name ? dest.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_').replace(/[^\w]/g, '') : "";
+            const finalData = { 
+                ...dest, 
+                timeline: dest.timeline || [45, 48, 52, 55, 58, 62, 65, 68],
+                perfil_publico: dest.perfil_publico || "Turista Geral",
+                origem_dominante: dest.origem_dominante || null
+            };
+            if (idKey) transformed[idKey] = finalData;
+            if (nameKey) transformed[nameKey] = finalData;
+        }); 
+    } 
+    if (payload && payload.top_3_ranking) {
+        transformed.top_3_ranking = payload.top_3_ranking;
+    }
+    return transformed; 
+}
+
 
         function updateDataSourceIndicator(isSupabase) { 
             const indicator = document.getElementById('data-source-indicator'); 
@@ -348,11 +357,14 @@
                 } else { 
                     if (avgTemp > 24) { atrLabel = "Atratividade Máxima"; atrIcon = "🔥"; atrClass = "selo-alta"; } 
                 }
-                const pressVal = data.bookingPressure || 0.7; const pressIcon = pressVal > 0.9 ? "🚨" : "📈"; const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : ""; const proxVal = data.proximityTrigger || 0.6; const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : ""; const buzzVal = data.socialBuzz || 0.5; const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : ""; const audVal = data.audienceProfile || 0.5; const fidPerc = (audVal * 100).toFixed(0); const descPerc = (100 - fidPerc); const stayVal = data.stayIntent || 0.7; const stayPerc = (stayVal * 100).toFixed(0); const dayPerc = (100 - stayPerc); const elastVal = data.elasticityIndex || 0; const elastWidth = Math.abs(elastVal) * 50; const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg'; const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro"))); const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️"); const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100); const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0};
+                const pressVal = data.bookingPressure || 0.7; const pressIcon = pressVal > 0.9 ? "🚨" : "📈"; const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : ""; const proxVal = data.proximityTrigger || 0.6; const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : ""; const buzzVal = data.socialBuzz || 0.5; const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : ""; const audVal = data.audienceProfile || 0.5; const fidPerc = (audVal * 100).toFixed(0); const descPerc = (100 - fidPerc); const stayVal = data.stayIntent || 0.7; const stayPerc = (stayVal * 100).toFixed(0); const dayPerc = (100 - stayPerc); const elastVal = data.elasticityIndex || 0; const elastWidth = Math.abs(elastVal) * 50; const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg'; const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro"))); const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️"); const perfilPublico = data.perfil_publico || "Turista Geral";
+const origemDominante = data.origem_dominante ? `#${data.origem_dominante}` : "N/A";
+const shareNow = ((data.timeline[data.timeline.length-1] / totalInterestNow) * 100); const topOrigin = data.topOrigins ? data.topOrigins[0] : {location: "N/A", percent: 0};
                 
-                container.innerHTML += `<div class="card"><div class="card-header-top"><span class="dest-name">${data.name}</span><div class="selos-stack"><div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}%</div><div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>${pressSelo} ${proxSelo} ${buzzSelo}</div></div><div><span class="status-badge ${status.c}">${status.l}</span></div><div class="metrics-row"><div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div><div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div></div><div class="origin-box">📍 Origem Dominante: ${topOrigin.location} (${topOrigin.percent}%)</div><div class="audience-box"><span class="audience-label">Perfil de Público</span><div class="audience-icons"><div class="audience-item">🔄 ${fidPerc}%</div><div class="audience-item">✨ ${descPerc}%</div></div></div><div class="stay-box"><div class="stay-header"><span class="stay-label">Intenção de Estadia</span></div><div class="stay-bar-bg"><div class="stay-bar-fill" style="width: ${stayPerc}%"></div></div><div class="stay-values"><span>Pernoite: ${stayPerc}%</span><span>Day-Trip: ${dayPerc}%</span></div></div><div class="elasticity-box"><div class="elasticity-header"><span class="elasticity-label">Impacto Climático (IEC)</span><span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span></div><div class="elasticity-bar-bg"><div class="elasticity-center"></div><div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div></div></div><div class="insight-box">💡 ${data.insight}</div><div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div></div>`;
+                container.innerHTML += `<div class="card"><div class="card-header-top"><span class="dest-name">${data.name}</span><div class="selos-stack"><div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}%</div><div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>${pressSelo} ${proxSelo} ${buzzSelo}</div></div><div><span class="status-badge ${status.c}">${status.l}</span></div><div class="metrics-row"><div class="metric-box"><span class="metric-label">Humor do Mercado</span><span class="metric-value">${sentStatus.i} ${sentStatus.l}</span></div><div class="metric-box"><span class="metric-label">Pressão de Reserva</span><span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span></div></div><div class="origin-box">📍 Origem Dominante: ${origemDominante}</div><div class="audience-box"><span class="audience-label">Perfil: ${perfilPublico}</span><div class="audience-icons"><div class="audience-item">🔄 ${fidPerc}%</div><div class="audience-item">✨ ${descPerc}%</div></div> </div></div><div class="stay-box"> <div class="stay-header"><span class="stay-label">Intenção de Estadia</span></div><div class="stay-bar-bg"><div class="stay-bar-fill" style="width: ${stayPerc}%"></div></div><div class="stay-values"><span>Pernoite: ${stayPerc}%</span><span>Day-Trip: ${dayPerc}%</span></div></div><div class="elasticity-box"><div class="elasticity-header"><span class="elasticity-label">Impacto Climático (IEC)</span><span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span></div><div class="elasticity-bar-bg"><div class="elasticity-center"></div><div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div></div></div><div class="insight-box">💡 ${data.insight}</div><div class="weather-forecast">${data.weather.daily.slice(0, 5).map(d => `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`).join('')}</div></div>`;
                 
-                boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l}\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}%\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}%\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}%\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• ALERTA TÁTICO (CLIMA): ${elastLabel}\n• TOP 3 ORIGENS DE DEMANDA:\n`;
+               boletim += `📍 ${data.name.toUpperCase()}\n• Status: ${status.l} (${rc}% var)\n• Sentimento: ${sentStatus.l}\n• Pressão de Reserva: ${(pressVal*100).toFixed(0)}%\n• Gatilho de Proximidade: ${(proxVal*100).toFixed(0)}%\n• Velocidade Viral: ${(buzzVal*100).toFixed(0)}%\n• Renovação de Público: ${fidPerc}% Fidelidade | ${descPerc}% Descoberta\n• Perfil de Estadia: ${stayPerc}% Pernoite | ${dayPerc}% Day-Trip\n• ALERTA TÁTICO (CLIMA): ${elastLabel}\n• PERFIL DE PÚBLICO: ${perfilPublico}\n• ORIGEM DOMINANTE: ${origemDominante}\n• TOP 3 ORIGENS DE DEMANDA:\n`;
+
                 if(data.topOrigins) {
                     data.topOrigins.forEach((o, i) => {
                         const label = i === 0 ? "Primário" : (i === 1 ? "Secundário" : "Terciário");
