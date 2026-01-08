@@ -237,3 +237,5 @@ if __name__ == "__main__":
         print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
     else:
         print("--- ERRO: NENHUM DADO COLETADO ---")
+        import sys
+        sys.exit(1)
