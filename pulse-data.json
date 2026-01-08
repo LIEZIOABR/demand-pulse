@@ -2,16 +2,16 @@
     "monte_verde_mg": {
         "id": "monte_verde_mg",
         "name": "Monte Verde",
-        "recentChange": 0.1294,
+        "recentChange": 0.1379,
         "timeline": [
-            4.4,
-            3.7,
-            3.4,
-            3.3,
+            4.6,
             3.9,
-            4.4,
+            2.9,
+            3.4,
+            3.4,
+            4.9,
             5.0,
-            4.0
+            4.2
         ],
         "weather": {
             "daily": [
@@ -50,16 +50,16 @@
     "campos_do_jordao_sp": {
         "id": "campos_do_jordao_sp",
         "name": "Campos do Jordão",
-        "recentChange": -0.0184,
+        "recentChange": -0.002,
         "timeline": [
-            66.9,
-            53.4,
-            54.7,
-            56.0,
-            58.7,
-            79.4,
-            78.7,
-            58.8
+            68.0,
+            53.6,
+            55.0,
+            56.3,
+            59.3,
+            79.0,
+            80.0,
+            60.5
         ],
         "weather": {
             "daily": [
@@ -98,14 +98,14 @@
     "gramado_canela_rs": {
         "id": "gramado_canela_rs",
         "name": "Gramado + Canela",
-        "recentChange": -0.0579,
+        "recentChange": -0.0843,
         "timeline": [
-            9.9,
-            9.6,
-            8.9,
-            10.6,
             10.0,
-            13.4,
+            9.9,
+            9.1,
+            11.3,
+            10.4,
+            13.7,
             11.4,
             10.2
         ],
@@ -146,14 +146,14 @@
     "sao_lourenco_mg": {
         "id": "sao_lourenco_mg",
         "name": "São Lourenço",
-        "recentChange": 0.1538,
+        "recentChange": 0.0909,
         "timeline": [
+            5.6,
+            4.1,
             5.0,
             4.3,
-            4.6,
-            4.1,
-            4.1,
-            5.6,
+            4.7,
+            5.9,
             5.9,
             5.5
         ],
@@ -194,16 +194,16 @@
     "pocos_de_caldas_mg": {
         "id": "pocos_de_caldas_mg",
         "name": "Poços de Caldas",
-        "recentChange": 0.1179,
+        "recentChange": 0.1202,
         "timeline": [
-            62.6,
-            56.4,
-            59.9,
-            61.3,
-            62.9,
-            67.9,
-            71.7,
-            74.2
+            62.4,
+            56.7,
+            60.6,
+            61.9,
+            63.4,
+            69.6,
+            73.0,
+            76.0
         ],
         "weather": {
             "daily": [
@@ -239,19 +239,67 @@
         },
         "insight": "Poços em alta."
     },
+    "sao_bento_sapucai_sp": {
+        "id": "sao_bento_sapucai_sp",
+        "name": "São Bento do Sapucaí",
+        "recentChange": 0.684,
+        "timeline": [
+            19.7,
+            18.3,
+            19.9,
+            0.1,
+            23.7,
+            39.4,
+            74.4,
+            52.0
+        ],
+        "weather": {
+            "daily": [
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                },
+                {
+                    "max": 20,
+                    "cond": "Estável"
+                }
+            ]
+        },
+        "insight": "São Bento em alta."
+    },
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 0.6653,
+        "recentChange": 1.3111,
         "timeline": [
+            11.4,
+            26.6,
+            11.4,
+            9.9,
             0.1,
-            11.1,
-            11.9,
-            14.1,
-            0.1,
-            51.4,
-            64.4,
-            54.8
+            33.7,
+            58.9,
+            50.0
         ],
         "weather": {
             "daily": [
@@ -290,16 +338,16 @@
     "serra_negra_sp": {
         "id": "serra_negra_sp",
         "name": "Serra Negra",
-        "recentChange": 0.2866,
+        "recentChange": 0.3583,
         "timeline": [
-            62.6,
-            57.4,
             60.3,
-            35.1,
-            61.7,
-            84.0,
-            85.7,
-            87.0
+            57.4,
+            56.3,
+            32.3,
+            59.4,
+            82.0,
+            84.7,
+            87.5
         ],
         "weather": {
             "daily": [
@@ -338,16 +386,16 @@
     "goncalves_mg": {
         "id": "goncalves_mg",
         "name": "Gonçalves",
-        "recentChange": 0.466,
+        "recentChange": 0.3435,
         "timeline": [
-            62.7,
-            32.1,
-            54.0,
-            33.4,
-            25.9,
-            53.7,
-            59.4,
-            57.5
+            57.7,
+            33.1,
+            54.1,
+            49.7,
+            38.1,
+            48.9,
+            61.6,
+            60.0
         ],
         "weather": {
             "daily": [
@@ -386,16 +434,16 @@
     "santo_antonio_pinhal_sp": {
         "id": "santo_antonio_pinhal_sp",
         "name": "Santo Antônio do Pinhal",
-        "recentChange": 0.0992,
+        "recentChange": 0.2042,
         "timeline": [
-            39.0,
-            20.1,
-            26.6,
-            29.9,
-            27.7,
-            48.1,
-            47.6,
-            38.2
+            34.1,
+            30.3,
+            24.1,
+            21.1,
+            27.4,
+            42.7,
+            45.1,
+            36.8
         ],
         "weather": {
             "daily": [
