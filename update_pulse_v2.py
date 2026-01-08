@@ -92,12 +92,13 @@ def upload_to_supabase(payload, top_3_ranking, perfil_publico):
             "Prefer": "return=minimal"
         }
         
-        # Adiciona ranking ao payload de cada destino
+        # Adiciona origem dominante ao payload de cada destino
         for item in payload:
-            # Encontra a posição deste destino no ranking
-            ranking_pos = next((idx+1 for idx, r in enumerate(top_3_ranking) if r['destino'] == item['name']), None)
-            item['origem_dominante'] = ranking_pos if ranking_pos else None
-            item['perfil_publico'] = perfil_publico        
+            # Extrai origem dominante do topOrigins
+            origem = item.get('topOrigins', [{}])[0].get('location', 'N/A') if item.get('topOrigins') else 'N/A'
+            item['origem_dominante'] = origem
+            item['perfil_publico'] = perfil_publico
+        
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
             "payload": {"destinations": payload},
