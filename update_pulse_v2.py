@@ -7,6 +7,8 @@ import requests
 import os
 from datetime import datetime
 
+os.environ['USER_AGENT'] = 'Mozilla/5.0 (DemandPulseBot/1.0)'
+
 # =================================================================
 # ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.4 (COM ORIGEM DOMINANTE)
 # FOCO: 10 DESTINOS, RANKING, ORIGEM DOMINANTE E UPLOAD SUPABASE
@@ -95,7 +97,7 @@ def upload_to_supabase(payload, top_3_ranking, perfil_publico):
         # Adiciona origem dominante ao payload de cada destino
         for item in payload:
             # Extrai origem dominante do topOrigins
-            origem = item.get('topOrigins', [{}])[0].get('location', 'N/A') if item.get('topOrigins') else 'N/A'
+            origem = item.get('topOrigins', [{}])[0].get('posicao', None) if item.get('topOrigins') else 'N/A'
             item['origem_dominante'] = origem
             item['perfil_publico'] = perfil_publico
         
@@ -124,7 +126,13 @@ def upload_to_supabase(payload, top_3_ranking, perfil_publico):
 
 def get_trends_data_v3_4(destinos_dict):
     """Coleta 10 destinos com normalização comparativa e ranking."""
-    pytrends = TrendReq(hl='pt-BR', tz=180)
+    pytrends = TrendReq(
+        hl='pt-BR',
+        tz=180,
+        retries=5,
+        backoff_factor=0.3,
+        timeout=(10, 25)
+    )
     
     # 1. NORMALIZAÇÃO (Os 5 principais na mesma régua)
     principais = ["Monte Verde", "Campos do Jordão", "Gramado + Canela", "São Lourenço", "Poços de Caldas"]
@@ -205,8 +213,19 @@ if __name__ == "__main__":
         # Calcula perfil de público
         perfil_publico = calculate_perfil_publico(datetime.now())
 
-        # Calcula ranking (top 3)
+    # Calcula ranking (top 3)
         top_3_ranking = calculate_origem_dominante(final_data)
+
+        # Gera topOrigins (origem da demanda comparativa)
+        for destino in final_data:
+            destino["topOrigins"] = []
+            for item in top_3_ranking:
+                if item["destino"] != destino["name"]:
+                    destino["topOrigins"].append({
+                        "posicao": item["posicao"],
+                        "origem": item["destino"],
+                        "impacto": item["demanda"]
+                    })
         
         # Salva localmente para backup no GitHub
         with open('pulse-data.json', 'w', encoding='utf-8') as f:
