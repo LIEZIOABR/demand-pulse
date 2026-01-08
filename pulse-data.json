@@ -1,65 +1,17 @@
 {
-    "sao_bento_sapucai_sp": {
-        "id": "sao_bento_sapucai_sp",
-        "name": "São Bento do Sapucaí",
-        "recentChange": 0.3784,
-        "timeline": [
-            10.9,
-            16.9,
-            16.4,
-            7.9,
-            28.1,
-            65.7,
-            82.6,
-            55.8
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "São Bento em alta."
-    },
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 0.7925,
+        "recentChange": 1.3404,
         "timeline": [
-            14.3,
+            11.4,
+            26.6,
+            11.4,
+            9.9,
             0.1,
-            24.3,
-            0.1,
-            18.7,
-            30.0,
-            53.3,
-            44.8
+            32.4,
+            59.3,
+            50.0
         ],
         "weather": {
             "daily": [
@@ -94,149 +46,5 @@
             ]
         },
         "insight": "Passa Quatro em alta."
-    },
-    "serra_negra_sp": {
-        "id": "serra_negra_sp",
-        "name": "Serra Negra",
-        "recentChange": 0.2341,
-        "timeline": [
-            63.0,
-            43.7,
-            54.6,
-            45.3,
-            60.3,
-            83.3,
-            81.6,
-            84.0
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Serra Negra em alta."
-    },
-    "goncalves_mg": {
-        "id": "goncalves_mg",
-        "name": "Gonçalves",
-        "recentChange": 0.2458,
-        "timeline": [
-            54.9,
-            36.4,
-            54.9,
-            49.1,
-            27.6,
-            73.0,
-            65.1,
-            60.5
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Gonçalves em alta."
-    },
-    "santo_antonio_pinhal_sp": {
-        "id": "santo_antonio_pinhal_sp",
-        "name": "Santo Antônio do Pinhal",
-        "recentChange": 0.1506,
-        "timeline": [
-            43.0,
-            23.4,
-            27.3,
-            31.1,
-            27.7,
-            50.7,
-            49.0,
-            42.5
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Santo Antônio em alta."
     }
 }
