@@ -102,6 +102,8 @@ def upload_to_supabase(payload, top_3_ranking, perfil_publico):
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
             "payload": {"destinations": payload},
+            "origem_dominante": payload[0].get('origem_dominante', 'N/A') if payload else 'N/A',
+            "perfil_publico": perfil_publico,
             "top_3_ranking": top_3_ranking
         }
         
