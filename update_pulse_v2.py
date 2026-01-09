@@ -221,16 +221,28 @@ if __name__ == "__main__":
         # Calcula ranking (top 3)
         top_3_ranking = calculate_origem_dominante(final_data)
 
-        # Gera topOrigins (origem da demanda comparativa)
+        # Gera topOrigins específico para cada destino
         for destino in final_data:
-            destino["topOrigins"] = []
-            for item in top_3_ranking:
-                if item["destino"] != destino["name"]:
-                    destino["topOrigins"].append({
-                        "posicao": item["posicao"],
-                        "origem": item["destino"],
-                        "impacto": item["demanda"]
+            comparativos = []
+
+            for outro in final_data:
+                if outro["name"] != destino["name"]:
+                    comparativos.append({
+                        "origem": outro["name"],
+                        "impacto": round(outro.get("recentChange", 0) - destino.get("recentChange", 0), 4)
                     })
+
+            comparativos = sorted(comparativos, key=lambda x: x["impacto"], reverse=True)
+
+            destino["topOrigins"] = [
+                {
+                    "posicao": idx + 1,
+                    "origem": item["origem"],
+                    "impacto": item["impacto"]
+                }
+                for idx, item in enumerate(comparativos[:3])
+            ]
+
 
         # Salva localmente para backup no GitHub
         with open('pulse-data.json', 'w', encoding='utf-8') as f:
