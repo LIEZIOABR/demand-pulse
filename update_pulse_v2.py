@@ -94,24 +94,24 @@ def upload_to_supabase(payload, top_3_ranking, perfil_publico):
             "Prefer": "return=minimal"
         }
         
-# Adiciona origem dominante ao payload de cada destino
-for item in payload:
-    # Origem dominante = nome do destino com maior impacto
-    origem = (
-        item.get("topOrigins", [{}])[0].get("origem", "N/A")
-        if item.get("topOrigins")
-        else "N/A"
-    )
-    item["origem_dominante"] = origem
-    item["perfil_publico"] = perfil_publico
+        # Adiciona origem dominante ao payload de cada destino
+        for item in payload:
+            # Origem dominante = nome do destino com maior impacto
+            origem = (
+                item.get("topOrigins", [{}])[0].get("origem", "N/A")
+                if item.get("topOrigins")
+                else "N/A"
+            )
+            item["origem_dominante"] = origem
+            item["perfil_publico"] = perfil_publico
 
         
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
-            "payload": {"destinations": payload},
+            "payload": {"destinations": payload, "top_3_ranking": top_3_ranking},
             "origem_dominante": payload[0].get('origem_dominante', 'N/A') if payload else 'N/A',
             "perfil_publico": perfil_publico,
-            "top_3_ranking": top_3_ranking
+            # "top_3_ranking": top_3_ranking
         }
         
         # NOME DA TABELA CONFORME SUPABASE
@@ -213,12 +213,12 @@ destinos_config = {
 if __name__ == "__main__":
     print("--- INICIANDO MOTOR ABR V3.4 (COM ORIGEM DOMINANTE) ---")
     final_data = get_trends_data_v3_4(destinos_config)
-    
+
     if final_data:
         # Calcula perfil de público
         perfil_publico = calculate_perfil_publico(datetime.now())
 
-    # Calcula ranking (top 3)
+        # Calcula ranking (top 3)
         top_3_ranking = calculate_origem_dominante(final_data)
 
         # Gera topOrigins (origem da demanda comparativa)
@@ -231,11 +231,11 @@ if __name__ == "__main__":
                         "origem": item["destino"],
                         "impacto": item["demanda"]
                     })
-        
+
         # Salva localmente para backup no GitHub
         with open('pulse-data.json', 'w', encoding='utf-8') as f:
             json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
-        
+
         # Upload final para o Supabase (com ranking)
         upload_to_supabase(final_data, top_3_ranking, perfil_publico)
         print(f"--- PROCESSO CONCLUÍDO: {len(final_data)} DESTINOS ATUALIZADOS ---")
