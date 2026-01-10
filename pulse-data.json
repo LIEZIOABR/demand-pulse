@@ -2,14 +2,14 @@
     "monte_verde_mg": {
         "id": "monte_verde_mg",
         "name": "Monte Verde",
-        "recentChange": -0.011,
+        "recentChange": -0.0217,
         "timeline": [
-            4.6,
-            3.9,
-            3.6,
-            3.3,
-            3.7,
             4.4,
+            3.9,
+            3.4,
+            3.1,
+            3.7,
+            4.7,
             5.0,
             4.2
         ],
@@ -50,33 +50,33 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.708
+                "impacto": 1.0859
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.2556
+                "impacto": 0.6445
             },
             {
                 "posicao": 3,
                 "origem": "Gonçalves",
-                "impacto": 0.2445
+                "impacto": 0.2235
             }
         ]
     },
     "campos_do_jordao_sp": {
         "id": "campos_do_jordao_sp",
         "name": "Campos do Jordão",
-        "recentChange": -0.1581,
+        "recentChange": -0.1479,
         "timeline": [
-            69.6,
-            55.0,
+            68.0,
+            54.4,
             56.3,
-            57.0,
-            60.3,
-            81.4,
-            80.7,
-            59.5
+            56.6,
+            60.0,
+            81.3,
+            80.0,
+            60.0
         ],
         "weather": {
             "daily": [
@@ -115,31 +115,31 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.8551
+                "impacto": 1.2121
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.4027
+                "impacto": 0.7707
             },
             {
                 "posicao": 3,
                 "origem": "Gonçalves",
-                "impacto": 0.3916
+                "impacto": 0.3497
             }
         ]
     },
     "gramado_canela_rs": {
         "id": "gramado_canela_rs",
         "name": "Gramado + Canela",
-        "recentChange": -0.1479,
+        "recentChange": -0.1275,
         "timeline": [
-            10.4,
-            9.9,
-            9.7,
-            11.4,
-            10.9,
-            14.0,
+            10.1,
+            9.6,
+            9.4,
+            11.0,
+            10.3,
+            13.7,
             11.7,
             10.2
         ],
@@ -180,33 +180,33 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.8449
+                "impacto": 1.1917
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.3925
+                "impacto": 0.7503
             },
             {
                 "posicao": 3,
                 "origem": "Gonçalves",
-                "impacto": 0.3814
+                "impacto": 0.3293
             }
         ]
     },
     "sao_lourenco_mg": {
         "id": "sao_lourenco_mg",
         "name": "São Lourenço",
-        "recentChange": -0.042,
+        "recentChange": -0.0348,
         "timeline": [
-            5.0,
+            5.4,
+            4.4,
+            4.6,
+            4.1,
             4.7,
-            4.9,
-            4.3,
-            4.9,
-            6.1,
             6.0,
-            5.5
+            6.0,
+            5.3
         ],
         "weather": {
             "daily": [
@@ -245,33 +245,33 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.739
+                "impacto": 1.099
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.2866
+                "impacto": 0.6576
             },
             {
                 "posicao": 3,
                 "origem": "Gonçalves",
-                "impacto": 0.2755
+                "impacto": 0.2366
             }
         ]
     },
     "pocos_de_caldas_mg": {
         "id": "pocos_de_caldas_mg",
         "name": "Poços de Caldas",
-        "recentChange": 0.0456,
+        "recentChange": 0.0437,
         "timeline": [
-            63.9,
-            58.3,
-            61.4,
-            63.7,
-            64.6,
-            70.3,
-            73.7,
-            73.0
+            63.4,
+            57.3,
+            61.3,
+            63.0,
+            64.0,
+            70.6,
+            73.4,
+            72.8
         ],
         "weather": {
             "daily": [
@@ -310,33 +310,33 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.6514
+                "impacto": 1.0205
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.199
+                "impacto": 0.5791
             },
             {
                 "posicao": 3,
                 "origem": "Gonçalves",
-                "impacto": 0.1879
+                "impacto": 0.1581
             }
         ]
     },
     "sao_bento_sapucai_sp": {
         "id": "sao_bento_sapucai_sp",
         "name": "São Bento do Sapucaí",
-        "recentChange": 0.2446,
+        "recentChange": 0.6228,
         "timeline": [
-            44.0,
-            10.7,
-            11.6,
+            34.0,
+            9.7,
             0.1,
-            20.6,
-            27.7,
-            50.9,
-            36.7
+            8.7,
+            21.3,
+            24.9,
+            89.7,
+            64.2
         ],
         "weather": {
             "daily": [
@@ -375,33 +375,33 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.4524
+                "impacto": 0.4414
             },
             {
                 "posicao": 2,
                 "origem": "Gonçalves",
-                "impacto": -0.0111
+                "impacto": -0.421
             },
             {
                 "posicao": 3,
                 "origem": "Serra Negra",
-                "impacto": -0.1222
+                "impacto": -0.4228
             }
         ]
     },
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 0.697,
+        "recentChange": 1.0642,
         "timeline": [
+            8.6,
+            0.1,
             9.3,
             0.1,
-            14.0,
-            19.6,
             0.1,
-            28.1,
-            48.4,
-            39.8
+            17.0,
+            54.3,
+            44.0
         ],
         "weather": {
             "daily": [
@@ -440,33 +440,33 @@
             {
                 "posicao": 1,
                 "origem": "São Bento do Sapucaí",
-                "impacto": -0.4524
+                "impacto": -0.4414
             },
             {
                 "posicao": 2,
                 "origem": "Gonçalves",
-                "impacto": -0.4635
+                "impacto": -0.8624
             },
             {
                 "posicao": 3,
                 "origem": "Serra Negra",
-                "impacto": -0.5746
+                "impacto": -0.8642
             }
         ]
     },
     "serra_negra_sp": {
         "id": "serra_negra_sp",
         "name": "Serra Negra",
-        "recentChange": 0.1224,
+        "recentChange": 0.2,
         "timeline": [
-            47.6,
-            43.1,
-            33.3,
-            35.1,
-            44.7,
-            66.0,
-            61.4,
-            61.7
+            46.6,
+            44.1,
+            37.4,
+            29.1,
+            44.6,
+            62.9,
+            63.1,
+            63.5
         ],
         "weather": {
             "daily": [
@@ -505,33 +505,33 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.5746
+                "impacto": 0.8642
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.1222
+                "impacto": 0.4228
             },
             {
                 "posicao": 3,
                 "origem": "Gonçalves",
-                "impacto": 0.1111
+                "impacto": 0.0018
             }
         ]
     },
     "goncalves_mg": {
         "id": "goncalves_mg",
         "name": "Gonçalves",
-        "recentChange": 0.2335,
+        "recentChange": 0.2018,
         "timeline": [
-            60.0,
-            30.4,
-            57.1,
-            51.3,
-            41.0,
-            39.0,
-            62.1,
-            56.8
+            46.4,
+            36.0,
+            57.7,
+            29.9,
+            33.0,
+            58.3,
+            61.6,
+            56.5
         ],
         "weather": {
             "daily": [
@@ -570,33 +570,33 @@
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.4635
+                "impacto": 0.8624
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.0111
+                "impacto": 0.421
             },
             {
                 "posicao": 3,
                 "origem": "Serra Negra",
-                "impacto": -0.1111
+                "impacto": -0.0018
             }
         ]
     },
     "santo_antonio_pinhal_sp": {
         "id": "santo_antonio_pinhal_sp",
         "name": "Santo Antônio do Pinhal",
-        "recentChange": -0.0311,
+        "recentChange": 0.0129,
         "timeline": [
-            39.6,
-            25.4,
+            45.6,
+            32.7,
+            36.0,
             28.4,
-            29.4,
-            31.0,
-            48.1,
-            47.1,
-            38.3
+            31.4,
+            50.6,
+            52.6,
+            43.0
         ],
         "weather": {
             "daily": [
@@ -630,22 +630,22 @@
                 }
             ]
         },
-        "insight": "Santo Antônio estável.",
+        "insight": "Santo Antônio em alta.",
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.7281
+                "impacto": 1.0513
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.2757
+                "impacto": 0.6099
             },
             {
                 "posicao": 3,
                 "origem": "Gonçalves",
-                "impacto": 0.2646
+                "impacto": 0.1889
             }
         ]
     }
