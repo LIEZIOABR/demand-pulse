@@ -129,27 +129,43 @@
     <script>
         const SUPABASE_URL = 'https://torogxfslkqwqzkclhay.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvcm9neGZzbGtxd3F6a2NsaGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NTA2NDAsImV4cCI6MjA4MzAyNjY0MH0.uzl18r5B8vZGA0X90E8mRo9ZgH0-4aZwDQc5mH3p94A';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
+        let sbClient;
         let pulseData = {};
         let topRanking = [];
         let myChart = null;
 
-        async function loadData() {
+        async function initSupabase() {
             try {
-                const { data, error } = await supabase
+                sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                return true;
+            } catch (error) {
+                console.error('Erro ao inicializar Supabase:', error);
+                return false;
+            }
+        }
+
+        async function loadData() {
+            const initialized = await initSupabase();
+            if (!initialized) {
+                document.getElementById('boletim-texto').innerText = '⚠️ Erro ao conectar com banco de dados.';
+                return;
+            }
+
+            try {
+                const { data, error } = await sbClient
                     .from('demand_pulse_snapshots')
                     .select('payload')
                     .order('captured_at', { ascending: false })
                     .limit(1);
                 
                 if (error) throw error;
-                if (!data || data.length === 0) throw new Error('Sem dados');
+                if (!data || data.length === 0) throw new Error('Sem dados disponíveis');
                 
                 const payload = data[0].payload;
                 
                 if (!payload.destinations || !Array.isArray(payload.destinations)) {
-                    throw new Error('Formato inválido');
+                    throw new Error('Formato de dados inválido');
                 }
                 
                 payload.destinations.forEach(dest => {
@@ -160,8 +176,8 @@
                 
                 updateDashboard();
             } catch (error) {
-                console.error('Erro:', error);
-                document.getElementById('boletim-texto').innerText = '⚠️ Falha ao carregar dados: ' + error.message;
+                console.error('Erro ao carregar dados:', error);
+                document.getElementById('boletim-texto').innerText = '⚠️ Falha ao carregar: ' + error.message;
             }
         }
 
@@ -276,7 +292,6 @@
         }function renderBoletim() {
             let boletim = "ANÁLISE ESTRATÉGICA DE MERCADO\n\n";
             
-            // TOP 3 RANKING
             if (topRanking && topRanking.length > 0) {
                 boletim += "🏆 TOP 3 DESTINOS BRASIL (DEMANDA):\n";
                 topRanking.forEach(item => {
@@ -285,7 +300,6 @@
                 boletim += "\n----------------------------------\n\n";
             }
             
-            // ANÁLISE DOS 4 DESTINOS SELECIONADOS
             for (let i = 1; i <= 4; i++) {
                 const id = document.getElementById(`dest-${i}`).value;
                 const data = pulseData[id];
@@ -317,7 +331,6 @@
             document.getElementById('boletim-texto').innerText = boletim;
         }
 
-        // Event listeners para atualizar quando mudar seleção
         for (let i = 1; i <= 4; i++) {
             document.getElementById(`dest-${i}`).addEventListener('change', updateDashboard);
         }
