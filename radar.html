@@ -1,244 +1,328 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DEMAND PULSE — ABR ALL-IN-ONE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMAND PULSE — ABR ALL-IN-ONE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
-<!-- FONTS -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-
-<!-- LIBRARIES -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-
-<!-- ===================== STYLE ===================== -->
-<style>
-:root{
-  --accent:#00c6ff;
-  --green:#39ff14;
-  --red:#ff3131;
-  --yellow:#ffea00;
-  --bg:#000;
-  --panel:rgba(15,18,22,.88);
-  --border:rgba(255,255,255,.08);
-  --text:#eaf3ff;
-  --dim:#9ca3af;
-  --shadow:0 14px 40px rgba(0,0,0,.85);
-}
-
-*{
-  box-sizing:border-box;
-  user-select:none;
-}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Poppins,sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-.container{
-  max-width:1400px;
-  margin:auto;
-  padding:20px;
-  position:relative;
-  z-index:1;
-}
-
-h1{
-  text-align:center;
-  color:var(--accent);
-  margin:10px 0 30px;
-  font-weight:800;
-  letter-spacing:2px;
-}
-
-.panel{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:24px;
-  margin-bottom:30px;
-  box-shadow:var(--shadow);
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:30px;
-}
-
-#cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:24px;
-}
-
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:20px;
-  box-shadow:var(--shadow);
-}
-
-.badge{
-  display:inline-block;
-  padding:6px 14px;
-  border-radius:18px;
-  font-size:.65rem;
-  font-weight:800;
-  margin-bottom:8px;
-  text-transform:uppercase;
-}
-
-.up{background:rgba(57,255,20,.15);color:var(--green);border:1px solid var(--green)}
-.down{background:rgba(255,49,49,.15);color:var(--red);border:1px solid var(--red)}
-.stable{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3)}
-
-.metric{
-  font-size:.75rem;
-  color:var(--dim);
-  margin:4px 0;
-}
-
-.origin{
-  color:var(--yellow);
-  font-size:.75rem;
-  font-weight:700;
-}
-
-canvas{
-  width:100%!important;
-  height:320px!important;
-}
-
-#boletim{
-  white-space:pre-wrap;
-  font-family:"Fira Code",monospace;
-  font-size:.72rem;
-  color:var(--dim);
-  line-height:1.55;
-}
-
-@media(max-width:1024px){
-  .grid{grid-template-columns:1fr}
-}
-</style>
+    <style>
+        :root { --accent: #00c6ff; --bg: #000000; --panel: rgba(15, 18, 22, 0.75); --panel-border: rgba(255, 255, 255, 0.1); --text-main: #eaf3ff; --text-dim: #9ca3af; --accent-green: #39ff14; --accent-red: #ff3131; --shadow: 0 14px 40px rgba(0,0,0,0.85); }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: 'Poppins', sans-serif; overflow-x: hidden; min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
+        header { text-align: center; margin-bottom: 40px; padding-top: 20px; }
+        h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
+        .subtitle { color: var(--text-dim); font-size: 0.9rem; max-width: 700px; margin: 0 auto; line-height: 1.5; font-weight: 400; }
+        
+        .controls { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; padding: 24px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; box-shadow: var(--shadow); }
+        select { background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border); color: white; padding: 10px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; font-family: inherit; outline: none; }
+        
+        .bi-section { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; margin-bottom: 30px; box-shadow: var(--shadow); }
+        .bi-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .chart-container { height: 300px; width: 100%; }
+        .dashboard-grid { display: flex; align-items: flex-start; gap: 30px; }
+        .comparison-section { flex: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .sidebar { flex: 1; position: sticky; top: 20px; }
+        .sidebar-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; box-shadow: var(--shadow); height: 100%; min-height: 780px; display: flex; flex-direction: column; }
+        .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; min-height: 780px; position: relative; box-shadow: var(--shadow); }
+        .card:hover { border-color: rgba(0,198,255,0.4); }
+        .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .dest-name { font-weight: 800; font-size: 1.1rem; line-height: 1.3; flex: 1; color: var(--text-main); }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: inline-block; margin-top: 5px; text-transform: uppercase; }
+        .status-up { background: rgba(57, 255, 20, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+        .status-down { background: rgba(255, 49, 49, 0.15); color: var(--accent-red); border: 1px solid var(--accent-red); }
+        .metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .metric-box { background: rgba(255, 255, 255, 0.04); padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .metric-label { font-size: 0.65rem; color: var(--text-dim); display: block; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .metric-value { font-family: 'Fira Code', monospace; font-size: 1rem; font-weight: 700; color: var(--text-main); }
+        .origin-box { background: rgba(255, 234, 0, 0.05); border: 1px solid rgba(255, 234, 0, 0.2); padding: 12px; border-radius: 14px; font-size: 0.75rem; color: #ffea00; font-weight: 600; }
+        .insight-box { background: rgba(0, 198, 255, 0.05); border: 1px solid rgba(0, 198, 255, 0.2); padding: 14px; border-radius: 16px; font-size: 0.85rem; color: #99d6ff; min-height: 60px; display: flex; align-items: center; line-height: 1.4; }
+        .weather-forecast { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: auto; }
+        .forecast-day { text-align: center; flex: 1; }
+        .forecast-temp { font-size: 0.8rem; font-weight: 700; display: block; color: var(--text-main); }
+        .forecast-cond { font-size: 0.6rem; color: var(--text-dim); display: block; margin-top: 2px; }
+        .sidebar-title { font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
+        #boletim-texto { font-size: 0.75rem; color: var(--text-dim); line-height: 1.6; font-family: 'Fira Code', monospace; white-space: pre-wrap; word-wrap: break-word; }
+        footer { margin-top: 40px; padding: 20px 0; text-align: center; opacity: 0.6; font-size: 0.75rem; border-top: 1px solid var(--panel-border); }
+        @media (max-width: 1024px) { .dashboard-grid { flex-direction: column; } .comparison-section { width: 100%; } .sidebar { width: 100%; position: static; } }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>DEMAND PULSE — ABR ALL-IN-ONE</h1>
+    <div class="container">
+        <header>
+            <h1>DEMAND PULSE — ABR ALL-IN-ONE</h1>
+            <p class="subtitle">Inteligência de demanda em tempo real. Análise contínua de milhões de sinais digitais transformados em pulso de mercado.</p>
+        </header>
+        
+        <div class="controls">
+            <select id="dest-1">
+                <option value="monte_verde_mg" selected>Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-2">
+                <option value="campos_do_jordao_sp" selected>Campos do Jordão (SP)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-3">
+                <option value="gramado_canela_rs" selected>Gramado + Canela (RS)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="goncalves_mg">Gonçalves (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+            <select id="dest-4">
+                <option value="goncalves_mg" selected>Gonçalves (MG)</option>
+                <option value="monte_verde_mg">Monte Verde (MG)</option>
+                <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
+                <option value="gramado_canela_rs">Gramado + Canela (RS)</option>
+                <option value="pocos_de_caldas_mg">Poços de Caldas (MG)</option>
+                <option value="sao_bento_sapucai_sp">São Bento do Sapucaí (SP)</option>
+                <option value="passa_quatro_mg">Passa Quatro (MG)</option>
+                <option value="serra_negra_sp">Serra Negra (SP)</option>
+                <option value="sao_lourenco_mg">São Lourenço (MG)</option>
+                <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
+            </select>
+        </div>
 
-    <!-- PAINEL BI / TIMELINE -->
-    <div class="panel">
-      <canvas id="timeline"></canvas>
+        <div class="bi-section">
+            <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência</div>
+            <div class="chart-container"><canvas id="biChart"></canvas></div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="comparison-section" id="cards-container"></div>
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Boletim Estratégico ABR</div>
+                    <div id="boletim-texto">Carregando inteligência...</div>
+                </div>
+            </div>
+        </div>
+        <footer>© 2026 ABR CONSULTORIA & INTELIGÊNCIA — DEMAND PULSE v3.4 (Supabase Live)</footer>
     </div>
 
-    <!-- GRID PRINCIPAL -->
-    <div class="grid">
-      
-      <!-- CARDS DOS DESTINOS -->
-      <div id="cards">
-        <!-- cards renderizados via JS -->
-      </div>
+    <script>
+        const SUPABASE_URL = 'https://torogxfslkqwqzkclhay.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvcm9neGZzbGtxd3F6a2NsaGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NTA2NDAsImV4cCI6MjA4MzAyNjY0MH0.uzl18r5B8vZGA0X90E8mRo9ZgH0-4aZwDQc5mH3p94A';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let pulseData = {};
+        let topRanking = [];
+        let myChart = null;
 
-      <!-- BOLETIM ESTRATÉGICO -->
-      <div class="panel">
-        <h3>Boletim Estratégico</h3>
-        <div id="boletim">Carregando dados…</div>
-      </div>
+        async function loadData() {
+            try {
+                const { data, error } = await supabase
+                    .from('demand_pulse_snapshots')
+                    .select('payload')
+                    .order('captured_at', { ascending: false })
+                    .limit(1);
+                
+                if (error) throw error;
+                if (!data || data.length === 0) throw new Error('Sem dados');
+                
+                const payload = data[0].payload;
+                
+                if (!payload.destinations || !Array.isArray(payload.destinations)) {
+                    throw new Error('Formato inválido');
+                }
+                
+                payload.destinations.forEach(dest => {
+                    pulseData[dest.id] = dest;
+                });
+                
+                topRanking = payload.top_3_ranking || [];
+                
+                updateDashboard();
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('boletim-texto').innerText = '⚠️ Falha ao carregar dados: ' + error.message;
+            }
+        }
 
-    </div>
-  </div>
-<script>
-/* ===================== CONFIGURAÇÃO SUPABASE ===================== */
-const SUPABASE_URL = "https://torogxfslkqwqzkclhay.supabase.co";
-const SUPABASE_ANON_KEY = "SUA_ANON_KEY_AQUI";
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+        function updateDashboard() {
+            renderChart();
+            renderCards();
+            renderBoletim();
+        }
 
-/* ===================== HELPERS SEGUROS ===================== */
-function num(v, d = 0) {
-  return Number.isFinite(v) ? v : d;
-}
-function arr(v) {
-  return Array.isArray(v) ? v : [];
-}
-function txt(v) {
-  return String(v ?? "N/A");
-}
+        function renderChart() {
+            const colors = ['#00c6ff', '#39ff14', '#ff3131', '#ffea00'];
+            const datasets = [];
+            
+            for (let i = 1; i <= 4; i++) {
+                const id = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[id];
+                if (data && data.timeline) {
+                    datasets.push({
+                        label: data.name,
+                        data: data.timeline,
+                        borderColor: colors[i-1],
+                        backgroundColor: colors[i-1] + '22',
+                        tension: 0.2,
+                        fill: true
+                    });
+                }
+            }
+            
+            const ctx = document.getElementById('biChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#9ca3af',
+                                font: { family: 'Poppins', size: 11 }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+        }
 
-/* ===================== ESTADO GLOBAL ===================== */
-let snapshots = [];
-let dataMap = {};
-let chart = null;
+        function renderCards() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= 4; i++) {
+                const id = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[id];
+                
+                if (!data) continue;
+                
+                const rc = (data.recentChange * 100).toFixed(1);
+                const statusClass = data.recentChange > 0.05 ? 'status-up' : (data.recentChange < -0.05 ? 'status-down' : 'status-stable');
+                const statusLabel = data.recentChange > 0.05 ? 'Aquecendo' : (data.recentChange < -0.05 ? 'Arrefecendo' : 'Estável');
+                
+                const origins = data.topOrigins || [];
+                const originsHtml = origins.slice(0, 3).map(o => 
+                    `<div style="font-size:0.7rem;margin:2px 0;">• ${o.origem}: ${(o.impacto * 100).toFixed(1)}%</div>`
+                ).join('');
+                
+                const weather = data.weather?.daily || [];
+                const weatherHtml = weather.slice(0, 5).map(d =>
+                    `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`
+                ).join('');
+                
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="card-header-top">
+                            <span class="dest-name">${data.name}</span>
+                        </div>
+                        <span class="status-badge ${statusClass}">${statusLabel} (${rc}%)</span>
+                        <div class="metrics-row">
+                            <div class="metric-box">
+                                <span class="metric-label">Pressão de Reserva</span>
+                                <span class="metric-value">${(data.bookingPressure * 100).toFixed(0)}%</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="metric-label">Buzz Social</span>
+                                <span class="metric-value">${(data.socialBuzz * 100).toFixed(0)}%</span>
+                            </div>
+                        </div>
+                        <div class="origin-box">
+                            <strong>Top Origens:</strong>
+                            ${originsHtml}
+                        </div>
+                        <div class="insight-box">💡 ${data.insight}</div>
+                        <div class="weather-forecast">${weatherHtml}</div>
+                    </div>
+                `;
+            }
+        }function renderBoletim() {
+            let boletim = "ANÁLISE ESTRATÉGICA DE MERCADO\n\n";
+            
+            // TOP 3 RANKING
+            if (topRanking && topRanking.length > 0) {
+                boletim += "🏆 TOP 3 DESTINOS BRASIL (DEMANDA):\n";
+                topRanking.forEach(item => {
+                    boletim += `${item.posicao}º - ${item.destino}: ${(item.demanda * 100).toFixed(1)}% crescimento\n`;
+                });
+                boletim += "\n----------------------------------\n\n";
+            }
+            
+            // ANÁLISE DOS 4 DESTINOS SELECIONADOS
+            for (let i = 1; i <= 4; i++) {
+                const id = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[id];
+                
+                if (!data) continue;
+                
+                const rc = (data.recentChange * 100).toFixed(1);
+                const statusLabel = data.recentChange > 0.05 ? 'Aquecendo' : (data.recentChange < -0.05 ? 'Arrefecendo' : 'Estável');
+                
+                boletim += `📍 ${data.name.toUpperCase()}\n`;
+                boletim += `• Status: ${statusLabel} (${rc}% variação)\n`;
+                boletim += `• Pressão de Reserva: ${(data.bookingPressure * 100).toFixed(0)}%\n`;
+                boletim += `• Gatilho de Proximidade: ${(data.proximityTrigger * 100).toFixed(0)}%\n`;
+                boletim += `• Velocidade Viral: ${(data.socialBuzz * 100).toFixed(0)}%\n`;
+                boletim += `• Sentimento: ${(data.sentiment * 100).toFixed(0)}%\n`;
+                boletim += `• Intenção de Estadia: ${(data.stayIntent * 100).toFixed(0)}%\n`;
+                
+                if (data.topOrigins && data.topOrigins.length > 0) {
+                    boletim += `• TOP 3 ORIGENS DE IMPACTO:\n`;
+                    data.topOrigins.slice(0, 3).forEach((o, idx) => {
+                        const label = idx === 0 ? "Primário" : (idx === 1 ? "Secundário" : "Terciário");
+                        boletim += `  - ${label}: ${o.origem} (${(o.impacto * 100).toFixed(1)}%)\n`;
+                    });
+                }
+                
+                boletim += `\n`;
+            }
+            
+            document.getElementById('boletim-texto').innerText = boletim;
+        }
 
-/* ===================== LOAD INICIAL ===================== */
-window.onload = loadData;
+        // Event listeners para atualizar quando mudar seleção
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById(`dest-${i}`).addEventListener('change', updateDashboard);
+        }
 
-async function loadData() {
-  const { data, error } = await supabase
-    .from("demand_pulse_snapshots")
-    .select("payload,captured_at")
-    .order("captured_at", { ascending: true })
-    .limit(180);
-
-  if (error || !data || !data.length) {
-    document.getElementById("boletim").innerText =
-      "⚠️ Falha ao carregar dados do Supabase.";
-    return;
-  }
-
-  snapshots = data;
-  dataMap = transformPayload(data[data.length - 1].payload);
-  renderAll();
-}
-
-/* ===================== TRANSFORMAÇÃO DE PAYLOAD ===================== */
-function transformPayload(payload) {
-  const out = {};
-
-  if (!payload || !Array.isArray(payload.destinations)) return out;
-
-  payload.destinations.forEach((d) => {
-    if (!d || !d.id) return;
-
-    out[d.id] = {
-      id: d.id,
-      name: txt(d.name),
-      timeline: arr(d.timeline).length >= 2 ? d.timeline : [0, 0],
-      recentChange: num(d.recentChange),
-      sentiment: num(d.sentiment, 0.8),
-      bookingPressure: num(d.bookingPressure, 0.7),
-      proximityTrigger: num(d.proximityTrigger, 0.6),
-      socialBuzz: num(d.socialBuzz, 0.5),
-      stayIntent: num(d.stayIntent, 0.7),
-      elasticityIndex: num(d.elasticityIndex, 0),
-      perfil_publico: txt(d.perfil_publico),
-      insight: txt(d.insight),
-      topOrigins: arr(d.topOrigins),
-      origem_dominante: txt(d.topOrigins?.[0]?.location)
-    };
-  });
-
-  out.__top3 = arr(payload.top_3_ranking);
-  return out;
-}
-
-/* ===================== RENDER GERAL ===================== */
-function renderAll() {
-  renderChart();
-  renderCards();
-  renderBoletim();
-}
-</script>
-</script>
+        window.onload = loadData;
+    </script>
 </body>
 </html>
