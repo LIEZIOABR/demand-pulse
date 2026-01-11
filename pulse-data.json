@@ -2,16 +2,16 @@
     "monte_verde_mg": {
         "id": "monte_verde_mg",
         "name": "Monte Verde",
-        "recentChange": -0.1176,
+        "recentChange": -0.1031,
         "timeline": [
-            4.9,
-            3.9,
+            4.7,
+            3.6,
+            3.4,
             3.7,
-            3.1,
             3.7,
-            5.6,
-            5.3,
-            4.3
+            5.0,
+            5.1,
+            4.1
         ],
         "weather": {
             "daily": [
@@ -46,37 +46,42 @@
             ]
         },
         "insight": "Demanda por Monte Verde segue estável.",
+        "bookingPressure": 0.5,
+        "socialBuzz": 0.7577,
+        "proximityTrigger": 0.7,
+        "sentiment": 0.7207,
+        "stayIntent": 0.8959,
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 1.2185
+                "impacto": 0.6812
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.3441
+                "impacto": 0.4655
             },
             {
                 "posicao": 3,
                 "origem": "Poços de Caldas",
-                "impacto": 0.1446
+                "impacto": 0.1293
             }
         ]
     },
     "campos_do_jordao_sp": {
         "id": "campos_do_jordao_sp",
         "name": "Campos do Jordão",
-        "recentChange": -0.181,
+        "recentChange": -0.1827,
         "timeline": [
-            71.7,
-            57.1,
-            58.9,
-            60.1,
-            62.9,
-            84.1,
-            84.3,
-            63.1
+            69.4,
+            55.9,
+            57.6,
+            58.7,
+            61.4,
+            82.4,
+            82.1,
+            61.6
         ],
         "weather": {
             "daily": [
@@ -111,37 +116,42 @@
             ]
         },
         "insight": "Campos do Jordão apresenta comportamento estável.",
+        "bookingPressure": 0.6157,
+        "socialBuzz": 0.8738,
+        "proximityTrigger": 0.7,
+        "sentiment": 0.95,
+        "stayIntent": 0.8281,
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 1.2819
+                "impacto": 0.7608
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.4075
+                "impacto": 0.5451
             },
             {
                 "posicao": 3,
                 "origem": "Poços de Caldas",
-                "impacto": 0.208
+                "impacto": 0.2089
             }
         ]
     },
     "gramado_canela_rs": {
         "id": "gramado_canela_rs",
         "name": "Gramado + Canela",
-        "recentChange": -0.1313,
+        "recentChange": -0.1412,
         "timeline": [
-            11.0,
-            10.7,
+            10.4,
+            10.0,
             10.0,
             11.4,
-            11.0,
-            13.7,
-            12.3,
-            10.7
+            10.6,
+            13.9,
+            12.0,
+            10.4
         ],
         "weather": {
             "daily": [
@@ -176,37 +186,42 @@
             ]
         },
         "insight": "Serra Gaúcha estável.",
+        "bookingPressure": 0.5,
+        "socialBuzz": 0.7227,
+        "proximityTrigger": 0.7,
+        "sentiment": 0.7521,
+        "stayIntent": 0.8903,
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 1.2322
+                "impacto": 0.7193
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.3578
+                "impacto": 0.5036
             },
             {
                 "posicao": 3,
                 "origem": "Poços de Caldas",
-                "impacto": 0.1583
+                "impacto": 0.1674
             }
         ]
     },
     "sao_lourenco_mg": {
         "id": "sao_lourenco_mg",
         "name": "São Lourenço",
-        "recentChange": -0.0323,
+        "recentChange": -0.0331,
         "timeline": [
+            5.1,
+            4.7,
             5.0,
-            4.9,
-            4.6,
-            4.4,
-            4.9,
-            6.4,
-            6.4,
-            5.7
+            3.9,
+            5.0,
+            6.1,
+            6.1,
+            5.6
         ],
         "weather": {
             "daily": [
@@ -241,16 +256,21 @@
             ]
         },
         "insight": "São Lourenço estável.",
+        "bookingPressure": 0.5,
+        "socialBuzz": 0.8612,
+        "proximityTrigger": 0.7,
+        "sentiment": 0.7279,
+        "stayIntent": 0.8969,
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 1.1332
+                "impacto": 0.6112
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.2588
+                "impacto": 0.3955
             },
             {
                 "posicao": 3,
@@ -262,16 +282,16 @@
     "pocos_de_caldas_mg": {
         "id": "pocos_de_caldas_mg",
         "name": "Poços de Caldas",
-        "recentChange": 0.027,
+        "recentChange": 0.0262,
         "timeline": [
-            66.0,
-            60.3,
             64.3,
-            65.4,
-            67.4,
-            73.6,
-            75.6,
-            74.1
+            59.0,
+            62.4,
+            64.3,
+            65.6,
+            71.6,
+            75.4,
+            72.7
         ],
         "weather": {
             "daily": [
@@ -306,16 +326,21 @@
             ]
         },
         "insight": "Poços em alta.",
+        "bookingPressure": 0.7271,
+        "socialBuzz": 0.778,
+        "proximityTrigger": 0.9,
+        "sentiment": 0.95,
+        "stayIntent": 0.8752,
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 1.0739
+                "impacto": 0.5519
             },
             {
                 "posicao": 2,
                 "origem": "São Bento do Sapucaí",
-                "impacto": 0.1995
+                "impacto": 0.3362
             },
             {
                 "posicao": 3,
@@ -327,16 +352,16 @@
     "sao_bento_sapucai_sp": {
         "id": "sao_bento_sapucai_sp",
         "name": "São Bento do Sapucaí",
-        "recentChange": 0.2265,
+        "recentChange": 0.3624,
         "timeline": [
-            52.0,
-            6.6,
-            15.9,
-            6.7,
-            22.6,
-            32.4,
-            71.1,
-            51.6
+            48.6,
+            17.4,
+            18.1,
+            8.0,
+            25.4,
+            21.7,
+            80.6,
+            58.0
         ],
         "weather": {
             "daily": [
@@ -371,37 +396,42 @@
             ]
         },
         "insight": "São Bento em alta.",
+        "bookingPressure": 0.58,
+        "socialBuzz": 0.95,
+        "proximityTrigger": 0.9,
+        "sentiment": 0.95,
+        "stayIntent": 0.7319,
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "Passa Quatro",
-                "impacto": 0.8744
+                "impacto": 0.2157
             },
             {
                 "posicao": 2,
                 "origem": "Poços de Caldas",
-                "impacto": -0.1995
+                "impacto": -0.3362
             },
             {
                 "posicao": 3,
                 "origem": "São Lourenço",
-                "impacto": -0.2588
+                "impacto": -0.3955
             }
         ]
     },
     "passa_quatro_mg": {
         "id": "passa_quatro_mg",
         "name": "Passa Quatro",
-        "recentChange": 1.1009,
+        "recentChange": 0.5781,
         "timeline": [
-            7.9,
+            11.7,
+            11.9,
             0.1,
-            0.1,
-            16.9,
-            0.1,
-            6.6,
-            40.1,
-            32.7
+            10.0,
+            9.4,
+            19.4,
+            53.4,
+            43.3
         ],
         "weather": {
             "daily": [
@@ -436,86 +466,26 @@
             ]
         },
         "insight": "Passa Quatro em alta.",
+        "bookingPressure": 0.5,
+        "socialBuzz": 0.95,
+        "proximityTrigger": 0.9,
+        "sentiment": 0.9164,
+        "stayIntent": 0.7773,
         "topOrigins": [
             {
                 "posicao": 1,
                 "origem": "São Bento do Sapucaí",
-                "impacto": -0.8744
+                "impacto": -0.2157
             },
             {
                 "posicao": 2,
                 "origem": "Poços de Caldas",
-                "impacto": -1.0739
+                "impacto": -0.5519
             },
             {
                 "posicao": 3,
                 "origem": "São Lourenço",
-                "impacto": -1.1332
-            }
-        ]
-    },
-    "santo_antonio_pinhal_sp": {
-        "id": "santo_antonio_pinhal_sp",
-        "name": "Santo Antônio do Pinhal",
-        "recentChange": -0.0561,
-        "timeline": [
-            39.7,
-            31.4,
-            30.1,
-            22.0,
-            29.0,
-            52.6,
-            48.3,
-            40.9
-        ],
-        "weather": {
-            "daily": [
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                },
-                {
-                    "max": 20,
-                    "cond": "Estável"
-                }
-            ]
-        },
-        "insight": "Santo Antônio estável.",
-        "topOrigins": [
-            {
-                "posicao": 1,
-                "origem": "Passa Quatro",
-                "impacto": 1.157
-            },
-            {
-                "posicao": 2,
-                "origem": "São Bento do Sapucaí",
-                "impacto": 0.2826
-            },
-            {
-                "posicao": 3,
-                "origem": "Poços de Caldas",
-                "impacto": 0.0831
+                "impacto": -0.6112
             }
         ]
     }
