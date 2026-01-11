@@ -10,15 +10,15 @@ from datetime import datetime
 os.environ['USER_AGENT'] = 'Mozilla/5.0 (DemandPulseBot/1.0)'
 
 # =================================================================
-# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.4 (COM ORIGEM DOMINANTE)
-# FOCO: 10 DESTINOS, RANKING, ORIGEM DOMINANTE E UPLOAD SUPABASE
+# ABR ALL-IN-ONE - MOTOR DE INTELIGÊNCIA V3.5 (MÉTRICAS COMPLETAS)
+# FOCO: 10 DESTINOS, RANKING, ORIGEM DOMINANTE E MÉTRICAS FULL
 # =================================================================
 
 def get_weather(lat, lon):
     """Coleta previsão de 7 dias usando Open-Meteo."""
     try:
         url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=temperature_2m_max,weathercode&timezone=America%20Sao_Paulo"
-        response = requests.get(url, timeout=10 )
+        response = requests.get(url, timeout=10)
         data = response.json()
         weather_map = {0: "Ensolarado", 1: "Limpo", 2: "Parc. Nublado", 3: "Nublado", 45: "Nevoeiro", 48: "Nevoeiro", 51: "Garoa", 61: "Chuva Leve", 63: "Chuva", 71: "Neve", 80: "Pancadas Chuva", 95: "Trovoada"}
         forecast = []
@@ -30,12 +30,52 @@ def get_weather(lat, lon):
     except:
         return {"daily": [{"max": 20, "cond": "Estável"}] * 7}
 
+def calculate_metrics(recent_value, timeline_values):
+    """Calcula métricas baseadas nos dados de tendência."""
+    
+    # Pressão de Reserva: baseada na intensidade recente
+    booking_pressure = min(0.95, max(0.50, recent_value / 100))
+    
+    # Buzz Social: baseado na variação das últimas semanas
+    if len(timeline_values) >= 4:
+        recent_avg = sum(timeline_values[-4:]) / 4
+        previous_avg = sum(timeline_values[-8:-4]) / 4 if len(timeline_values) >= 8 else recent_avg
+        volatility = abs(recent_avg - previous_avg) / (previous_avg + 1)
+        social_buzz = min(0.95, max(0.40, volatility * 2 + 0.5))
+    else:
+        social_buzz = 0.65
+    
+    # Gatilho de Proximidade: baseado na tendência crescente
+    if len(timeline_values) >= 3:
+        last_3 = timeline_values[-3:]
+        is_growing = last_3[-1] > last_3[0]
+        proximity_trigger = min(0.95, max(0.50, 0.7 + (0.2 if is_growing else 0)))
+    else:
+        proximity_trigger = 0.70
+    
+    # Sentimento: baseado no valor absoluto recente
+    sentiment = min(0.95, max(0.60, 0.70 + (recent_value / 200)))
+    
+    # Intenção de Estadia: baseado na consistência
+    if len(timeline_values) >= 4:
+        std_dev = pd.Series(timeline_values[-4:]).std()
+        stability = max(0, 1 - (std_dev / 50))
+        stay_intent = min(0.90, max(0.50, 0.60 + (stability * 0.3)))
+    else:
+        stay_intent = 0.70
+    
+    return {
+        "bookingPressure": round(booking_pressure, 4),
+        "socialBuzz": round(social_buzz, 4),
+        "proximityTrigger": round(proximity_trigger, 4),
+        "sentiment": round(sentiment, 4),
+        "stayIntent": round(stay_intent, 4)
+    }
+
 def calculate_origem_dominante(results_list):
     """Calcula ranking de destinos por demanda (Google Trends)."""
-    # Ordena por recentChange (mudança recente) em ordem decrescente
     ranked = sorted(results_list, key=lambda x: x.get('recentChange', 0), reverse=True)
     
-    # Retorna top 3 com posição
     top_3 = []
     for idx, item in enumerate(ranked[:3], 1):
         top_3.append({
@@ -47,35 +87,18 @@ def calculate_origem_dominante(results_list):
     return top_3
     
 def calculate_perfil_publico(data_atual):
-    """
-    Calcula o perfil de público baseado na sazonalidade para destinos de serra.
-    
-    Retorna:
-    - "Família Verão" (dez-fev): férias de verão
-    - "Família Inverno" (jun-ago): férias de inverno  
-    - "Casal Feriados" (fins de semana): casais em feriados
-    - "Turista Geral" (resto): turistas em geral
-    """
+    """Calcula o perfil de público baseado na sazonalidade."""
     mes = data_atual.month
     dia_semana = data_atual.weekday()
     
-    # Férias de verão (dezembro, janeiro, fevereiro)
     if mes in [12, 1, 2]:
         return "Família Verão"
-    
-    # Férias de inverno (junho, julho, agosto)
     elif mes in [6, 7, 8]:
         return "Família Inverno"
-    
-    # Fins de semana (sexta, sábado, domingo)
-    elif dia_semana >= 4:  # 4=sexta, 5=sábado, 6=domingo
+    elif dia_semana >= 4:
         return "Casal Feriados"
-    
-    # Resto do ano
     else:
         return "Turista Geral"
-
-
 
 def upload_to_supabase(payload, top_3_ranking, perfil_publico):
     """Envia os dados coletados para a tabela correta no Supabase."""
@@ -94,9 +117,7 @@ def upload_to_supabase(payload, top_3_ranking, perfil_publico):
             "Prefer": "return=minimal"
         }
         
-        # Adiciona origem dominante ao payload de cada destino
         for item in payload:
-            # Origem dominante = nome do destino com maior impacto
             origem = (
                 item.get("topOrigins", [{}])[0].get("origem", "N/A")
                 if item.get("topOrigins")
@@ -104,22 +125,19 @@ def upload_to_supabase(payload, top_3_ranking, perfil_publico):
             )
             item["origem_dominante"] = origem
             item["perfil_publico"] = perfil_publico
-
         
         data_to_send = {
             "captured_at": datetime.now().isoformat(),
             "payload": {"destinations": payload, "top_3_ranking": top_3_ranking},
             "origem_dominante": payload[0].get('origem_dominante', 'N/A') if payload else 'N/A',
-            "perfil_publico": perfil_publico,
-            # "top_3_ranking": top_3_ranking
+            "perfil_publico": perfil_publico
         }
         
-        # NOME DA TABELA CONFORME SUPABASE
         endpoint = f"{url}/rest/v1/demand_pulse_snapshots"
         response = requests.post(endpoint, headers=headers, json=data_to_send, timeout=15)
         
         if response.status_code in [200, 201]:
-            print("Sucesso: Dados com Origem Dominante entregues ao Supabase!")
+            print("Sucesso: Dados com Métricas Completas entregues ao Supabase!")
             print(f"Top 3 Ranking: {top_3_ranking}")
             return True
         else:
@@ -139,7 +157,6 @@ def get_trends_data_v3_4(destinos_dict):
         timeout=(10, 25)
     )
     
-    # 1. NORMALIZAÇÃO (Os 5 principais na mesma régua)
     principais = ["Monte Verde", "Campos do Jordão", "Gramado + Canela", "São Lourenço", "Poços de Caldas"]
     keywords_main = [destinos_dict[n]['keyword'] for n in principais]
     
@@ -161,15 +178,21 @@ def get_trends_data_v3_4(destinos_dict):
                     change = (recent - previous) / previous if previous > 0 else 0
                     timeline = [round(max(0.1, x), 1) for x in df_main[kw].resample('W').mean().tail(8).tolist()]
                     
+                    # Calcula métricas completas
+                    metrics = calculate_metrics(recent, timeline)
+                    
                     results_map[info['id']] = {
-                        "id": info['id'], "name": nome, "recentChange": round(change, 4),
-                        "timeline": timeline, "weather": get_weather(info['lat'], info['lon']),
-                        "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável")
+                        "id": info['id'],
+                        "name": nome,
+                        "recentChange": round(change, 4),
+                        "timeline": timeline,
+                        "weather": get_weather(info['lat'], info['lon']),
+                        "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável"),
+                        **metrics  # Adiciona todas as métricas
                     }
     except Exception as e:
         print(f"Erro na Fase 1: {e}")
 
-    # 2. COMPLEMENTO (Os outros 5 destinos)
     secundarios = [n for n in destinos_dict.keys() if n not in principais]
     for nome in secundarios:
         try:
@@ -186,10 +209,17 @@ def get_trends_data_v3_4(destinos_dict):
                 change = (recent - previous) / previous if previous > 0 else 0
                 timeline = [round(max(0.1, x), 1) for x in df_sec[kw].resample('W').mean().tail(8).tolist()]
                 
+                # Calcula métricas completas
+                metrics = calculate_metrics(recent, timeline)
+                
                 results_map[info['id']] = {
-                    "id": info['id'], "name": nome, "recentChange": round(change, 4),
-                    "timeline": timeline, "weather": get_weather(info['lat'], info['lon']),
-                    "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável")
+                    "id": info['id'],
+                    "name": nome,
+                    "recentChange": round(change, 4),
+                    "timeline": timeline,
+                    "weather": get_weather(info['lat'], info['lon']),
+                    "insight": info['insight_base'].format(status="em alta" if change > 0 else "estável"),
+                    **metrics  # Adiciona todas as métricas
                 }
         except Exception as e:
             print(f"Erro em {nome}: {e}")
@@ -211,20 +241,15 @@ destinos_config = {
 }
 
 if __name__ == "__main__":
-    print("--- INICIANDO MOTOR ABR V3.4 (COM ORIGEM DOMINANTE) ---")
+    print("--- INICIANDO MOTOR ABR V3.5 (MÉTRICAS COMPLETAS) ---")
     final_data = get_trends_data_v3_4(destinos_config)
 
     if final_data:
-        # Calcula perfil de público
         perfil_publico = calculate_perfil_publico(datetime.now())
-
-        # Calcula ranking (top 3)
         top_3_ranking = calculate_origem_dominante(final_data)
 
-        # Gera topOrigins específico para cada destino
         for destino in final_data:
             comparativos = []
-
             for outro in final_data:
                 if outro["name"] != destino["name"]:
                     comparativos.append({
@@ -233,7 +258,6 @@ if __name__ == "__main__":
                     })
 
             comparativos = sorted(comparativos, key=lambda x: x["impacto"], reverse=True)
-
             destino["topOrigins"] = [
                 {
                     "posicao": idx + 1,
@@ -243,12 +267,9 @@ if __name__ == "__main__":
                 for idx, item in enumerate(comparativos[:3])
             ]
 
-
-        # Salva localmente para backup no GitHub
         with open('pulse-data.json', 'w', encoding='utf-8') as f:
             json.dump({d['id']: d for d in final_data}, f, ensure_ascii=False, indent=4)
 
-        # Upload final para o Supabase (com ranking)
         upload_to_supabase(final_data, top_3_ranking, perfil_publico)
         print(f"--- PROCESSO CONCLUÍDO: {len(final_data)} DESTINOS ATUALIZADOS ---")
         print(f"--- TOP 3 RANKING: {top_3_ranking} ---")
