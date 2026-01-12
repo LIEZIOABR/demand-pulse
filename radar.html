@@ -12,25 +12,50 @@
         :root { --accent: #00c6ff; --bg: #000000; --panel: rgba(15, 18, 22, 0.75); --panel-border: rgba(255, 255, 255, 0.1); --text-main: #eaf3ff; --text-dim: #9ca3af; --accent-green: #39ff14; --accent-red: #ff3131; --shadow: 0 14px 40px rgba(0,0,0,0.85); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; }
         body { background-color: var(--bg); color: var(--text-main); font-family: 'Poppins', sans-serif; overflow-x: hidden; min-height: 100vh; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; }
         .container { max-width: 1400px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
-        header { text-align: center; margin-bottom: 40px; padding-top: 20px; }
+        header { text-align: center; margin-bottom: 40px; padding-top: 20px; position: relative; }
+        .header-nav { position: absolute; top: 20px; left: 0; display: flex; gap: 10px; z-index: 10; }
+        .btn-nav { border: 1px solid var(--accent); padding: 8px 16px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.3s; text-transform: uppercase; text-decoration: none; background: rgba(0,0,0,0.8); color: var(--accent); box-shadow: 0 0 12px rgba(0,198,255,0.2); }
+        .btn-nav:hover { background: rgba(0,198,255,0.15); box-shadow: 0 0 20px rgba(0,198,255,0.4); }
+        .btn-logout { border-color: var(--accent-red); color: var(--accent-red); }
+        .btn-logout:hover { background: rgba(255,49,49,0.15); box-shadow: 0 0 20px rgba(255,49,49,0.4); }
+        .status-indicator { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-left: 10px; }
+        .status-live { background: rgba(57, 255, 20, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .status-fallback { background: rgba(255, 234, 0, 0.2); color: #ffea00; border: 1px solid #ffea00; }
+        .logo { max-width: 230px; width: 100%; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.3)); }
         h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
         .subtitle { color: var(--text-dim); font-size: 0.9rem; max-width: 700px; margin: 0 auto; line-height: 1.5; font-weight: 400; }
         
-        .controls { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; padding: 24px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; box-shadow: var(--shadow); }
-        select { background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border); color: white; padding: 10px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; font-family: inherit; outline: none; }
+        .controls { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; padding: 24px; margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; backdrop-filter: blur(14px); box-shadow: var(--shadow); }
+        .date-filter-group { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--panel-border); margin-bottom: 5px; align-items: center; }
+        .filter-label { font-size: 0.7rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+        select, input[type="date"] { background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border); color: white; padding: 10px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; font-family: inherit; outline: none; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        .btn-update { grid-column: 1 / -1; background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); color: #001018; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .btn-update:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,198,255,0.4); }
         
-        .bi-section { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; margin-bottom: 30px; box-shadow: var(--shadow); }
+        .bi-section { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; margin-bottom: 30px; backdrop-filter: blur(14px); box-shadow: var(--shadow); }
         .bi-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .bi-legend { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 20px; display: block; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px; }
         .chart-container { height: 300px; width: 100%; }
         .dashboard-grid { display: flex; align-items: flex-start; gap: 30px; }
         .comparison-section { flex: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .sidebar { flex: 1; position: sticky; top: 20px; }
-        .sidebar-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; box-shadow: var(--shadow); height: 100%; min-height: 780px; display: flex; flex-direction: column; }
-        .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; min-height: 780px; position: relative; box-shadow: var(--shadow); }
+        .sidebar-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; backdrop-filter: blur(18px); box-shadow: var(--shadow); height: 100%; min-height: 780px; display: flex; flex-direction: column; }
+        .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 15px; transition: 0.3s; min-height: 780px; position: relative; backdrop-filter: blur(18px); box-shadow: var(--shadow); }
         .card:hover { border-color: rgba(0,198,255,0.4); }
-        .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; min-height: 100px; }
         .dest-name { font-weight: 800; font-size: 1.1rem; line-height: 1.3; flex: 1; color: var(--text-main); }
+        .selos-stack { display: flex; flex-direction: column; gap: 5px; align-items: flex-end; }
+        .atratividade-selo { font-size: 0.6rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; white-space: nowrap; }
+        .selo-alta { background: var(--accent-green); color: #000; }
+        .selo-media { background: var(--accent); color: #000; }
+        .selo-urgente { background: var(--accent-red); color: #fff; }
+        .selo-gatilho { background: #ffea00; color: #000; }
+        .selo-share { background: #fff; color: #000; font-weight: 900; }
+        .selo-buzz { background: #ff00ff; color: #fff; animation: pulse-buzz 1.5s infinite; }
+        @keyframes pulse-buzz { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: inline-block; margin-top: 5px; text-transform: uppercase; }
         .status-up { background: rgba(57, 255, 20, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); }
         .status-stable { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
@@ -40,25 +65,66 @@
         .metric-label { font-size: 0.65rem; color: var(--text-dim); display: block; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
         .metric-value { font-family: 'Fira Code', monospace; font-size: 1rem; font-weight: 700; color: var(--text-main); }
         .origin-box { background: rgba(255, 234, 0, 0.05); border: 1px solid rgba(255, 234, 0, 0.2); padding: 12px; border-radius: 14px; font-size: 0.75rem; color: #ffea00; font-weight: 600; }
+        .audience-box { background: rgba(255, 255, 255, 0.04); padding: 12px; border-radius: 14px; font-size: 0.75rem; display: flex; align-items: center; justify-content: space-between; }
+        .audience-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; font-weight: 800; }
+        .audience-icons { display: flex; gap: 12px; }
+        .audience-item { cursor: help; display: flex; align-items: center; gap: 4px; font-weight: 700; }
+        .stay-box { background: rgba(0, 198, 255, 0.05); padding: 12px; border-radius: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .stay-header { display: flex; justify-content: space-between; align-items: center; }
+        .stay-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+        .stay-bar-bg { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; display: flex; }
+        .stay-bar-fill { height: 100%; background: var(--accent); box-shadow: 0 0 10px rgba(0,198,255,0.5); }
+        .stay-values { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 700; color: var(--text-main); }
+        .elasticity-box { background: rgba(255, 255, 255, 0.03); padding: 12px; border-radius: 14px; border: 1px dashed rgba(255,255,255,0.15); }
+        .elasticity-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .elasticity-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+        .elasticity-bar-bg { height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; position: relative; overflow: hidden; }
+        .elasticity-center { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: rgba(255,255,255,0.4); z-index: 2; }
+        .elasticity-fill { height: 100%; position: absolute; top: 0; transition: 0.5s; }
+        .elasticity-pos { background: var(--accent-green); left: 50%; box-shadow: 0 0 10px rgba(57,255,20,0.4); }
+        .elasticity-neg { background: var(--accent-red); right: 50%; box-shadow: 0 0 10px rgba(255,49,49,0.4); }
         .insight-box { background: rgba(0, 198, 255, 0.05); border: 1px solid rgba(0, 198, 255, 0.2); padding: 14px; border-radius: 16px; font-size: 0.85rem; color: #99d6ff; min-height: 60px; display: flex; align-items: center; line-height: 1.4; }
         .weather-forecast { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: auto; }
         .forecast-day { text-align: center; flex: 1; }
         .forecast-temp { font-size: 0.8rem; font-weight: 700; display: block; color: var(--text-main); }
         .forecast-cond { font-size: 0.6rem; color: var(--text-dim); display: block; margin-top: 2px; }
-        .sidebar-title { font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .sidebar-title { font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+        .btn-copy { background: rgba(0, 198, 255, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 6px 12px; border-radius: 8px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-copy:hover { background: rgba(0, 198, 255, 0.2); }
         #boletim-texto { font-size: 0.75rem; color: var(--text-dim); line-height: 1.6; font-family: 'Fira Code', monospace; white-space: pre-wrap; word-wrap: break-word; }
         footer { margin-top: 40px; padding: 20px 0; text-align: center; opacity: 0.6; font-size: 0.75rem; border-top: 1px solid var(--panel-border); }
         @media (max-width: 1024px) { .dashboard-grid { flex-direction: column; } .comparison-section { width: 100%; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
+    <canvas id="matrix-canvas"></canvas>
     <div class="container">
         <header>
-            <h1>DEMAND PULSE — ABR ALL-IN-ONE</h1>
+            <div class="header-nav">
+                <button class="btn-nav" onclick="window.location.href='index.html'">← Voltar HUB</button>
+                <button class="btn-nav btn-logout" onclick="logout()">Sair</button>
+            </div>
+            <img src="logo.png" alt="ABR Logo" class="logo">
+            <h1>DEMAND PULSE <span id="data-source-indicator" class="status-indicator status-live">🟢 BD ATIVO</span></h1>
             <p class="subtitle">Inteligência de demanda em tempo real. Análise contínua de milhões de sinais digitais transformados em pulso de mercado.</p>
         </header>
         
         <div class="controls">
+            <div class="date-filter-group">
+                <span class="filter-label">📅 Período:</span>
+                <select id="date-preset" onchange="handleDatePreset()">
+                    <option value="30">Últimos 30 dias</option>
+                    <option value="current_month">Mês Atual</option>
+                    <option value="last_month">Mês Anterior</option>
+                    <option value="custom">Personalizado</option>
+                </select>
+                <div id="custom-dates" style="display:none; gap:10px; align-items:center;">
+                    <input type="date" id="start-date">
+                    <span style="font-size:0.7rem; color:var(--text-dim)">até</span>
+                    <input type="date" id="end-date">
+                </div>
+            </div>
             <select id="dest-1">
                 <option value="monte_verde_mg" selected>Monte Verde (MG)</option>
                 <option value="campos_do_jordao_sp">Campos do Jordão (SP)</option>
@@ -107,10 +173,12 @@
                 <option value="sao_lourenco_mg">São Lourenço (MG)</option>
                 <option value="santo_antonio_pinhal_sp">Santo Antônio do Pinhal (SP)</option>
             </select>
+            <button class="btn-update" onclick="updateDashboard()">Atualizar Análise de BI</button>
         </div>
 
         <div class="bi-section">
             <div class="bi-title">📊 Linha do Tempo — Comparativo de Tendência</div>
+            <span class="bi-legend">💡 Gráfico: Volume de Interesse (0-100) | Cards: Variação Percentual (%) de crescimento recente.</span>
             <div class="chart-container"><canvas id="biChart"></canvas></div>
         </div>
 
@@ -118,12 +186,15 @@
             <div class="comparison-section" id="cards-container"></div>
             <div class="sidebar">
                 <div class="sidebar-card">
-                    <div class="sidebar-title">Boletim Estratégico ABR</div>
+                    <div class="sidebar-header">
+                        <span class="sidebar-title">Boletim Estratégico ABR</span>
+                        <button class="btn-copy" onclick="copyBoletim()">Copiar Boletim</button>
+                    </div>
                     <div id="boletim-texto">Carregando inteligência...</div>
                 </div>
             </div>
         </div>
-        <footer>© 2026 ABR CONSULTORIA & INTELIGÊNCIA — DEMAND PULSE v3.4 (Supabase Live)</footer>
+        <footer>© 2026 ABR CONSULTORIA & INTELIGÊNCIA — DEMAND PULSE v25.1 (Supabase Live)</footer>
     </div>
 
     <script>
@@ -134,6 +205,32 @@
         let pulseData = {};
         let topRanking = [];
         let myChart = null;
+
+        function logout() { 
+            if(confirm("Sair do sistema?")) window.location.href = "https://inspiring-peony-6a9450.netlify.app/"; 
+        }
+        
+        function copyBoletim() { 
+            const text = document.getElementById('boletim-texto').innerText; 
+            navigator.clipboard.writeText(text).then(() => { 
+                const btn = document.querySelector('.btn-copy'); 
+                const originalText = btn.innerText; 
+                btn.innerText = "Copiado!"; 
+                btn.style.background = "var(--accent-green)"; 
+                btn.style.color = "black"; 
+                setTimeout(() => { 
+                    btn.innerText = originalText; 
+                    btn.style.background = "rgba(0, 198, 255, 0.1)"; 
+                    btn.style.color = "var(--accent)"; 
+                }, 2000); 
+            }); 
+        }
+        
+        function handleDatePreset() {
+            const preset = document.getElementById('date-preset').value;
+            const customDiv = document.getElementById('custom-dates');
+            customDiv.style.display = preset === 'custom' ? 'flex' : 'none';
+        }
 
         async function initSupabase() {
             try {
@@ -148,6 +245,8 @@
         async function loadData() {
             const initialized = await initSupabase();
             if (!initialized) {
+                document.getElementById('data-source-indicator').className = 'status-indicator status-fallback';
+                document.getElementById('data-source-indicator').textContent = '🟡 MODO FALLBACK';
                 document.getElementById('boletim-texto').innerText = '⚠️ Erro ao conectar com banco de dados.';
                 return;
             }
@@ -174,13 +273,17 @@
                 
                 topRanking = payload.top_3_ranking || [];
                 
+                document.getElementById('data-source-indicator').className = 'status-indicator status-live';
+                document.getElementById('data-source-indicator').textContent = '🟢 BD ATIVO';
+                
                 updateDashboard();
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
+                document.getElementById('data-source-indicator').className = 'status-indicator status-fallback';
+                document.getElementById('data-source-indicator').textContent = '🟡 MODO FALLBACK';
                 document.getElementById('boletim-texto').innerText = '⚠️ Falha ao carregar: ' + error.message;
             }
         }
-
         function updateDashboard() {
             renderChart();
             renderCards();
@@ -244,22 +347,87 @@
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
             
+            let totalInterestNow = 0;
+            let totalInterestPrev = 0;
+            
+            for (let i = 1; i <= 4; i++) {
+                const id = document.getElementById(`dest-${i}`).value;
+                const data = pulseData[id];
+                if (data && data.timeline) {
+                    totalInterestNow += data.timeline[data.timeline.length - 1];
+                    totalInterestPrev += data.timeline[data.timeline.length - 2];
+                }
+            }
+            
             for (let i = 1; i <= 4; i++) {
                 const id = document.getElementById(`dest-${i}`).value;
                 const data = pulseData[id];
                 
                 if (!data) continue;
                 
+                const valNow = data.timeline[data.timeline.length - 1];
+                const shareNow = ((valNow / totalInterestNow) * 100);
+                
                 const rc = (data.recentChange * 100).toFixed(1);
                 const statusClass = data.recentChange > 0.05 ? 'status-up' : (data.recentChange < -0.05 ? 'status-down' : 'status-stable');
                 const statusLabel = data.recentChange > 0.05 ? 'Aquecendo' : (data.recentChange < -0.05 ? 'Arrefecendo' : 'Estável');
                 
-                const origins = data.topOrigins || [];
-                const originsHtml = origins.slice(0, 3).map(o => 
-                    `<div style="font-size:0.7rem;margin:2px 0;">• ${o.origem}: ${(o.impacto * 100).toFixed(1)}%</div>`
-                ).join('');
+                const sentVal = data.sentiment || 0.8;
+                const sentIcon = sentVal > 0.85 ? '😊' : (sentVal < 0.75 ? '⚠️' : '😐');
+                const sentLabel = sentVal > 0.85 ? 'Positivo' : (sentVal < 0.75 ? 'Alerta' : 'Neutro');
+                
+                const pressVal = data.bookingPressure || 0.7;
+                const pressIcon = pressVal > 0.9 ? '🚨' : '📈';
+                const pressSelo = pressVal > 0.9 ? `<div class="atratividade-selo selo-urgente">🚨 Janela Fechando</div>` : '';
+                
+                const proxVal = data.proximityTrigger || 0.6;
+                const proxSelo = proxVal > 0.9 ? `<div class="atratividade-selo selo-gatilho">⚡ Gatilho 48h Ativo</div>` : '';
+                
+                const buzzVal = data.socialBuzz || 0.5;
+                const buzzSelo = buzzVal > 0.9 ? `<div class="atratividade-selo selo-buzz">⚡ Social Buzz</div>` : '';
                 
                 const weather = data.weather?.daily || [];
+                const avgTemp = weather.length > 0 ? weather.reduce((acc, d) => acc + d.max, 0) / weather.length : 20;
+                
+                let atrLabel = "Condição Normal";
+                let atrIcon = "☀️";
+                let atrClass = "selo-media";
+                
+                if (data.climateProfile === "cold") {
+                    if (avgTemp < 18) {
+                        atrLabel = "Atratividade Máxima";
+                        atrIcon = "❄️";
+                        atrClass = "selo-alta";
+                    }
+                } else {
+                    if (avgTemp > 24) {
+                        atrLabel = "Atratividade Máxima";
+                        atrIcon = "🔥";
+                        atrClass = "selo-alta";
+                    }
+                }
+                
+                const audVal = data.audienceProfile || 0.5;
+                const fidPerc = (audVal * 100).toFixed(0);
+                const descPerc = (100 - fidPerc);
+                
+                const stayVal = data.stayIntent || 0.7;
+                const stayPerc = (stayVal * 100).toFixed(0);
+                const dayPerc = (100 - stayPerc);
+                
+                const elastVal = data.elasticityIndex || 0;
+                const elastWidth = Math.abs(elastVal) * 50;
+                const elastClass = elastVal >= 0 ? 'elasticity-pos' : 'elasticity-neg';
+                const elastLabel = elastVal > 0.5 ? "Alavancagem Alta" : (elastVal > 0 ? "Alavancagem Leve" : (elastVal < -0.5 ? "Risco Crítico" : (elastVal < 0 ? "Risco de Retração" : "Neutro")));
+                const elastIcon = elastVal > 0 ? "🚀" : (elastVal < 0 ? "📉" : "⚖️");
+                
+                const origins = data.topOrigins || [];
+                const originsHtml = origins.slice(0, 3).map(o => {
+                    const loc = o.location || o.origem || 'N/A';
+                    const perc = o.percent || (o.impacto ? (o.impacto * 100).toFixed(1) : 0);
+                    return `<div style="font-size:0.7rem;margin:2px 0;">• ${loc}: ${perc}%</div>`;
+                }).join('');
+                
                 const weatherHtml = weather.slice(0, 5).map(d =>
                     `<div class="forecast-day"><span class="forecast-temp">${Math.round(d.max)}°</span><span class="forecast-cond">${d.cond}</span></div>`
                 ).join('');
@@ -268,28 +436,66 @@
                     <div class="card">
                         <div class="card-header-top">
                             <span class="dest-name">${data.name}</span>
+                            <div class="selos-stack">
+                                <div class="atratividade-selo selo-share">SHARE: ${shareNow.toFixed(0)}%</div>
+                                <div class="atratividade-selo ${atrClass}">${atrIcon} ${atrLabel}</div>
+                                ${pressSelo}
+                                ${proxSelo}
+                                ${buzzSelo}
+                            </div>
                         </div>
                         <span class="status-badge ${statusClass}">${statusLabel} (${rc}%)</span>
                         <div class="metrics-row">
                             <div class="metric-box">
-                                <span class="metric-label">Pressão de Reserva</span>
-                                <span class="metric-value">${(data.bookingPressure * 100).toFixed(0)}%</span>
+                                <span class="metric-label">Humor do Mercado</span>
+                                <span class="metric-value">${sentIcon} ${sentLabel}</span>
                             </div>
                             <div class="metric-box">
-                                <span class="metric-label">Buzz Social</span>
-                                <span class="metric-value">${(data.socialBuzz * 100).toFixed(0)}%</span>
+                                <span class="metric-label">Pressão de Reserva</span>
+                                <span class="metric-value">${pressIcon} ${(pressVal*100).toFixed(0)}%</span>
                             </div>
                         </div>
                         <div class="origin-box">
-                            <strong>Top Origens:</strong>
-                            ${originsHtml}
+                            <strong>📍 Top 3 Origens de Demanda:</strong>
+                            ${originsHtml || '<div style="font-size:0.7rem;opacity:0.6;">Dados em análise...</div>'}
+                        </div>
+                        <div class="audience-box">
+                            <span class="audience-label">Perfil de Público</span>
+                            <div class="audience-icons">
+                                <div class="audience-item" title="Fidelidade">🔄 ${fidPerc}%</div>
+                                <div class="audience-item" title="Descoberta">✨ ${descPerc}%</div>
+                            </div>
+                        </div>
+                        <div class="stay-box">
+                            <div class="stay-header">
+                                <span class="stay-label">Intenção de Estadia</span>
+                            </div>
+                            <div class="stay-bar-bg">
+                                <div class="stay-bar-fill" style="width: ${stayPerc}%"></div>
+                            </div>
+                            <div class="stay-values">
+                                <span>Pernoite: ${stayPerc}%</span>
+                                <span>Day-Trip: ${dayPerc}%</span>
+                            </div>
+                        </div>
+                        <div class="elasticity-box">
+                            <div class="elasticity-header">
+                                <span class="elasticity-label">Impacto Climático (IEC)</span>
+                                <span style="font-size: 0.6rem; font-weight: 800; color: ${elastVal >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">${elastIcon} ${elastLabel}</span>
+                            </div>
+                            <div class="elasticity-bar-bg">
+                                <div class="elasticity-center"></div>
+                                <div class="elasticity-fill ${elastClass}" style="width: ${elastWidth}%"></div>
+                            </div>
                         </div>
                         <div class="insight-box">💡 ${data.insight}</div>
                         <div class="weather-forecast">${weatherHtml}</div>
                     </div>
                 `;
             }
-        }function renderBoletim() {
+        }
+
+        function renderBoletim() {
             let boletim = "ANÁLISE ESTRATÉGICA DE MERCADO\n\n";
             
             if (topRanking && topRanking.length > 0) {
@@ -311,17 +517,20 @@
                 
                 boletim += `📍 ${data.name.toUpperCase()}\n`;
                 boletim += `• Status: ${statusLabel} (${rc}% variação)\n`;
-                boletim += `• Pressão de Reserva: ${(data.bookingPressure * 100).toFixed(0)}%\n`;
-                boletim += `• Gatilho de Proximidade: ${(data.proximityTrigger * 100).toFixed(0)}%\n`;
-                boletim += `• Velocidade Viral: ${(data.socialBuzz * 100).toFixed(0)}%\n`;
-                boletim += `• Sentimento: ${(data.sentiment * 100).toFixed(0)}%\n`;
-                boletim += `• Intenção de Estadia: ${(data.stayIntent * 100).toFixed(0)}%\n`;
+                boletim += `• Pressão de Reserva: ${((data.bookingPressure || 0.7) * 100).toFixed(0)}%\n`;
+                boletim += `• Gatilho de Proximidade: ${((data.proximityTrigger || 0.6) * 100).toFixed(0)}%\n`;
+                boletim += `• Velocidade Viral: ${((data.socialBuzz || 0.5) * 100).toFixed(0)}%\n`;
+                boletim += `• Sentimento: ${((data.sentiment || 0.8) * 100).toFixed(0)}%\n`;
+                boletim += `• Intenção de Estadia: ${((data.stayIntent || 0.7) * 100).toFixed(0)}%\n`;
                 
-                if (data.topOrigins && data.topOrigins.length > 0) {
-                    boletim += `• TOP 3 ORIGENS DE IMPACTO:\n`;
-                    data.topOrigins.slice(0, 3).forEach((o, idx) => {
+                const origins = data.topOrigins || [];
+                if (origins.length > 0) {
+                    boletim += `• TOP 3 ORIGENS DE DEMANDA:\n`;
+                    origins.slice(0, 3).forEach((o, idx) => {
                         const label = idx === 0 ? "Primário" : (idx === 1 ? "Secundário" : "Terciário");
-                        boletim += `  - ${label}: ${o.origem} (${(o.impacto * 100).toFixed(1)}%)\n`;
+                        const loc = o.location || o.origem || 'N/A';
+                        const perc = o.percent || (o.impacto ? (o.impacto * 100).toFixed(1) : 0);
+                        boletim += `  - ${label}: ${loc} (${perc}%)\n`;
                     });
                 }
                 
@@ -333,6 +542,44 @@
 
         for (let i = 1; i <= 4; i++) {
             document.getElementById(`dest-${i}`).addEventListener('change', updateDashboard);
+        }
+
+        // EFEITO MATRIX
+        const canvas = document.getElementById('matrix-canvas');
+        const ctxM = canvas.getContext('2d');
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
+        const cols = w / 16;
+        const drops = Array(Math.floor(cols)).fill(1);
+
+        function drawMatrix() {
+            ctxM.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctxM.fillRect(0, 0, w, h);
+            ctxM.fillStyle = 'rgba(0, 198, 255, 0.4)';
+            ctxM.font = '16px monospace';
+            drops.forEach((y, i) => {
+                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                ctxM.fillText(text, i * 16, y * 16);
+                if (y * 16 > h && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+
+        setInterval(drawMatrix, 90);
+
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        });
+
+        // BLINDAGEM DE SEGURANÇA
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
         }
 
         window.onload = loadData;
