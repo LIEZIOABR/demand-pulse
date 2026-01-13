@@ -1,0 +1,492 @@
+{
+  "gramado-canela": {
+    "id": "gramado-canela",
+    "nome": "Gramado + Canela",
+    "estado": "RS",
+    "regiao": "Serra Gaúcha",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": -13.0,
+    "pressaoReserva": 34,
+    "gatilhoProximidade": 87,
+    "velocidadeViral": 35,
+    "sentimento": 83,
+    "intencaoEstadia": 76,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "Rio Grande do Sul lidera com -13.0%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "Rio Grande do Sul",
+        "location": "Rio Grande do Sul",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "Santa Catarina",
+        "location": "Santa Catarina",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Paraná",
+        "location": "Paraná",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "14°-26° - Ensolarado",
+    "ultimaAtualizacao": "2026-01-13T18:42:23.338498"
+  },
+  "campos-jordao": {
+    "id": "campos-jordao",
+    "nome": "Campos do Jordão",
+    "estado": "SP",
+    "regiao": "Serra da Mantiqueira",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": 2.7,
+    "pressaoReserva": 39,
+    "gatilhoProximidade": 98,
+    "velocidadeViral": 38,
+    "sentimento": 80,
+    "intencaoEstadia": 90,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "São Paulo lidera com +2.7%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "18°-26° - Parcialmente nublado",
+    "ultimaAtualizacao": "2026-01-13T18:43:36.054434"
+  },
+  "monte-verde": {
+    "id": "monte-verde",
+    "nome": "Monte Verde",
+    "estado": "MG",
+    "regiao": "Sul de Minas",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": -15.0,
+    "pressaoReserva": 38,
+    "gatilhoProximidade": 85,
+    "velocidadeViral": 19,
+    "sentimento": 77,
+    "intencaoEstadia": 80,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "Minas Gerais lidera com -15.0%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "15°-24° - Nublado",
+    "ultimaAtualizacao": "2026-01-13T18:44:06.546324"
+  },
+  "sao-lourenco": {
+    "id": "sao-lourenco",
+    "nome": "São Lourenço",
+    "estado": "MG",
+    "regiao": "Circuito das Águas",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": -8.0,
+    "pressaoReserva": 20,
+    "gatilhoProximidade": 92,
+    "velocidadeViral": 31,
+    "sentimento": 83,
+    "intencaoEstadia": 88,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "Minas Gerais lidera com -8.0%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "18°-26° - Parcialmente nublado",
+    "ultimaAtualizacao": "2026-01-13T18:46:14.775170"
+  },
+  "pocos-caldas": {
+    "id": "pocos-caldas",
+    "nome": "Poços de Caldas",
+    "estado": "MG",
+    "regiao": "Sul de Minas",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": 9.0,
+    "pressaoReserva": 52,
+    "gatilhoProximidade": 91,
+    "velocidadeViral": 60,
+    "sentimento": 94,
+    "intencaoEstadia": 85,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "Minas Gerais lidera com +9.0%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "17°-24° - Nublado",
+    "ultimaAtualizacao": "2026-01-13T18:48:39.879704"
+  },
+  "sao-bento": {
+    "id": "sao-bento",
+    "nome": "São Bento do Sapucaí",
+    "estado": "SP",
+    "regiao": "Serra da Mantiqueira",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": 12.7,
+    "pressaoReserva": 33,
+    "gatilhoProximidade": 88,
+    "velocidadeViral": 36,
+    "sentimento": 82,
+    "intencaoEstadia": 89,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "São Paulo lidera com +12.7%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "18°-26° - Parcialmente nublado",
+    "ultimaAtualizacao": "2026-01-13T18:49:25.822303"
+  },
+  "passa-quatro": {
+    "id": "passa-quatro",
+    "nome": "Passa Quatro",
+    "estado": "MG",
+    "regiao": "Serra da Mantiqueira",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": 4.6,
+    "pressaoReserva": 35,
+    "gatilhoProximidade": 96,
+    "velocidadeViral": 21,
+    "sentimento": 76,
+    "intencaoEstadia": 86,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "Minas Gerais lidera com +4.6%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "19°-28° - Nublado",
+    "ultimaAtualizacao": "2026-01-13T18:51:10.725911"
+  },
+  "serra-negra": {
+    "id": "serra-negra",
+    "nome": "Serra Negra",
+    "estado": "SP",
+    "regiao": "Circuito das Águas",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": 5.3,
+    "pressaoReserva": 25,
+    "gatilhoProximidade": 95,
+    "velocidadeViral": 29,
+    "sentimento": 95,
+    "intencaoEstadia": 76,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "São Paulo lidera com +5.3%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "18°-26° - Parcialmente nublado",
+    "ultimaAtualizacao": "2026-01-13T18:51:55.852002"
+  },
+  "goncalves": {
+    "id": "goncalves",
+    "nome": "Gonçalves",
+    "estado": "MG",
+    "regiao": "Sul de Minas",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": 8.3,
+    "pressaoReserva": 40,
+    "gatilhoProximidade": 92,
+    "velocidadeViral": 36,
+    "sentimento": 94,
+    "intencaoEstadia": 84,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "Minas Gerais lidera com +8.3%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "16°-25° - Nublado",
+    "ultimaAtualizacao": "2026-01-13T18:52:51.491729"
+  },
+  "santo-antonio": {
+    "id": "santo-antonio",
+    "nome": "Santo Antônio do Pinhal",
+    "estado": "SP",
+    "regiao": "Serra da Mantiqueira",
+    "status": "Estável",
+    "emoji": "📊",
+    "humor": "Positivo",
+    "crescimento": 13.6,
+    "pressaoReserva": 31,
+    "gatilhoProximidade": 87,
+    "velocidadeViral": 39,
+    "sentimento": 86,
+    "intencaoEstadia": 88,
+    "perfilPublico": {
+      "casais": 50,
+      "familias": 50
+    },
+    "impactoClimatico": "Favorável",
+    "insight": "São Paulo lidera com +13.6%",
+    "topOrigins": [
+      {
+        "posicao": 1,
+        "origem": "São Paulo",
+        "location": "São Paulo",
+        "percentual": 55.56,
+        "percent": 55.56,
+        "impacto": "Alto"
+      },
+      {
+        "posicao": 2,
+        "origem": "Rio de Janeiro",
+        "location": "Rio de Janeiro",
+        "percentual": 27.78,
+        "percent": 27.78,
+        "impacto": "Médio"
+      },
+      {
+        "posicao": 3,
+        "origem": "Minas Gerais",
+        "location": "Minas Gerais",
+        "percentual": 18.52,
+        "percent": 18.52,
+        "impacto": "Baixo"
+      }
+    ],
+    "previsao": "18°-26° - Parcialmente nublado",
+    "ultimaAtualizacao": "2026-01-13T18:53:59.975282"
+  }
+}
