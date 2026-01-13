@@ -1,37 +1,61 @@
-name: Atualizar Dados do Google Trends
+name: Atualizar DEMAND PULSE v4.2
 
 on:
+  # Execução agendada (diária às 3h da manhã - horário Brasília)
   schedule:
-    # Roda todo dia a meia-noite (ajuste o cron conforme sua necessidade)
-    - cron: '0 3 * * *'
-  workflow_dispatch: # Permite que você rode manualmente se quiser
+    - cron: '0 6 * * *'  # 6 UTC = 3h BRT (UTC-3)
+  
+  # Permite execução manual
+  workflow_dispatch:
 
 jobs:
-  build:
+  update-pulse:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
-
+      
       - name: Configurar Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-
+          python-version: '3.11'
+      
       - name: Instalar dependências
         run: |
+          python -m pip install --upgrade pip
           pip install "urllib3<2.0" pytrends pandas supabase requests
-
-      - name: Executar script de atualização
-        run: python update_pulse_v2.py
+      
+      - name: Executar DEMAND PULSE v4.2
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-
-      - name: Salvar mudanças no GitHub
+        run: |
+          echo "🚀 Iniciando DEMAND PULSE v4.2..."
+          python update_pulse_v2.py
+      
+      - name: Verificar resultado
+        run: |
+          if [ -f pulse-data-backup.json ]; then
+            echo "✅ Backup criado com sucesso!"
+            echo "📊 Tamanho do arquivo:"
+            ls -lh pulse-data-backup.json
+          else
+            echo "❌ AVISO: Backup não foi criado"
+          fi
+      
+      - name: Upload backup como artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: pulse-data-backup-${{ github.run_number }}
+          path: pulse-data-backup.json
+          retention-days: 7
+      
+      - name: Salvar mudanças no GitHub (se houver)
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add pulse-data.json
-          git commit -m "Atualização automática de dados" || echo "Sem mudanças para salvar"
-          git push
+          git add -A
+          git diff --staged --quiet || git commit -m "chore: atualização automática DEMAND PULSE v4.2 [skip ci]"
+          git push || echo "Sem mudanças para salvar"
