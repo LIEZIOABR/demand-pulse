@@ -45,7 +45,7 @@ jobs:
           fi
       
       - name: Upload backup como artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: pulse-data-backup-${{ github.run_number }}
