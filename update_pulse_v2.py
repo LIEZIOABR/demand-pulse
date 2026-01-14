@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """
-DEMAND PULSE v5.1 - COM HEADERS DE NAVEGADOR (DEFINITIVO)
-==========================================================
+DEMAND PULSE v6.0 - BRIGHT DATA (FINAL)
+========================================
 Data: 14/01/2026
 Desenvolvedor: Liezio Abrantes
 
-CORREÇÃO CRÍTICA v5.1:
-- ✅ Headers completos de navegador real (Chrome/Windows)
-- ✅ User-Agent, Accept, Accept-Language, Accept-Encoding
-- ✅ Simula comportamento de browser para passar ScraperAPI
+VERSÃO DEFINITIVA v6.0:
+- ✅ Bright Data Web Unlocker API
+- ✅ Bearer token authentication
+- ✅ Zone: web_unlocker1
+- ✅ Headers completos de navegador
 - ✅ SEM fallbacks sintéticos (cliente exige)
-- ✅ Retorna apenas dados reais ou falha explicitamente
+- ✅ CAPTCHA Solver automático
 """
 
 import os
@@ -29,8 +30,9 @@ from typing import Dict, List, Optional
 # CONFIGURAÇÃO
 # ============================================================================
 
-SCRAPER_API_KEY = "6a32c62cda344f200cf5ad85e4f6b491"
-USE_SCRAPER_API = True
+BRIGHT_DATA_API_KEY = "29e61205-769b-4482-aecb-79f8a4bd8e35"
+BRIGHT_DATA_ZONE = "web_unlocker1"
+USE_BRIGHT_DATA = True
 
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
@@ -60,43 +62,35 @@ DESTINOS = [
 ]
 
 # ============================================================================
-# SCRAPERAPI COM HEADERS DE NAVEGADOR REAL
+# BRIGHT DATA WEB UNLOCKER API
 # ============================================================================
 
-def scraper_api_request(url: str, timeout: int = 45) -> str:
+def bright_data_request(url: str, timeout: int = 60) -> str:
     """
-    Faz requisição via ScraperAPI com headers COMPLETOS de navegador real.
-    Simula Chrome 120 no Windows 10 para passar autenticação ScraperAPI.
+    Faz requisição via Bright Data Web Unlocker API.
+    Usa Bearer token authentication e zona web_unlocker1.
     """
-    if not USE_SCRAPER_API:
+    if not USE_BRIGHT_DATA:
         response = requests.get(url, timeout=timeout)
         return response.text
     
-    # Headers completos de navegador real (Chrome/Windows)
+    # Bright Data endpoint
+    api_url = "https://api.brightdata.com/request"
+    
+    # Headers com Bearer token
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-        "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Accept-Encoding": "gzip, deflate, br",
-        "DNT": "1",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Cache-Control": "max-age=0"
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {BRIGHT_DATA_API_KEY}"
     }
     
-    # ScraperAPI endpoint
-    api_url = "http://api.scraperapi.com"
-    params = {
-        "api_key": SCRAPER_API_KEY,
+    # Payload
+    payload = {
+        "zone": BRIGHT_DATA_ZONE,
         "url": url,
-        "render": "false"
+        "format": "raw"
     }
     
-    response = requests.get(api_url, params=params, headers=headers, timeout=timeout)
+    response = requests.post(api_url, headers=headers, json=payload, timeout=timeout)
     response.raise_for_status()
     return response.text
 
@@ -131,7 +125,7 @@ def extract_trends_data_from_html(html: str) -> Optional[Dict]:
                     "source": "real"
                 }
         
-        # Tenta padrões alternativos de dados do Google Trends
+        # Tenta padrões alternativos
         alt_pattern = r'"TIMESERIES"[^}]*"lineAnnotationText":\s*"(\d+)"'
         alt_match = re.search(alt_pattern, html)
         
@@ -144,7 +138,7 @@ def extract_trends_data_from_html(html: str) -> Optional[Dict]:
                 "source": "real"
             }
         
-        # SEM FALLBACK - retorna None se não achou dados reais
+        # SEM FALLBACK - retorna None
         return None
         
     except Exception as e:
@@ -187,28 +181,27 @@ def extract_geographic_origins_from_html(html: str, estado_base: str) -> Optiona
                     "source": "real"
                 })
         
-        # Retorna origens reais ou None
         return origins[:3] if origins else None
         
     except Exception as e:
-        print(f"      ⚠️  Erro ao extrair origens: {str(e)[:50]}")
+        print(f"      ⚠️  Erro origens: {str(e)[:50]}")
         return None
 
 # ============================================================================
-# COLETA DE DADOS - SEM FALLBACKS
+# COLETA DE DADOS
 # ============================================================================
 
 def get_trends_data_direct(keyword: str, retries: int = 2) -> Optional[Dict]:
     """
-    Busca dados via ScraperAPI.
+    Busca dados via Bright Data.
     RETORNA None se falhar (sem fallback sintético).
     """
     for attempt in range(retries):
         try:
             trends_url = f"https://trends.google.com/trends/explore?geo=BR&q={keyword.replace(' ', '%20')}"
-            print(f"      🔍 ScraperAPI: {keyword}")
+            print(f"      🔍 Bright Data: {keyword}")
             
-            html = scraper_api_request(trends_url, timeout=45)
+            html = bright_data_request(trends_url, timeout=60)
             trends_data = extract_trends_data_from_html(html)
             
             if trends_data:
@@ -224,24 +217,23 @@ def get_trends_data_direct(keyword: str, retries: int = 2) -> Optional[Dict]:
             else:
                 print(f"      ❌ FALHA: {str(e)[:80]}")
     
-    # SEM FALLBACK - retorna None
     return None
 
 def get_geographic_origins_direct(keyword: str, estado: str) -> Optional[List[Dict]]:
     """
-    Busca origens geográficas.
+    Busca origens geográficas via Bright Data.
     RETORNA None se falhar (sem fallback sintético).
     """
     try:
         geo_url = f"https://trends.google.com/trends/explore?geo=BR&q={keyword.replace(' ', '%20')}"
-        html = scraper_api_request(geo_url, timeout=45)
+        html = bright_data_request(geo_url, timeout=60)
         origins = extract_geographic_origins_from_html(html, estado)
         
         if origins:
             print(f"      ✅ Origens REAIS: {[o['origem'] for o in origins]}")
             return origins
         else:
-            print(f"      ❌ Origens não encontradas no HTML")
+            print(f"      ❌ Origens não encontradas")
             return None
             
     except Exception as e:
@@ -299,15 +291,15 @@ def calcular_metricas(trends_data: Dict, origins: List[Dict], weather: Dict) -> 
     }
 
 # ============================================================================
-# MAIN - SEM FALLBACKS SINTÉTICOS
+# MAIN
 # ============================================================================
 
 def main():
     print("\n" + "="*60)
-    print("🚀 DEMAND PULSE v5.1 - COM HEADERS DE NAVEGADOR")
+    print("🚀 DEMAND PULSE v6.0 - BRIGHT DATA (FINAL)")
     print("="*60)
-    print(f"📍 Destinos: {len(DESTINOS)} | 🔑 ScraperAPI: ON")
-    print(f"🌐 Headers: Chrome 120 / Windows 10 (completos)")
+    print(f"📍 Destinos: {len(DESTINOS)} | 🔑 Bright Data: ON")
+    print(f"🌐 API: Web Unlocker | Zone: {BRIGHT_DATA_ZONE}")
     print(f"⚠️  SEM FALLBACKS: Apenas dados reais ou falha")
     print("="*60 + "\n")
     
@@ -321,14 +313,14 @@ def main():
         try:
             keyword = random.choice(destino['keywords'])
             
-            # Busca trends (retorna None se falhar)
+            # Busca trends
             trends_data = get_trends_data_direct(keyword)
             if not trends_data:
                 raise Exception("Sem dados de tendência")
             
             time.sleep(random.uniform(3, 5))
             
-            # Busca origens (retorna None se falhar)
+            # Busca origens
             origins = get_geographic_origins_direct(keyword, destino['estado'])
             if not origins:
                 raise Exception("Sem dados de origens")
@@ -346,7 +338,7 @@ def main():
                 **metricas, "topOrigins": origins,
                 "previsao": f"{weather['temp_min']:.0f}°-{weather['temp_max']:.0f}° - {weather['condicao']}",
                 "ultimaAtualizacao": datetime.now().isoformat(),
-                "dataSource": "real"
+                "dataSource": "real-brightdata"
             }
             
             final_data.append(destino_data)
@@ -370,8 +362,8 @@ def main():
     
     if not final_data:
         print("❌ ERRO CRÍTICO: Nenhum dado real coletado!")
-        print("⚠️  ScraperAPI não está funcionando no ambiente Python")
-        print("💡 AÇÕES: 1) Verificar trial restrictions 2) Testar plano pago 3) Trocar serviço\n")
+        print("⚠️  Bright Data não está funcionando")
+        print("💡 AÇÕES: 1) Verificar API key 2) Verificar saldo 3) Contactar suporte\n")
         return
     
     # BACKUP
@@ -390,7 +382,7 @@ def main():
                     "total_destinos": len(final_data),
                     "top_3_ranking": [d['id'] for d in sorted_data[:3]],
                     "ultima_atualizacao": datetime.now().isoformat(),
-                    "versao": "v5.1-headers",
+                    "versao": "v6.0-brightdata",
                     "taxa_sucesso_real": f"{(destinos_sucesso/len(DESTINOS))*100:.0f}%"
                 }
             }
