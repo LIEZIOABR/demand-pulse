@@ -2,19 +2,23 @@
 # -*- coding: utf-8 -*-
 
 """
-DEMAND PULSE v6.1 - BRIGHT DATA (MÁXIMO RIGOR TÉCNICO)
-=======================================================
-Data: 14/01/2026
+DEMAND PULSE v7.0 - SERP API (SOLUÇÃO DEFINITIVA)
+==================================================
+Data: 15/01/2026
 Desenvolvedor: Liezio Abrantes
 
-VERSÃO v6.1 - CORREÇÕES CRÍTICAS:
-- ✅ Formato JSON EXATO da documentação Bright Data
-- ✅ Timeout 90s (Google Trends é lento)
-- ✅ Retries 3x com backoff exponencial
-- ✅ Logging detalhado para debug
-- ✅ Validação de resposta HTTP
-- ✅ Headers explícitos Content-Type
+VERSÃO v7.0 - API CORRETA:
+- ✅ Bright Data SERP API (especializada Google)
+- ✅ Zona: serp_api1 (NÃO web_unlocker1)
+- ✅ API Key: 29e61205-769b-4482-aecb-79f6a4bd8e35
+- ✅ Timeout 90s, retries 3x
+- ✅ Logging detalhado
 - ✅ SEM fallbacks sintéticos
+- ✅ Custo: $1.50/CPM (~$1.35/mês)
+
+DESCOBERTA CRÍTICA (14/01/2026):
+Web Unlocker API rejeita search engines por design.
+Documentação oficial: "For Google, use SERP API"
 """
 
 import os
@@ -28,11 +32,11 @@ from supabase import create_client
 from typing import Dict, List, Optional
 
 # ============================================================================
-# CONFIGURAÇÃO
+# CONFIGURAÇÃO BRIGHT DATA SERP API
 # ============================================================================
 
 BRIGHT_DATA_API_KEY = "29e61205-769b-4482-aecb-79f6a4bd8e35"
-BRIGHT_DATA_ZONE = "web_unlocker1"
+BRIGHT_DATA_ZONE = "serp_api1"  # ← MUDANÇA CRÍTICA: era "web_unlocker1"
 BRIGHT_DATA_ENDPOINT = "https://api.brightdata.com/request"
 
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
@@ -63,26 +67,29 @@ DESTINOS = [
 ]
 
 # ============================================================================
-# BRIGHT DATA - FORMATO EXATO DA DOCUMENTAÇÃO
+# BRIGHT DATA SERP API - REQUISIÇÃO
 # ============================================================================
 
-def bright_data_request(url: str, timeout: int = 90) -> str:
+def serp_api_request(url: str, timeout: int = 90) -> str:
     """
-    Requisição Bright Data com formato EXATO da documentação oficial.
+    Requisição via Bright Data SERP API.
+    
+    SERP API é especializada em search engines (Google, Bing, etc).
+    Aceita Google Trends URLs, diferente de Web Unlocker API.
     
     Timeout: 90s (Google Trends pode demorar)
-    Retries: 3x com backoff exponencial (5s, 10s, 20s)
+    Retries: 3x com backoff exponencial
     """
     
-    # Headers EXATOS como na documentação
+    # Headers com Bearer token
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {BRIGHT_DATA_API_KEY}"
     }
     
-    # Payload EXATO como na documentação
+    # Payload SERP API
     payload = {
-        "zone": BRIGHT_DATA_ZONE,
+        "zone": BRIGHT_DATA_ZONE,  # serp_api1
         "url": url,
         "format": "raw"
     }
@@ -100,7 +107,7 @@ def bright_data_request(url: str, timeout: int = 90) -> str:
                 timeout=timeout
             )
             
-            # Log status code
+            # Log status
             print(f"         → Status: {response.status_code}")
             
             # Valida resposta
@@ -108,14 +115,18 @@ def bright_data_request(url: str, timeout: int = 90) -> str:
                 print(f"         → Response size: {len(response.text)} bytes")
                 return response.text
             
+            elif response.status_code == 400:
+                # Se ainda der 400, SERP API também tem problema
+                raise Exception(f"HTTP 400: Validation failed - {response.text[:200]}")
+            
             elif response.status_code == 401:
-                raise Exception(f"401 Unauthorized - API Key inválida ou zona incorreta")
+                raise Exception(f"401 Unauthorized - API Key inválida")
             
             elif response.status_code == 402:
-                raise Exception(f"402 Payment Required - Saldo insuficiente ($7 disponível)")
+                raise Exception(f"402 Payment Required - Saldo insuficiente (${response.text})")
             
             elif response.status_code == 429:
-                wait_time = 5 * (2 ** attempt)  # Backoff exponencial
+                wait_time = 5 * (2 ** attempt)
                 print(f"         → 429 Rate Limit - Aguardando {wait_time}s")
                 time.sleep(wait_time)
                 continue
@@ -293,13 +304,13 @@ def extract_geographic_origins_from_html(html: str) -> Optional[List[Dict]]:
 
 def get_trends_data_direct(keyword: str) -> Optional[Dict]:
     """
-    Coleta dados via Bright Data com máximo rigor.
+    Coleta dados via SERP API.
     """
     try:
         trends_url = f"https://trends.google.com/trends/explore?geo=BR&q={keyword.replace(' ', '%20')}"
         print(f"      🔍 URL: {trends_url[:80]}...")
         
-        html = bright_data_request(trends_url, timeout=90)
+        html = serp_api_request(trends_url, timeout=90)
         
         if not html:
             print(f"      ❌ HTML vazio retornado")
@@ -320,12 +331,12 @@ def get_trends_data_direct(keyword: str) -> Optional[Dict]:
 
 def get_geographic_origins_direct(keyword: str) -> Optional[List[Dict]]:
     """
-    Coleta origens via Bright Data.
+    Coleta origens via SERP API.
     """
     try:
         geo_url = f"https://trends.google.com/trends/explore?geo=BR&q={keyword.replace(' ', '%20')}"
         
-        html = bright_data_request(geo_url, timeout=90)
+        html = serp_api_request(geo_url, timeout=90)
         
         if not html:
             return None
@@ -344,7 +355,7 @@ def get_geographic_origins_direct(keyword: str) -> Optional[List[Dict]]:
         return None
 
 def get_weather_data(cidade: str) -> Dict:
-    """Clima (sempre funciona)"""
+    """Clima"""
     coords = {
         "Gramado + Canela": (-29.37, -50.87), "Campos do Jordão": (-22.74, -45.59),
         "Monte Verde": (-22.86, -46.04), "São Lourenço": (-22.12, -45.05),
@@ -399,13 +410,13 @@ def calcular_metricas(trends_data: Dict, origins: List[Dict], weather: Dict) -> 
 
 def main():
     print("\n" + "="*70)
-    print("🚀 DEMAND PULSE v6.1 - BRIGHT DATA (MÁXIMO RIGOR TÉCNICO)")
+    print("🚀 DEMAND PULSE v7.0 - SERP API (SOLUÇÃO DEFINITIVA)")
     print("="*70)
     print(f"📍 Destinos: {len(DESTINOS)}")
-    print(f"🔑 API Key: {BRIGHT_DATA_API_KEY[:20]}...")
+    print(f"🔑 API: SERP API (especializada Google)")
     print(f"🌐 Zone: {BRIGHT_DATA_ZONE}")
-    print(f"⏱️  Timeout: 90s por requisição")
-    print(f"🔄 Retries: 3x com backoff exponencial")
+    print(f"💰 Custo: $1.50/CPM (~$1.35/mês)")
+    print(f"⏱️  Timeout: 90s | Retries: 3x")
     print(f"⚠️  SEM FALLBACKS: Apenas dados reais")
     print("="*70 + "\n")
     
@@ -446,7 +457,7 @@ def main():
                 **metricas, "topOrigins": origins,
                 "previsao": f"{weather['temp_min']:.0f}°-{weather['temp_max']:.0f}° - {weather['condicao']}",
                 "ultimaAtualizacao": datetime.now().isoformat(),
-                "dataSource": "real-brightdata-v6.1"
+                "dataSource": "real-serp-api-v7.0"
             }
             
             final_data.append(destino_data)
@@ -472,7 +483,7 @@ def main():
     
     if not final_data:
         print("❌ CRÍTICO: Zero dados coletados!")
-        print("💡 Verificar: 1) API Key 2) Saldo 3) Zona\n")
+        print("💡 Verificar: 1) SERP API 2) Saldo 3) Zona\n")
         return
     
     # BACKUP
@@ -491,7 +502,7 @@ def main():
                     "total_destinos": len(final_data),
                     "top_3_ranking": [d['id'] for d in sorted_data[:3]],
                     "ultima_atualizacao": datetime.now().isoformat(),
-                    "versao": "v6.1-brightdata-rigorosa",
+                    "versao": "v7.0-serp-api-definitiva",
                     "taxa_sucesso": f"{(destinos_sucesso/len(DESTINOS))*100:.0f}%"
                 }
             }
