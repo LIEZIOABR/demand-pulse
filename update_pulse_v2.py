@@ -2,18 +2,19 @@
 # -*- coding: utf-8 -*-
 
 """
-DEMAND PULSE v6.0 - BRIGHT DATA (FINAL)
-========================================
+DEMAND PULSE v6.1 - BRIGHT DATA (MÁXIMO RIGOR TÉCNICO)
+=======================================================
 Data: 14/01/2026
 Desenvolvedor: Liezio Abrantes
 
-VERSÃO DEFINITIVA v6.0:
-- ✅ Bright Data Web Unlocker API
-- ✅ Bearer token authentication
-- ✅ Zone: web_unlocker1
-- ✅ Headers completos de navegador
-- ✅ SEM fallbacks sintéticos (cliente exige)
-- ✅ CAPTCHA Solver automático
+VERSÃO v6.1 - CORREÇÕES CRÍTICAS:
+- ✅ Formato JSON EXATO da documentação Bright Data
+- ✅ Timeout 90s (Google Trends é lento)
+- ✅ Retries 3x com backoff exponencial
+- ✅ Logging detalhado para debug
+- ✅ Validação de resposta HTTP
+- ✅ Headers explícitos Content-Type
+- ✅ SEM fallbacks sintéticos
 """
 
 import os
@@ -30,9 +31,9 @@ from typing import Dict, List, Optional
 # CONFIGURAÇÃO
 # ============================================================================
 
-BRIGHT_DATA_API_KEY = "29e61205-769b-4482-aecb-79f8a4bd8e35"
+BRIGHT_DATA_API_KEY = "29e61205-769b-4482-aecb-79f6a4bd8e35"
 BRIGHT_DATA_ZONE = "web_unlocker1"
-USE_BRIGHT_DATA = True
+BRIGHT_DATA_ENDPOINT = "https://api.brightdata.com/request"
 
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
@@ -62,186 +63,288 @@ DESTINOS = [
 ]
 
 # ============================================================================
-# BRIGHT DATA WEB UNLOCKER API
+# BRIGHT DATA - FORMATO EXATO DA DOCUMENTAÇÃO
 # ============================================================================
 
-def bright_data_request(url: str, timeout: int = 60) -> str:
+def bright_data_request(url: str, timeout: int = 90) -> str:
     """
-    Faz requisição via Bright Data Web Unlocker API.
-    Usa Bearer token authentication e zona web_unlocker1.
+    Requisição Bright Data com formato EXATO da documentação oficial.
+    
+    Timeout: 90s (Google Trends pode demorar)
+    Retries: 3x com backoff exponencial (5s, 10s, 20s)
     """
-    if not USE_BRIGHT_DATA:
-        response = requests.get(url, timeout=timeout)
-        return response.text
     
-    # Bright Data endpoint
-    api_url = "https://api.brightdata.com/request"
-    
-    # Headers com Bearer token
+    # Headers EXATOS como na documentação
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {BRIGHT_DATA_API_KEY}"
     }
     
-    # Payload
+    # Payload EXATO como na documentação
     payload = {
         "zone": BRIGHT_DATA_ZONE,
         "url": url,
         "format": "raw"
     }
     
-    response = requests.post(api_url, headers=headers, json=payload, timeout=timeout)
-    response.raise_for_status()
-    return response.text
+    # Retries com backoff exponencial
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            print(f"         → Request attempt {attempt + 1}/{max_retries}")
+            
+            response = requests.post(
+                BRIGHT_DATA_ENDPOINT,
+                headers=headers,
+                json=payload,
+                timeout=timeout
+            )
+            
+            # Log status code
+            print(f"         → Status: {response.status_code}")
+            
+            # Valida resposta
+            if response.status_code == 200:
+                print(f"         → Response size: {len(response.text)} bytes")
+                return response.text
+            
+            elif response.status_code == 401:
+                raise Exception(f"401 Unauthorized - API Key inválida ou zona incorreta")
+            
+            elif response.status_code == 402:
+                raise Exception(f"402 Payment Required - Saldo insuficiente ($7 disponível)")
+            
+            elif response.status_code == 429:
+                wait_time = 5 * (2 ** attempt)  # Backoff exponencial
+                print(f"         → 429 Rate Limit - Aguardando {wait_time}s")
+                time.sleep(wait_time)
+                continue
+            
+            else:
+                raise Exception(f"HTTP {response.status_code}: {response.text[:100]}")
+        
+        except requests.exceptions.Timeout:
+            if attempt < max_retries - 1:
+                wait_time = 5 * (2 ** attempt)
+                print(f"         → Timeout - Tentando novamente em {wait_time}s")
+                time.sleep(wait_time)
+                continue
+            else:
+                raise Exception(f"Timeout após {max_retries} tentativas")
+        
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Request error: {str(e)[:100]}")
+    
+    raise Exception(f"Falhou após {max_retries} tentativas")
 
 # ============================================================================
-# PARSE HTML - SEM FALLBACKS SINTÉTICOS
+# PARSE HTML - RIGOROSO
 # ============================================================================
 
 def extract_trends_data_from_html(html: str) -> Optional[Dict]:
     """
-    Extrai dados de tendência do HTML do Google Trends.
-    RETORNA None se não encontrar dados reais (sem fallback sintético).
+    Extração RIGOROSA de dados do Google Trends.
+    Valida cada etapa, retorna None se qualquer validação falhar.
     """
+    
+    if not html or len(html) < 1000:
+        print(f"         → HTML muito pequeno: {len(html)} bytes")
+        return None
+    
     try:
-        # Tenta extrair JSON embarcado
+        # Pattern principal: timelineData
         pattern = r'"default":\s*{[^}]*"timelineData":\s*(\[[^\]]+\])'
-        match = re.search(pattern, html)
+        match = re.search(pattern, html, re.DOTALL)
         
         if match:
             timeline_json = match.group(1)
-            timeline_data = json.loads(timeline_json)
             
-            if timeline_data and len(timeline_data) > 1:
-                values = [point.get('value', [0])[0] for point in timeline_data]
-                current = values[-1]
-                previous = values[0]
-                variation = ((current - previous) / previous * 100) if previous > 0 else 0
-                
-                return {
-                    "current": current,
-                    "variation": round(variation, 1),
-                    "trend_data": values,
-                    "source": "real"
-                }
+            # Valida JSON
+            try:
+                timeline_data = json.loads(timeline_json)
+            except json.JSONDecodeError as e:
+                print(f"         → JSON inválido: {str(e)[:50]}")
+                return None
+            
+            # Valida estrutura
+            if not isinstance(timeline_data, list) or len(timeline_data) < 2:
+                print(f"         → Timeline insuficiente: {len(timeline_data)} pontos")
+                return None
+            
+            # Extrai valores
+            values = []
+            for point in timeline_data:
+                if isinstance(point, dict) and 'value' in point:
+                    val = point['value']
+                    if isinstance(val, list) and len(val) > 0:
+                        values.append(val[0])
+            
+            if len(values) < 2:
+                print(f"         → Valores insuficientes: {len(values)}")
+                return None
+            
+            # Calcula variação
+            current = values[-1]
+            previous = values[0]
+            
+            if previous == 0:
+                variation = 0
+            else:
+                variation = ((current - previous) / previous) * 100
+            
+            print(f"         → Timeline extraído: {len(values)} pontos, variação {variation:+.1f}%")
+            
+            return {
+                "current": current,
+                "variation": round(variation, 1),
+                "trend_data": values,
+                "source": "real",
+                "data_points": len(values)
+            }
         
-        # Tenta padrões alternativos
+        # Pattern alternativo: TIMESERIES
         alt_pattern = r'"TIMESERIES"[^}]*"lineAnnotationText":\s*"(\d+)"'
         alt_match = re.search(alt_pattern, html)
         
         if alt_match:
             value = int(alt_match.group(1))
+            print(f"         → TIMESERIES extraído: {value}")
+            
             return {
                 "current": value,
                 "variation": 0,
                 "trend_data": [value],
-                "source": "real"
+                "source": "real",
+                "data_points": 1
             }
         
-        # SEM FALLBACK - retorna None
+        print(f"         → Nenhum pattern encontrado no HTML")
         return None
         
     except Exception as e:
-        print(f"      ⚠️  Parse error: {str(e)[:50]}")
+        print(f"         → Erro parse: {str(e)[:80]}")
         return None
 
-def extract_geographic_origins_from_html(html: str, estado_base: str) -> Optional[List[Dict]]:
+def extract_geographic_origins_from_html(html: str) -> Optional[List[Dict]]:
     """
-    Extrai origens geográficas do HTML.
-    RETORNA None se não encontrar dados reais (sem fallback sintético).
+    Extração RIGOROSA de origens geográficas.
     """
+    
+    if not html or len(html) < 1000:
+        return None
+    
     try:
         pattern = r'"geoMapData":\s*(\[[^\]]+\])'
-        match = re.search(pattern, html)
+        match = re.search(pattern, html, re.DOTALL)
+        
+        if not match:
+            print(f"         → geoMapData não encontrado")
+            return None
+        
+        geo_json = match.group(1)
+        
+        try:
+            geo_data = json.loads(geo_json)
+        except json.JSONDecodeError:
+            print(f"         → geoMapData JSON inválido")
+            return None
+        
+        if not isinstance(geo_data, list) or len(geo_data) == 0:
+            print(f"         → geoMapData vazio")
+            return None
+        
+        # Ordena por valor
+        geo_sorted = sorted(geo_data, key=lambda x: x.get('value', [0])[0], reverse=True)
         
         origins = []
-        
-        if match:
-            geo_json = match.group(1)
-            geo_data = json.loads(geo_json)
-            geo_sorted = sorted(geo_data, key=lambda x: x.get('value', [0])[0], reverse=True)
+        for idx, region in enumerate(geo_sorted[:3], 1):
+            name = region.get('geoName')
+            if not name:
+                continue
             
-            for idx, region in enumerate(geo_sorted[:3], 1):
-                name = region.get('geoName', None)
-                if not name:
-                    continue
-                    
-                value = region.get('value', [0])[0]
-                max_val = geo_sorted[0].get('value', [1])[0]
-                percentage = round((value / max_val) * 100, 2) if max_val > 0 else 0
-                impacto = "Alto" if percentage >= 50 else ("Médio" if percentage >= 20 else "Baixo")
-                
-                origins.append({
-                    "posicao": idx,
-                    "origem": name,
-                    "location": name,
-                    "percentual": percentage,
-                    "percent": percentage,
-                    "impacto": impacto,
-                    "source": "real"
-                })
+            value = region.get('value', [0])[0]
+            max_val = geo_sorted[0].get('value', [1])[0]
+            percentage = round((value / max_val) * 100, 2) if max_val > 0 else 0
+            impacto = "Alto" if percentage >= 50 else ("Médio" if percentage >= 20 else "Baixo")
+            
+            origins.append({
+                "posicao": idx,
+                "origem": name,
+                "location": name,
+                "percentual": percentage,
+                "percent": percentage,
+                "impacto": impacto,
+                "source": "real"
+            })
         
-        return origins[:3] if origins else None
+        if origins:
+            print(f"         → Origens extraídas: {[o['origem'] for o in origins]}")
+            return origins
+        
+        return None
         
     except Exception as e:
-        print(f"      ⚠️  Erro origens: {str(e)[:50]}")
+        print(f"         → Erro origens: {str(e)[:80]}")
         return None
 
 # ============================================================================
 # COLETA DE DADOS
 # ============================================================================
 
-def get_trends_data_direct(keyword: str, retries: int = 2) -> Optional[Dict]:
+def get_trends_data_direct(keyword: str) -> Optional[Dict]:
     """
-    Busca dados via Bright Data.
-    RETORNA None se falhar (sem fallback sintético).
+    Coleta dados via Bright Data com máximo rigor.
     """
-    for attempt in range(retries):
-        try:
-            trends_url = f"https://trends.google.com/trends/explore?geo=BR&q={keyword.replace(' ', '%20')}"
-            print(f"      🔍 Bright Data: {keyword}")
+    try:
+        trends_url = f"https://trends.google.com/trends/explore?geo=BR&q={keyword.replace(' ', '%20')}"
+        print(f"      🔍 URL: {trends_url[:80]}...")
+        
+        html = bright_data_request(trends_url, timeout=90)
+        
+        if not html:
+            print(f"      ❌ HTML vazio retornado")
+            return None
+        
+        trends_data = extract_trends_data_from_html(html)
+        
+        if trends_data:
+            print(f"      ✅ Dados REAIS: {trends_data['variation']:+.1f}% ({trends_data['data_points']} pontos)")
+            return trends_data
+        else:
+            print(f"      ❌ Parse falhou - HTML não contém dados válidos")
+            return None
             
-            html = bright_data_request(trends_url, timeout=60)
-            trends_data = extract_trends_data_from_html(html)
-            
-            if trends_data:
-                print(f"      ✅ Dados REAIS: {trends_data['variation']:+.1f}%")
-                return trends_data
-            else:
-                raise Exception("HTML não contém dados do Google Trends")
-                
-        except Exception as e:
-            if attempt < retries - 1:
-                print(f"      ⚠️  Tentativa {attempt + 1}: {str(e)[:60]}")
-                time.sleep(10)
-            else:
-                print(f"      ❌ FALHA: {str(e)[:80]}")
-    
-    return None
+    except Exception as e:
+        print(f"      ❌ Erro: {str(e)[:100]}")
+        return None
 
-def get_geographic_origins_direct(keyword: str, estado: str) -> Optional[List[Dict]]:
+def get_geographic_origins_direct(keyword: str) -> Optional[List[Dict]]:
     """
-    Busca origens geográficas via Bright Data.
-    RETORNA None se falhar (sem fallback sintético).
+    Coleta origens via Bright Data.
     """
     try:
         geo_url = f"https://trends.google.com/trends/explore?geo=BR&q={keyword.replace(' ', '%20')}"
-        html = bright_data_request(geo_url, timeout=60)
-        origins = extract_geographic_origins_from_html(html, estado)
+        
+        html = bright_data_request(geo_url, timeout=90)
+        
+        if not html:
+            return None
+        
+        origins = extract_geographic_origins_from_html(html)
         
         if origins:
-            print(f"      ✅ Origens REAIS: {[o['origem'] for o in origins]}")
+            print(f"      ✅ Origens: {', '.join([o['origem'] for o in origins])}")
             return origins
         else:
             print(f"      ❌ Origens não encontradas")
             return None
             
     except Exception as e:
-        print(f"      ❌ Erro origens: {str(e)[:50]}")
+        print(f"      ❌ Erro origens: {str(e)[:80]}")
         return None
 
 def get_weather_data(cidade: str) -> Dict:
-    """Busca clima (sempre funciona)"""
+    """Clima (sempre funciona)"""
     coords = {
         "Gramado + Canela": (-29.37, -50.87), "Campos do Jordão": (-22.74, -45.59),
         "Monte Verde": (-22.86, -46.04), "São Lourenço": (-22.12, -45.05),
@@ -270,7 +373,7 @@ def get_weather_data(cidade: str) -> Dict:
         return {"temp_atual": 22, "temp_max": 26, "temp_min": 18, "condicao": "Parcialmente nublado"}
 
 def calcular_metricas(trends_data: Dict, origins: List[Dict], weather: Dict) -> Dict:
-    """Calcula métricas completas"""
+    """Métricas"""
     variation = trends_data.get('variation', 0)
     current = trends_data.get('current', 50)
     
@@ -295,82 +398,88 @@ def calcular_metricas(trends_data: Dict, origins: List[Dict], weather: Dict) -> 
 # ============================================================================
 
 def main():
-    print("\n" + "="*60)
-    print("🚀 DEMAND PULSE v6.0 - BRIGHT DATA (FINAL)")
-    print("="*60)
-    print(f"📍 Destinos: {len(DESTINOS)} | 🔑 Bright Data: ON")
-    print(f"🌐 API: Web Unlocker | Zone: {BRIGHT_DATA_ZONE}")
-    print(f"⚠️  SEM FALLBACKS: Apenas dados reais ou falha")
-    print("="*60 + "\n")
+    print("\n" + "="*70)
+    print("🚀 DEMAND PULSE v6.1 - BRIGHT DATA (MÁXIMO RIGOR TÉCNICO)")
+    print("="*70)
+    print(f"📍 Destinos: {len(DESTINOS)}")
+    print(f"🔑 API Key: {BRIGHT_DATA_API_KEY[:20]}...")
+    print(f"🌐 Zone: {BRIGHT_DATA_ZONE}")
+    print(f"⏱️  Timeout: 90s por requisição")
+    print(f"🔄 Retries: 3x com backoff exponencial")
+    print(f"⚠️  SEM FALLBACKS: Apenas dados reais")
+    print("="*70 + "\n")
     
     final_data = []
     destinos_sucesso = 0
     destinos_falha = 0
     
     for idx, destino in enumerate(DESTINOS, 1):
-        print(f"[{idx}/{len(DESTINOS)}] {destino['nome']}")
+        print(f"\n[{idx}/{len(DESTINOS)}] {destino['nome']}")
+        print("-" * 70)
         
         try:
             keyword = random.choice(destino['keywords'])
+            print(f"   🔑 Keyword: {keyword}")
             
-            # Busca trends
+            # Trends
             trends_data = get_trends_data_direct(keyword)
             if not trends_data:
                 raise Exception("Sem dados de tendência")
             
-            time.sleep(random.uniform(3, 5))
+            time.sleep(random.uniform(4, 6))
             
-            # Busca origens
-            origins = get_geographic_origins_direct(keyword, destino['estado'])
+            # Origens
+            origins = get_geographic_origins_direct(keyword)
             if not origins:
                 raise Exception("Sem dados de origens")
             
-            # Busca clima
+            # Clima
             weather = get_weather_data(destino['nome'])
             
-            # Calcula métricas
+            # Métricas
             metricas = calcular_metricas(trends_data, origins, weather)
             
-            # Monta dados
+            # Dados finais
             destino_data = {
                 "id": destino['id'], "nome": destino['nome'],
                 "estado": destino['estado'], "regiao": destino['regiao'],
                 **metricas, "topOrigins": origins,
                 "previsao": f"{weather['temp_min']:.0f}°-{weather['temp_max']:.0f}° - {weather['condicao']}",
                 "ultimaAtualizacao": datetime.now().isoformat(),
-                "dataSource": "real-brightdata"
+                "dataSource": "real-brightdata-v6.1"
             }
             
             final_data.append(destino_data)
             destinos_sucesso += 1
-            print(f"   ✅ SUCESSO: {metricas['crescimento']:+.1f}% | {metricas['status']}\n")
+            print(f"\n   ✅ SUCESSO: {metricas['crescimento']:+.1f}% | {metricas['status']}")
             
         except Exception as e:
             destinos_falha += 1
-            print(f"   ❌ FALHA: {str(e)[:100]}\n")
+            print(f"\n   ❌ FALHA: {str(e)}")
         
         if idx < len(DESTINOS):
-            time.sleep(random.uniform(8, 12))
+            delay = random.uniform(10, 15)
+            print(f"\n   ⏸️  Aguardando {delay:.1f}s...")
+            time.sleep(delay)
     
     # RESUMO
-    print("="*60)
+    print("\n" + "="*70)
     print("📊 RESUMO FINAL:")
-    print(f"   ✅ SUCESSO (dados reais): {destinos_sucesso}/{len(DESTINOS)}")
+    print(f"   ✅ SUCESSO: {destinos_sucesso}/{len(DESTINOS)}")
     print(f"   ❌ FALHA: {destinos_falha}/{len(DESTINOS)}")
-    print(f"   📈 TAXA REAL: {(destinos_sucesso/len(DESTINOS))*100:.0f}%")
-    print("="*60 + "\n")
+    print(f"   📈 TAXA: {(destinos_sucesso/len(DESTINOS))*100:.0f}%")
+    print("="*70 + "\n")
     
     if not final_data:
-        print("❌ ERRO CRÍTICO: Nenhum dado real coletado!")
-        print("⚠️  Bright Data não está funcionando")
-        print("💡 AÇÕES: 1) Verificar API key 2) Verificar saldo 3) Contactar suporte\n")
+        print("❌ CRÍTICO: Zero dados coletados!")
+        print("💡 Verificar: 1) API Key 2) Saldo 3) Zona\n")
         return
     
     # BACKUP
     backup_data = {d['id']: d for d in final_data}
     with open('pulse-data-backup.json', 'w', encoding='utf-8') as f:
         json.dump(backup_data, f, ensure_ascii=False, indent=2)
-    print(f"💾 Backup salvo: {len(final_data)} destinos com dados REAIS\n")
+    print(f"💾 Backup: {len(final_data)} destinos\n")
     
     # SUPABASE
     if SUPABASE_ENABLED and final_data:
@@ -382,18 +491,18 @@ def main():
                     "total_destinos": len(final_data),
                     "top_3_ranking": [d['id'] for d in sorted_data[:3]],
                     "ultima_atualizacao": datetime.now().isoformat(),
-                    "versao": "v6.0-brightdata",
-                    "taxa_sucesso_real": f"{(destinos_sucesso/len(DESTINOS))*100:.0f}%"
+                    "versao": "v6.1-brightdata-rigorosa",
+                    "taxa_sucesso": f"{(destinos_sucesso/len(DESTINOS))*100:.0f}%"
                 }
             }
             supabase.table('pulse_snapshots').insert(payload).execute()
-            print("📤 Supabase: Enviado!\n")
+            print("📤 Supabase: OK!\n")
         except Exception as e:
             print(f"⚠️  Supabase: {str(e)[:80]}\n")
     
-    print("="*60)
+    print("="*70)
     print("🎉 CONCLUÍDO!")
-    print("="*60)
+    print("="*70)
 
 if __name__ == "__main__":
     main()
